@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="43.926327mm"
+   height="33.792358mm"
+   viewBox="0 0 43.926327 33.792358"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"><inkscape:page
+       x="0"
+       y="0"
+       width="43.926327"
+       height="33.792358"
+       id="page2"
+       margin="0"
+       bleed="0" /></sodipodi:namedview><defs
+     id="defs1" /><g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-42.911752,-54.006435)"><g
+       id="g1"><path
+         style="fill:#ffff00"
+         d="m 64.877418,75.861196 c 3.7668,-1.723479 8.734686,-9.139504 10.991591,-5.670441 l 10.969066,16.860425 -21.91263,0.47041 -0.04803,-11.660394 z"
+         id="path3"
+         sodipodi:nodetypes="cscccc"
+         inkscape:export-filename="triangleCYM.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" /><path
+         style="fill:#00ffff"
+         d="m 54.719346,70.20102 10.155577,5.660439 c 0.03242,3.778048 0.141389,7.906048 0.05432,11.649793 L 42.911749,87.79879 c 3.808928,-5.82796 7.928262,-11.816087 11.807597,-17.59777 z"
+         id="path2"
+         sodipodi:nodetypes="ccccc" /><path
+         style="fill:#ff00ff"
+         d="M 54.718109,70.204006 64.890319,54.006434 75.870253,70.189761 64.871414,75.865146 Z"
+         id="path1"
+         sodipodi:nodetypes="ccccc" /></g></g></svg>

@@ -1,6 +1,7 @@
 //rgb est en format tableau [255,255,255]
 //hsl est en format objet {h:0,s:0,l:0}
 //hex est en format string #ffffff
+//hsv est en format objet {h:0,s:0,v:0}
 //Convertisseurs §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const rgbToHsl = (rgb) => {
   let r = rgb[0] / 255,
@@ -8,7 +9,7 @@ const rgbToHsl = (rgb) => {
     b = rgb[2] / 255;
   let max = Math.max(r, g, b),
     min = Math.min(r, g, b);
-  let h,
+  let h = 0, // Default hue
     s,
     l = (max + min) / 2;
 
@@ -28,19 +29,21 @@ const rgbToHsl = (rgb) => {
         h = (r - g) / d + 4;
         break;
     }
-    h /= 6;
+    h /= 6; // h is now [0, 1]
   }
 
+  // Return h=[0, 360], s=[0, 1], l=[0, 1]
   return {
-    h: h.toFixed(4) * 100,
-    s: s.toFixed(4) * 100,
-    l: l.toFixed(4) * 100,
+    h: h * 360,
+    s: s,
+    l: l,
   };
 };
 const hslToRgb = (hsl) => {
-  let h = hsl.h / 360,
-    s = hsl.s,
-    l = hsl.l;
+  // Expects h=[0, 360], s=[0, 1], l=[0, 1]
+  let h = hsl.h / 360, // Convert h to [0, 1] for calculation
+    s = Math.max(0, Math.min(1, hsl.s)), // Clamp s
+    l = Math.max(0, Math.min(1, hsl.l)); // Clamp l
   let r, g, b;
 
   if (s === 0) {
@@ -54,6 +57,7 @@ const hslToRgb = (hsl) => {
       if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
       return p;
     };
+    // Use standard formulas
     let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     let p = 2 * l - q;
     r = hue2rgb(p, q, h + 1 / 3);
@@ -89,56 +93,61 @@ const HexVersRGB = (hex) => {
   return [rouge, vert, bleu];
 };
 const hslToHsv = (hsl) => {
-  const h = parseFloat(hsl.h); // Ensure h is a number
-  let s = parseFloat(hsl.s); // Ensure s is a number
-  let l = parseFloat(hsl.l); // Ensure l is a number
+  // Expects h=[0, 360], s=[0, 1], l=[0, 1]
+  const h = hsl.h;
+  let s = Math.max(0, Math.min(1, hsl.s)); // Clamp s
+  let l = Math.max(0, Math.min(1, hsl.l)); // Clamp l
 
-  // Calculate Value (V)
-  let v = l + s * Math.min(l, 1 - l);
-
-  // Calculate Saturation (S) for HSV
-  let newS;
+  // Calculate V and S_hsv in [0, 1]
+  const v = l + s * Math.min(l, 1 - l);
+  let s_hsv;
   if (v === 0) {
-    newS = 0;
+    s_hsv = 0;
   } else {
-    // Avoid division by zero or very small numbers causing issues
-    newS = 2 * (1 - l / v);
+    s_hsv = (v - l) / v; // Use standard formula: (V-L)/V
   }
 
-  // Clamp S and V before formatting to avoid potential issues with toFixed
-  newS = Math.max(0, Math.min(1, newS));
-  v = Math.max(0, Math.min(1, v));
-
-  // Return consistent string format
+  // Return h=[0, 360], s_hsv=[0, 1], v=[0, 1]
   return {
-    h: h.toFixed(4) * 100,
-    s: newS.toFixed(4) * 100,
-    v: v.toFixed(4) * 100,
+    h: h,
+    s: Math.max(0, Math.min(1, s_hsv)), // Clamp result
+    v: Math.max(0, Math.min(1, v)), // Clamp result
   };
 };
 const hsvToHsl = (hsv) => {
+  // Expects h=[0, 360], s=[0, 1], v=[0, 1]
   const h = hsv.h;
-  let s = hsv.s;
-  let v = hsv.v;
-  let l = v * (1 - s / 2);
-  let newS;
+  let s = Math.max(0, Math.min(1, hsv.s)); // Clamp s
+  let v = Math.max(0, Math.min(1, hsv.v)); // Clamp v
+
+  // Calculate L and S_hsl in [0, 1]
+  const l = v * (1 - s / 2);
+  let s_hsl;
   if (l === 0 || l === 1) {
-    newS = 0;
+    s_hsl = 0;
   } else {
-    newS = 2 * (1 - l / v);
+    // Use standard formula: (v - l) / min(l, 1 - l)
+    s_hsl = (v - l) / Math.min(l, 1 - l);
   }
+
+  // Return h=[0, 360], s_hsl=[0, 1], l=[0, 1]
   return {
-    h: h.toFixed(4) * 100,
-    s: newS.toFixed(4) * 100,
-    l: l.toFixed(4) * 100,
+    h: h,
+    s: Math.max(0, Math.min(1, s_hsl)), // Clamp result
+    l: Math.max(0, Math.min(1, l)), // Clamp result
   };
 };
 //complementaire §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const complementary = (rgb) => {
   const hsl = rgbToHsl(rgb);
-  hsl.h + 180 > 360 ? (hsl.h = hsl.h + 180 - 360) : (hsl.h = hsl.h + 180);
-  const hsl2 = { h: hsl.h, s: hsl.s, l: hsl.l };
-  const rgb2 = hslToRgb(hsl2);
+  // Ajuste la teinte de 180 degrés
+  hsl.h = (hsl.h + 180) % 360;
+  // Convertit l'objet hsl en tableau rgb
+  const rgb2 = hslToRgb(hsl);
+  return rgb2;
+};
+const Opposite = (rgb) => {
+  const rgb2 = [255 - rgb[0], 255 - rgb[1], 255 - rgb[2]];
   return rgb2;
 };
 //thirds §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
@@ -150,23 +159,28 @@ const triangleHarmony = (rgb) => {
 const siblingOfComplementary = (rgb) => {
   const complementaryColor = complementary(rgb);
   const hsl = rgbToHsl(complementaryColor);
-  hsl.h + 30 > 360 ? (hsl.h = hsl.h + 30 - 360) : (hsl.h = hsl.h + 30);
-  const hsl2 = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hsl.h - 30 < 0 ? (hsl.h = hsl.h - 30 + 360) : (hsl.h = hsl.h - 30);
-  const hsl3 = { h: hsl.h, s: hsl.s, l: hsl.l };
+  // Ajuste la teinte de 30 degrés
+  hsl.h = (hsl.h + 30) % 360;
+  // Ajuste la teinte de -30 degrés
+  hsl.h = (hsl.h - 30 + 360) % 360; // fait en sorte que la teinte soit entre 0 et 360
+  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
+  const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
   const rgb3 = hslToRgb(hsl3);
   return { rgb, rgb2, rgb3 };
 };
 //fourths §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const squareHarmony = (rgb) => {
-  const hsl = rgbToHsl(rgb);
-  hsl.h + 90 > 360 ? (hsl.h = hsl.h + 90 - 360) : (hsl.h = hsl.h + 90);
-  const hsl2 = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hsl.h - 90 < 0 ? (hsl.h = hsl.h - 90 + 360) : (hsl.h = hsl.h - 90);
-  const hsl3 = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hsl.h + 180 > 360 ? (hsl.h = hsl.h + 180 - 360) : (hsl.h = hsl.h + 180);
-  const hsl4 = { h: hsl.h, s: hsl.s, l: hsl.l };
+  const hsl = rgbToHsl(rgb); // hsl.h is now [0, 360]
+  // Ajuste la teinte de 90 degrés
+  hsl.h = (hsl.h + 90) % 360;
+  // Ajuste la teinte de 180 degrés
+  hsl.h = (hsl.h + 180) % 360; // Complementary
+  // Ajuste la teinte de 270 degrés
+  hsl.h = (hsl.h + 270) % 360;
+  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
+  const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
+  const hsl4 = { h: h4, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
   const rgb3 = hslToRgb(hsl3);
   const rgb4 = hslToRgb(hsl4);
@@ -174,32 +188,34 @@ const squareHarmony = (rgb) => {
 };
 const rectangleHarmony1 = (rgb) => {
   const hsl = rgbToHsl(rgb);
-  hsl.h + 45 > 360 ? (hsl.h = hsl.h + 45 - 360) : (hsl.h = hsl.h + 45);
-  const hsl2 = { h: hsl.h, s: hsl.s, l: hsl.l };
+  // Ajuste la teinte de 45 degrés
+  hsl.h = (hsl.h + 45) % 360;
+  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
-  const rgb3 = complementary(rgb);
-  const hsl3 = rgbToHsl(rgb3);
-  hsl3.h + 45 > 360 ? (hsl3.h = hsl3.h + 45 - 360) : (hsl3.h = hsl3.h + 45);
-  const hsl4 = { h: hsl3.h, s: hsl3.s, l: hsl3.l };
+  const rgb3 = complementary(rgb); //complémentaire
+  const hsl3 = rgbToHsl(rgb3); // H est déjà la teinte complémentaire
+  const h4 = (hsl3.h + 45) % 360; // Ajoute le même angle à la teinte complémentaire
+  const hsl4 = { h: h4, s: hsl3.s, l: hsl3.l }; // Utilise s, l de la teinte complémentaire
   const rgb4 = hslToRgb(hsl4);
   return { rgb, rgb2, rgb3, rgb4 };
 };
 const rectangleHarmony2 = (rgb) => {
   const hsl = rgbToHsl(rgb);
-  hsl.h - 45 > 360 ? (hsl.h = hsl.h - 45 + 360) : (hsl.h = hsl.h - 45);
-  const hsl2 = { h: hsl.h, s: hsl.s, l: hsl.l };
+  // Ajuste la teinte de -45 degrés
+  hsl.h = (hsl.h - 45 + 360) % 360;
+  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
-  const rgb3 = complementary(rgb);
-  const hsl3 = rgbToHsl(rgb3);
-  hsl3.h - 45 < 0 ? (hsl3.h = hsl3.h - 45 + 360) : (hsl3.h = hsl3.h - 45);
-  const hsl4 = { h: hsl3.h, s: hsl3.s, l: hsl3.l };
+  const rgb3 = complementary(rgb); //complémentaire
+  const hsl3 = rgbToHsl(rgb3); // H est déjà la teinte complémentaire
+  const h4 = (hsl3.h - 45 + 360) % 360; // Ajoute le même angle à la teinte complémentaire
+  const hsl4 = { h: h4, s: hsl3.s, l: hsl3.l }; // Utilise s, l de la teinte complémentaire
   const rgb4 = hslToRgb(hsl4);
   return { rgb, rgb2, rgb3, rgb4 };
 };
 // Autres §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
-// Mixes two HSL colors for a third color
+// Mixe deux couleurs HSL pour une troisième couleur
 const hslMixer = (hsl1, hsl2, percent) => {
-  // Hue interpolation (shortest path)
+  // Interpolation de la teinte (chemin le plus court) - Attend h entre 0 et 360
   let deltaH = hsl2.h - hsl1.h;
   if (deltaH > 180) {
     deltaH -= 360;
@@ -207,16 +223,16 @@ const hslMixer = (hsl1, hsl2, percent) => {
     deltaH += 360;
   }
   let h = hsl1.h + deltaH * percent;
-  // Normalize hue to be within [0, 360)
+  // Normalise la teinte pour être entre 0 et 360
   h = ((h % 360) + 360) % 360;
 
-  // Saturation interpolation
+  // Interpolation de la saturation - Attend s entre 0 et 1
   const s = hsl1.s + (hsl2.s - hsl1.s) * percent;
 
-  // Lightness interpolation
+  // Interpolation de la luminosité - Attend l entre 0 et 1
   const l = hsl1.l + (hsl2.l - hsl1.l) * percent;
 
-  // Clamp saturation and lightness between 0 and 1
+  // Clamp saturation et luminosité entre 0 et 1
   const clampedS = Math.max(0, Math.min(1, s));
   const clampedL = Math.max(0, Math.min(1, l));
 
@@ -225,20 +241,20 @@ const hslMixer = (hsl1, hsl2, percent) => {
 
 // Generates a third color by mixing two input RGB colors in HSL space
 const inputOfTwoColorForAThird = (rgb, rgb2, percent) => {
-  // Convert input RGB to HSL
+  // Convertit les couleurs RGB en HSL
   const hsl1 = rgbToHsl(rgb);
   const hsl2 = rgbToHsl(rgb2);
 
-  // Mix in HSL space
+  // Mixe dans l'espace HSL
   const hsl3 = hslMixer(hsl1, hsl2, percent);
 
-  // Convert the result back to RGB
+  // Convertit le résultat en RGB
   const rgb3 = hslToRgb(hsl3);
 
-  // Return original RGBs and the new mixed RGB
+  // Retourne les couleurs RGB d'origine et la nouvelle couleur mélangée
   return { rgb, rgb2, rgb3 };
 };
-// create a variation of a color
+// crée une variation d'une couleur
 const createRGBVariations = (rgb) => {
   // Crée deux tableaux pour stocker les variations de couleur
   const rgb1 = [];
@@ -250,7 +266,7 @@ const createRGBVariations = (rgb) => {
 
   // Calcule les variations de couleur pour chaque composante RGB
   rgb.map((val, index) => {
-    // Use clamp for simplification
+    // Utilise clamp pour simplifier
     rgb1[index] = Math.max(0, Math.min(255, val + distance1));
     rgb2[index] = Math.max(0, Math.min(255, val - distance2));
   });
@@ -265,20 +281,20 @@ const generateIntermediateColors = (
   targetRGB = [179, 148, 210],
   factor = 0.5
 ) => {
-  // Convert input RGB colors to HSL
+  // Convertit les couleurs RGB en HSL
   const hsl1 = rgbToHsl(rgb1);
   const hsl2 = rgbToHsl(rgb2);
   const targetHsl = rgbToHsl(targetRGB);
 
-  // Interpolate in HSL space towards the target HSL
+  // Interpolation dans l'espace HSL vers la cible HSL
   const hsl3 = hslMixer(hsl1, targetHsl, factor);
   const hsl4 = hslMixer(hsl2, targetHsl, factor);
 
-  // Convert the resulting HSL colors back to RGB
+  // Convertit les couleurs HSL en RGB
   const rgb3 = hslToRgb(hsl3);
   const rgb4 = hslToRgb(hsl4);
 
-  // Return original RGBs and the new intermediate RGBs
+  // Retourne les couleurs RGB d'origine et les nouvelles couleurs RGB intermédiaires
   return { rgb1, rgb2, rgb3, rgb4 };
 };
 const funcs = {
@@ -289,6 +305,7 @@ const funcs = {
   hslToHsv,
   hsvToHsl,
   complementary,
+  Opposite,
   triangleHarmony,
   siblingOfComplementary,
   squareHarmony,
