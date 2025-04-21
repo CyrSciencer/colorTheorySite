@@ -1,0 +1,16 @@
+.triangular-harmonies {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.isosceles-triangle {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+.tip {
+  width: 30px;
+  height: 30px;
+  border-width: 3px;
+  border-style: solid;
+}

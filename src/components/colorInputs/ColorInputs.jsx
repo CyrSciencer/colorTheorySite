@@ -16,7 +16,7 @@ const ColorInputs = ({
     handleChanges;
   return (
     <>
-      <div className="rgb-input">
+      <div className="rgb-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="r" style={{ color: oppositeColor }}>
           R
         </label>
@@ -78,7 +78,7 @@ const ColorInputs = ({
           maxLength="3"
         />
       </div>
-      <div className="hsl-input">
+      <div className="hsl-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="h-hsl" style={{ color: oppositeColor }}>
           H
         </label>
@@ -137,7 +137,7 @@ const ColorInputs = ({
           }
         />
       </div>
-      <div className="hsv-input">
+      <div className="hsv-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="h-hsv" style={{ color: oppositeColor }}>
           H
         </label>
@@ -196,7 +196,7 @@ const ColorInputs = ({
           }
         />
       </div>
-      <div className="hex-input">
+      <div className="hex-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="hex" style={{ color: oppositeColor }}>
           Hex
         </label>

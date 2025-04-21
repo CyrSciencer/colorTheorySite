@@ -146,7 +146,7 @@ const complementary = (rgb) => {
   const rgb2 = hslToRgb(hsl);
   return rgb2;
 };
-const Opposite = (rgb) => {
+const opposite = (rgb) => {
   const rgb2 = [255 - rgb[0], 255 - rgb[1], 255 - rgb[2]];
   return rgb2;
 };
@@ -160,9 +160,9 @@ const siblingOfComplementary = (rgb) => {
   const complementaryColor = complementary(rgb);
   const hsl = rgbToHsl(complementaryColor);
   // Ajuste la teinte de 30 degrés
-  hsl.h = (hsl.h + 30) % 360;
+  const h2 = (hsl.h + 30) % 360;
   // Ajuste la teinte de -30 degrés
-  hsl.h = (hsl.h - 30 + 360) % 360; // fait en sorte que la teinte soit entre 0 et 360
+  const h3 = (hsl.h - 30 + 360) % 360; // fait en sorte que la teinte soit entre 0 et 360
   const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
   const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
@@ -297,6 +297,38 @@ const generateIntermediateColors = (
   // Retourne les couleurs RGB d'origine et les nouvelles couleurs RGB intermédiaires
   return { rgb1, rgb2, rgb3, rgb4 };
 };
+//contrastes §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+const contrast = (hsv) => {
+  const colorHues = {
+    yellow: { hue: 60, ratioHarmony: 3 },
+    red: { hue: 0, ratioHarmony: 6 },
+    red2: { hue: 360, ratioHarmony: 6 },
+    blue: { hue: 240, ratioHarmony: 8 },
+    green: { hue: 120, ratioHarmony: 6 },
+    purple: { hue: 300, ratioHarmony: 9 },
+    orange: { hue: 30, ratioHarmony: 4 },
+  };
+
+  // console.log(hsv.h);
+  const distances = {
+    yellow: Math.abs(hsv.h - colorHues.yellow.hue),
+    red: Math.abs(hsv.h - colorHues.red.hue),
+    red2: Math.abs(hsv.h - colorHues.red2.hue),
+    blue: Math.abs(hsv.h - colorHues.blue.hue),
+    green: Math.abs(hsv.h - colorHues.green.hue),
+    purple: Math.abs(hsv.h - colorHues.purple.hue),
+    orange: Math.abs(hsv.h - colorHues.orange.hue),
+  };
+  // console.log(distances);
+  const minDistance = Math.min(...Object.values(distances));
+  const closestColor = Object.keys(distances).find(
+    (key) => distances[key] === minDistance
+  );
+  // console.log({ closestColor });
+  // console.log(colorHues[closestColor]);
+  const { ratioHarmony } = colorHues[closestColor];
+  return { ratioHarmony, closestColor };
+};
 const funcs = {
   rgbToHsl,
   hslToRgb,
@@ -305,7 +337,7 @@ const funcs = {
   hslToHsv,
   hsvToHsl,
   complementary,
-  Opposite,
+  opposite,
   triangleHarmony,
   siblingOfComplementary,
   squareHarmony,
@@ -314,5 +346,6 @@ const funcs = {
   inputOfTwoColorForAThird,
   createRGBVariations,
   generateIntermediateColors,
+  contrast,
 };
 export default funcs;

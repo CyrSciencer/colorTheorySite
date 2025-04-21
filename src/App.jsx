@@ -3,17 +3,23 @@ import "./App.css";
 import ColorInputs from "./components/colorInputs/ColorInputs";
 import funcs from "../utilities/complementaries";
 import ColorTriangles from "./components/colorTriangles/colorTriangles";
+import SquareComposition from "./components/squareComposition/SquareComposition";
+import CompositionHarmony from "./components/compositionHarmony/CompositionHarmony";
+import TriangularHarmonies from "./components/triangularHamonies/TriangularHarmonies";
 function App() {
   //states définisant les couleurs
   const [rgb, setRgb] = useState([0, 0, 0]);
   const [hsl, setHsl] = useState({ h: 0, s: 0, l: 0 });
   const [hex, setHex] = useState("#000000");
   const [hsv, setHsv] = useState({ h: 0, s: 0, v: 0 });
-  const [oppositeColor, setOppositeColor] = useState([255, 255, 255]);
+  const [oppositeColor, setoppositeColor] = useState([255, 255, 255]);
+  const [complementaryColor, setComplementaryColor] = useState([255, 255, 255]);
   //useEffect pour mettre à jour la couleur opposée
+  // console.log({ complementaryColor });
   useEffect(() => {
-    // console.log(funcs.Opposite(rgb));
-    setOppositeColor(funcs.rgbVersHex(funcs.Opposite(rgb)));
+    // console.log(funcs.opposite(rgb));
+    setoppositeColor(funcs.rgbVersHex(funcs.opposite(rgb)));
+    setComplementaryColor(funcs.rgbVersHex(funcs.complementary(rgb)));
   }, [rgb]);
   return (
     <>
@@ -38,7 +44,45 @@ function App() {
         </div>
       </header>
       <main>
-        <ColorTriangles color1="red" color2="blue" color3="green" />
+        <div className="color-triangles-container">
+          <h2>Color triangles</h2>
+          <ColorTriangles hex={hex} />
+        </div>
+        <div className="square-composition-container">
+          <h2>Composition squares</h2>
+          <div>
+            <div className="square-composition-row">
+              <SquareComposition innerColor={hex} outerColor="#000000" />
+              <SquareComposition innerColor="#000000" outerColor={hex} />
+              <SquareComposition innerColor={hex} outerColor="#ffffff" />
+              <SquareComposition innerColor="#ffffff" outerColor={hex} />{" "}
+            </div>
+
+            <div className="square-composition-row">
+              <SquareComposition
+                innerColor={hex}
+                outerColor={complementaryColor}
+              />
+              <SquareComposition
+                innerColor={complementaryColor}
+                outerColor={hex}
+              />
+
+              <SquareComposition innerColor={hex} outerColor="#949494" />
+              <SquareComposition innerColor="#949494" outerColor={hex} />
+            </div>
+          </div>
+        </div>
+        {/* <div className="composition-harmony-container">
+          <h2>Composition harmony</h2>
+          <CompositionHarmony hsv={hsv} />
+        </div> */}
+        <div className="three-hue-harmonies">
+          <h2>Three hue harmonies</h2>
+          <div className="three-hue-harmonies-container">
+            <TriangularHarmonies rgb={rgb} />
+          </div>
+        </div>
       </main>
     </>
   );
