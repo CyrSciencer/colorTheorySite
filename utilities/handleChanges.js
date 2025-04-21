@@ -1,9 +1,10 @@
 import { useState } from "react";
-import funcs from "./complementaries";
+import colorManagementFuncs from "./complementaries";
+import InformationTranslationFuncs from "./InformationTranslation.js";
 
 //usages
 const { rgbToHsl, hslToRgb, rgbVersHex, HexVersRGB, hslToHsv, hsvToHsl } =
-  funcs;
+  InformationTranslationFuncs;
 
 //fonctions handle changes
 const handleRgbChange = (

@@ -1,9 +1,10 @@
-import funcs from "../../../utilities/complementaries";
+import colorManagementFuncs from "../../../utilities/complementaries";
+import InformationTranslationFuncs from "../../../utilities/InformationTranslation.js";
 
 const CompositionHarmony = ({ hsv }) => {
-  const contrast = funcs.contrast(hsv);
-  console.log(hsv.h);
-  console.log({ contrast });
+  const contrast = InformationTranslationFuncs.contrast(hsv);
+  //   console.log(hsv.h);
+  //   console.log({ contrast });
   return <div>CompositionHarmony</div>;
 };
 

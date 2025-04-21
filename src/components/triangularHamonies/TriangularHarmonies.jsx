@@ -1,4 +1,5 @@
-import funcs from "../../../utilities/complementaries";
+import colorManagementFuncs from "../../../utilities/complementaries";
+import InformationTranslationFuncs from "../../../utilities/InformationTranslation.js";
 import { useState, useEffect } from "react";
 import "./triangularHarmonies.css";
 const TriangularHarmonies = ({ rgb }) => {
@@ -6,8 +7,9 @@ const TriangularHarmonies = ({ rgb }) => {
   const [hex3, setHex3] = useState("");
   const [hex4, setHex4] = useState("");
   const [hex5, setHex5] = useState("");
-  const { rgbVersHex } = funcs;
-  const { triangleHarmony, siblingOfComplementary, opposite } = funcs;
+  const { rgbVersHex } = InformationTranslationFuncs;
+  const { triangleHarmony, siblingOfComplementary, opposite } =
+    colorManagementFuncs;
   const equilateralHarmony = triangleHarmony(rgb);
   const siblingOfComplementaryHarmony = siblingOfComplementary(rgb);
   console.log({ equilateralHarmony, siblingOfComplementaryHarmony });

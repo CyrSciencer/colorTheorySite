@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import ColorInputs from "./components/colorInputs/ColorInputs";
-import funcs from "../utilities/complementaries";
+import colorManagementFuncs from "../utilities/complementaries";
+import InformationTranslationFuncs from "../utilities/InformationTranslation.js";
 import ColorTriangles from "./components/colorTriangles/colorTriangles";
 import SquareComposition from "./components/squareComposition/SquareComposition";
 import CompositionHarmony from "./components/compositionHarmony/CompositionHarmony";
@@ -14,12 +15,15 @@ function App() {
   const [hsv, setHsv] = useState({ h: 0, s: 0, v: 0 });
   const [oppositeColor, setoppositeColor] = useState([255, 255, 255]);
   const [complementaryColor, setComplementaryColor] = useState([255, 255, 255]);
+  const { rgbVersHex } = InformationTranslationFuncs;
+  const { opposite, complementary } = colorManagementFuncs;
+
   //useEffect pour mettre à jour la couleur opposée
   // console.log({ complementaryColor });
   useEffect(() => {
     // console.log(funcs.opposite(rgb));
-    setoppositeColor(funcs.rgbVersHex(funcs.opposite(rgb)));
-    setComplementaryColor(funcs.rgbVersHex(funcs.complementary(rgb)));
+    setoppositeColor(rgbVersHex(opposite(rgb)));
+    setComplementaryColor(rgbVersHex(complementary(rgb)));
   }, [rgb]);
   return (
     <>
@@ -54,8 +58,9 @@ function App() {
             <div className="square-composition-row">
               <SquareComposition innerColor={hex} outerColor="#000000" />
               <SquareComposition innerColor="#000000" outerColor={hex} />
-              <SquareComposition innerColor={hex} outerColor="#ffffff" />
-              <SquareComposition innerColor="#ffffff" outerColor={hex} />{" "}
+
+              <SquareComposition innerColor={hex} outerColor="#949494" />
+              <SquareComposition innerColor="#949494" outerColor={hex} />
             </div>
 
             <div className="square-composition-row">
@@ -67,9 +72,8 @@ function App() {
                 innerColor={complementaryColor}
                 outerColor={hex}
               />
-
-              <SquareComposition innerColor={hex} outerColor="#949494" />
-              <SquareComposition innerColor="#949494" outerColor={hex} />
+              <SquareComposition innerColor={hex} outerColor="#ffffff" />
+              <SquareComposition innerColor="#ffffff" outerColor={hex} />
             </div>
           </div>
         </div>
