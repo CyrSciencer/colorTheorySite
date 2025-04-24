@@ -23,10 +23,20 @@ const triangleHarmony = (rgb) => {
 const siblingOfComplementary = (rgb) => {
   const complementaryColor = complementary(rgb);
   const hsl = rgbToHsl(complementaryColor);
-  // Ajuste la teinte de 30 degrés
-  const h2 = (hsl.h + 20) % 360;
-  // Ajuste la teinte de -30 degrés
-  const h3 = (hsl.h - 20 + 360) % 360; // fait en sorte que la teinte soit entre 0 et 360
+  // Ajuste la teinte de 15 degrés
+  const h2 = (hsl.h + 15) % 360;
+  // Ajuste la teinte de -15 degrés
+  const h3 = (hsl.h - 15 + 360) % 360; // fait en sorte que la teinte soit entre 0 et 360
+  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
+  const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
+  const rgb2 = hslToRgb(hsl2);
+  const rgb3 = hslToRgb(hsl3);
+  return { rgb, rgb2, rgb3 };
+};
+const analogue = (rgb) => {
+  const hsl = rgbToHsl(rgb);
+  const h2 = (hsl.h + 30) % 360;
+  const h3 = (hsl.h - 30 + 360) % 360;
   const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
   const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
@@ -167,6 +177,7 @@ const colorManagementFuncs = {
   opposite,
   triangleHarmony,
   siblingOfComplementary,
+  analogue,
   squareHarmony,
   rectangleHarmony1,
   rectangleHarmony2,

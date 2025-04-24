@@ -1,16 +1,93 @@
 .triangular-harmonies {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 100px;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
 }
-.isosceles-triangle {
-  width: 100px;
-  height: 100px;
-  background-color: red;
-}
+
 .tip {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-width: 3px;
   border-style: solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* .isosceles-triangle */
+.isosceles-triangle {
+  width: 250px;
+  height: 250px;
+  display: flex;
+  position: relative;
+  /* border: 1px solid red; */
+  justify-content: center;
+  flex-direction: column;
+}
+.isosceles-triangle .top-tip {
+  left: 95px;
+  position: absolute;
+  top: -25px;
+}
+.isosceles-triangle .bottom-tips {
+  /* border: 1px solid blue; */
+  width: 100%;
+  display: flex;
+  position: absolute;
+  bottom: -10px;
+  justify-content: center;
+  gap: 70px;
+}
+/* .equilateral-triangle */
+.equilateral-triangle {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 250px;
+  /* border: 1px solid green; */
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+.equilateral-triangle .top-tip {
+  position: absolute;
+  top: -25px;
+  left: 100px;
+}
+.equilateral-triangle .bottom-tips {
+  position: absolute;
+  display: flex;
+  bottom: 40px;
+  justify-content: center;
+  gap: 150px;
+}
+/* .analogue-triangle */
+.analogue-triangle {
+  width: 250px;
+  height: 250px;
+  /* border: 1px solid yellow; */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+.analogue-triangle .top-tip {
+  position: absolute;
+  top: -25px;
+  left: 98px;
+}
+.analogue-triangle .bottom-tips {
+  position: absolute;
+  display: flex;
+  top: -10px;
+  left: 35px;
+  justify-content: center;
+  flex-direction: row;
+  gap: 70px;
 }

@@ -72,7 +72,7 @@ const hslToRgb = (hsl) => {
 
 const rgbVersHex = (rgb) => {
   //"Convertit un tableau de 3 valeurs RGB en code hexadécimal."
-
+  console.log({ rgb });
   const [rouge, vert, bleu] = rgb;
 
   // Assure que les valeurs sont dans la plage [0, 255]

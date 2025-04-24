@@ -3,7 +3,7 @@ import "./App.css";
 import ColorInputs from "./components/colorInputs/ColorInputs";
 import colorManagementFuncs from "../utilities/complementaries";
 import InformationTranslationFuncs from "../utilities/InformationTranslation.js";
-import ColorTriangles from "./components/colorTriangles/colorTriangles";
+import ColorTriangles from "./components/colorTriangles/ColorTriangles";
 import SquareComposition from "./components/squareComposition/SquareComposition";
 import CompositionHarmony from "./components/compositionHarmony/CompositionHarmony";
 import TriangularHarmonies from "./components/triangularHamonies/TriangularHarmonies";
@@ -54,6 +54,20 @@ function App() {
         </div>
         <div className="square-composition-container">
           <h2>Composition squares</h2>
+          <h3>
+            Complementary color:
+            <span
+              style={{
+                color: rgbVersHex(opposite(rgb)),
+                textShadow: `0 1px 2px ${rgbVersHex(
+                  rgb
+                )} , 0 -1px 2px ${rgbVersHex(rgb)} `,
+                backgroundColor: rgbVersHex(complementary(rgb)),
+              }}
+            >
+              {rgbVersHex(complementary(rgb)).toUpperCase()}
+            </span>
+          </h3>
           <div>
             <div className="square-composition-row">
               <SquareComposition innerColor={hex} outerColor="#000000" />

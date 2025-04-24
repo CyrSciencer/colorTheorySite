@@ -1,7 +1,7 @@
 import "./colorTriangle.css";
-import triangleCYM from "../../assets/triangleCYM.svg";
-import triangleRGB from "../../assets/triangleRGB.svg";
-import triangleRYB from "../../assets/triangleRYB.svg";
+import triangleCYM from "../../assets/svg/triangleCYM.svg";
+import triangleRGB from "../../assets/svg/triangleRGB.svg";
+import triangleRYB from "../../assets/svg/triangleRYB.svg";
 import ColorTriangle from "./ColorTriangle";
 const ColorTriangles = ({ hex }) => {
   return (

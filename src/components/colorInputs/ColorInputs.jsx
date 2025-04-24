@@ -203,7 +203,7 @@ const ColorInputs = ({
         <input
           id="hex"
           type="text"
-          value={hex}
+          value={hex.toUpperCase()}
           onChange={(e) =>
             handleHexChange(e.target.value, setRgb, setHsl, setHex, setHsv)
           }

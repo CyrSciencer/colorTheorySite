@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "OldLangua";
+  src: url("/src/assets/fonts/oldLangua.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body,
 div,
@@ -102,6 +109,7 @@ section {
 }
 body {
   line-height: 1;
+  font-family: "OldLangua", sans-serif;
 }
 ol,
 ul {
