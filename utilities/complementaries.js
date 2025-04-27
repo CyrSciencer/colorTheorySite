@@ -47,11 +47,11 @@ const analogue = (rgb) => {
 const squareHarmony = (rgb) => {
   const hsl = rgbToHsl(rgb); // hsl.h is now [0, 360]
   // Ajuste la teinte de 90 degrés
-  hsl.h = (hsl.h + 90) % 360;
+  const h3 = (hsl.h + 90) % 360;
   // Ajuste la teinte de 180 degrés
-  hsl.h = (hsl.h + 180) % 360; // Complementary
+  const h2 = (hsl.h + 180) % 360; // Complementary
   // Ajuste la teinte de 270 degrés
-  hsl.h = (hsl.h + 270) % 360;
+  const h4 = (hsl.h + 270) % 360;
   const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
   const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
   const hsl4 = { h: h4, s: hsl.s, l: hsl.l };
@@ -63,7 +63,7 @@ const squareHarmony = (rgb) => {
 const rectangleHarmony1 = (rgb) => {
   const hsl = rgbToHsl(rgb);
   // Ajuste la teinte de 45 degrés
-  hsl.h = (hsl.h + 45) % 360;
+  const h2 = (hsl.h + 45) % 360;
   const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
   const rgb3 = complementary(rgb); //complémentaire
@@ -76,7 +76,7 @@ const rectangleHarmony1 = (rgb) => {
 const rectangleHarmony2 = (rgb) => {
   const hsl = rgbToHsl(rgb);
   // Ajuste la teinte de -45 degrés
-  hsl.h = (hsl.h - 45 + 360) % 360;
+  const h2 = (hsl.h - 45 + 360) % 360;
   const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
   const rgb2 = hslToRgb(hsl2);
   const rgb3 = complementary(rgb); //complémentaire

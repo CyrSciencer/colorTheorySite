@@ -1,7 +1,7 @@
+import "./triangularHarmonies.css";
 import colorManagementFuncs from "../../../utilities/complementaries";
 import InformationTranslationFuncs from "../../../utilities/InformationTranslation.js";
 import { useState, useEffect } from "react";
-import "./triangularHarmonies.css";
 import adjComplementaryHarmony from "../../assets/svg/harmonie-adj-complémentaire.svg";
 import analoguousHarmony from "../../assets/svg/harmonie-analogues.svg";
 import triadHarmony from "../../assets/svg/harmonie-triadiques.svg";

@@ -7,6 +7,8 @@ import ColorTriangles from "./components/colorTriangles/ColorTriangles";
 import SquareComposition from "./components/squareComposition/SquareComposition";
 import CompositionHarmony from "./components/compositionHarmony/CompositionHarmony";
 import TriangularHarmonies from "./components/triangularHamonies/TriangularHarmonies";
+import QuadrangularHarmonies from "./components/quadrangularHarmony/QuadrangularHarmonies.jsx";
+
 function App() {
   //states définisant les couleurs
   const [rgb, setRgb] = useState([0, 0, 0]);
@@ -99,6 +101,12 @@ function App() {
           <h2>Three hue harmonies</h2>
           <div className="three-hue-harmonies-container">
             <TriangularHarmonies rgb={rgb} />
+          </div>
+        </div>
+        <div className="four-hue-harmonies">
+          <h2>Four hue harmonies</h2>
+          <div className="four-hue-harmonies-container">
+            <QuadrangularHarmonies rgb={rgb} />
           </div>
         </div>
       </main>
