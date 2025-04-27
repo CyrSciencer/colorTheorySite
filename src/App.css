@@ -74,7 +74,10 @@ span {
   gap: 1rem;
 }
 .three-hue-harmonies,
-.four-hue-harmonies {
+.four-hue-harmonies,
+.opposite-temperature,
+.composition-harmony {
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;

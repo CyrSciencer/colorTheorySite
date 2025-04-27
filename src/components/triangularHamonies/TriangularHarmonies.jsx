@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import adjComplementaryHarmony from "../../assets/svg/harmonie-adj-complémentaire.svg";
 import analoguousHarmony from "../../assets/svg/harmonie-analogues.svg";
 import triadHarmony from "../../assets/svg/harmonie-triadiques.svg";
-const TriangularHarmonies = ({ rgb }) => {
+const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   console.log(rgb);
 
   const [hex2, setHex2] = useState("");
@@ -14,7 +14,6 @@ const TriangularHarmonies = ({ rgb }) => {
   const [hex5, setHex5] = useState("");
   const [hex6, setHex6] = useState("");
   const [hex7, setHex7] = useState("");
-  const [lightness, setLightness] = useState([0, 0, 0]);
   const { rgbVersHex } = InformationTranslationFuncs;
   const {
     triangleHarmony,
@@ -28,14 +27,6 @@ const TriangularHarmonies = ({ rgb }) => {
   const analogueHarmony = analogue(rgb);
   console.log({ equilateralHarmony, siblingOfComplementaryHarmony });
   useEffect(() => {
-    let checklightness = 0;
-    rgb.map((val) => {
-      checklightness += val;
-    });
-    console.log(checklightness);
-    checklightness > 382
-      ? setLightness([0, 0, 0])
-      : setLightness([255, 255, 255]);
     setHex2(rgbVersHex(equilateralHarmony.rgb2));
     setHex3(rgbVersHex(equilateralHarmony.rgb3));
     setHex4(rgbVersHex(siblingOfComplementaryHarmony.rgb2));
@@ -64,8 +55,8 @@ const TriangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex2,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex2.toUpperCase()}
@@ -75,8 +66,8 @@ const TriangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex3,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex3.toUpperCase()}
@@ -101,8 +92,8 @@ const TriangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex4,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex4.toUpperCase()}
@@ -112,8 +103,8 @@ const TriangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex5,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex5.toUpperCase()}
@@ -137,8 +128,8 @@ const TriangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex6,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex6.toUpperCase()}
@@ -148,8 +139,8 @@ const TriangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex7,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex7.toUpperCase()}

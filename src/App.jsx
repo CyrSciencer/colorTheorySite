@@ -7,8 +7,8 @@ import ColorTriangles from "./components/colorTriangles/ColorTriangles";
 import SquareComposition from "./components/squareComposition/SquareComposition";
 import CompositionHarmony from "./components/compositionHarmony/CompositionHarmony";
 import TriangularHarmonies from "./components/triangularHamonies/TriangularHarmonies";
-import QuadrangularHarmonies from "./components/quadrangularHarmony/QuadrangularHarmonies.jsx";
-
+import QuadrangularHarmonies from "./components/quadrangularHarmonies/QuadrangularHarmonies.jsx";
+import Temperatures from "./components/Temperatures/Temperatures";
 function App() {
   //states définisant les couleurs
   const [rgb, setRgb] = useState([0, 0, 0]);
@@ -17,15 +17,25 @@ function App() {
   const [hsv, setHsv] = useState({ h: 0, s: 0, v: 0 });
   const [oppositeColor, setoppositeColor] = useState([255, 255, 255]);
   const [complementaryColor, setComplementaryColor] = useState([255, 255, 255]);
+  const [contrastColorRgb, setContrastColorRgb] = useState([255, 255, 255]);
   const { rgbVersHex } = InformationTranslationFuncs;
   const { opposite, complementary } = colorManagementFuncs;
-
+  console.log({ hsl, hsv });
   //useEffect pour mettre à jour la couleur opposée
   // console.log({ complementaryColor });
   useEffect(() => {
     // console.log(funcs.opposite(rgb));
     setoppositeColor(rgbVersHex(opposite(rgb)));
     setComplementaryColor(rgbVersHex(complementary(rgb)));
+
+    // Calculate contrast color (black or white) based on rgb brightness
+    let checklightness = 0;
+    rgb.map((val) => {
+      checklightness += val;
+    });
+    checklightness > 382
+      ? setContrastColorRgb([0, 0, 0]) // Set to black
+      : setContrastColorRgb([255, 255, 255]); // Set to white
   }, [rgb]);
   return (
     <>
@@ -60,10 +70,10 @@ function App() {
             Complementary color:
             <span
               style={{
-                color: rgbVersHex(opposite(rgb)),
+                color: rgbVersHex(contrastColorRgb),
                 textShadow: `0 1px 2px ${rgbVersHex(
-                  rgb
-                )} , 0 -1px 2px ${rgbVersHex(rgb)} `,
+                  opposite(contrastColorRgb)
+                )} , 0 -1px 2px ${rgbVersHex(opposite(contrastColorRgb))} `,
                 backgroundColor: rgbVersHex(complementary(rgb)),
               }}
             >
@@ -93,21 +103,34 @@ function App() {
             </div>
           </div>
         </div>
-        {/* <div className="composition-harmony-container">
-          <h2>Composition harmony</h2>
-          <CompositionHarmony hsv={hsv} />
-        </div> */}
+
         <div className="three-hue-harmonies">
           <h2>Three hue harmonies</h2>
           <div className="three-hue-harmonies-container">
-            <TriangularHarmonies rgb={rgb} />
+            <TriangularHarmonies
+              rgb={rgb}
+              contrastColorRgb={contrastColorRgb}
+            />
           </div>
         </div>
         <div className="four-hue-harmonies">
           <h2>Four hue harmonies</h2>
           <div className="four-hue-harmonies-container">
-            <QuadrangularHarmonies rgb={rgb} />
+            <QuadrangularHarmonies
+              rgb={rgb}
+              contrastColorRgb={contrastColorRgb}
+            />
           </div>
+        </div>
+        <div className="opposite-temperature">
+          <h2>Opposite temperature</h2>
+          <div className="opposite-temperature-container">
+            <Temperatures rgb={rgb} contrastColorRgb={contrastColorRgb} />
+          </div>
+        </div>
+        <div className="composition-harmony">
+          <h2>Composition harmony</h2>
+          <CompositionHarmony hsl={hsl} />
         </div>
       </main>
     </>

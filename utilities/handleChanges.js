@@ -49,7 +49,8 @@ const handleHslChange = (
 ) => {
   const newHsl = { ...currentHsl };
   // Validation for numeric HSL
-  const rawValue = value;
+  // Remove '%' or '°' before parsing
+  const rawValue = value.replace(/[%°]/g, "");
   if (rawValue === "") {
     newHsl[key] = 0; // Handle empty input as 0
   } else {
@@ -62,7 +63,7 @@ const handleHslChange = (
         numValue >= 0 &&
         numValue <= 100
       ) {
-        newHsl[key] = numValue; // Store as number
+        newHsl[key] = numValue / 100; // Store as number 0-1
       } else {
         return; // Ignore out-of-range input
       }
@@ -109,7 +110,8 @@ const handleHsvChange = (
 ) => {
   const newHsv = { ...currentHsv };
   // Validation for numeric HSV
-  const rawValue = value;
+  // Remove '%' or '°' before parsing
+  const rawValue = value.replace(/[%°]/g, "");
   if (rawValue === "") {
     newHsv[key] = 0; // Handle empty input as 0
   } else {
@@ -122,7 +124,7 @@ const handleHsvChange = (
         numValue >= 0 &&
         numValue <= 100
       ) {
-        newHsv[key] = numValue; // Store as number
+        newHsv[key] = numValue / 100; // Store as number 0-1
       } else {
         return; // Ignore out-of-range input
       }

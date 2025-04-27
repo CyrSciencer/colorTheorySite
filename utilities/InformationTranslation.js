@@ -72,7 +72,7 @@ const hslToRgb = (hsl) => {
 
 const rgbVersHex = (rgb) => {
   //"Convertit un tableau de 3 valeurs RGB en code hexadécimal."
-  console.log({ rgb });
+  // console.log({ rgb });
   const [rouge, vert, bleu] = rgb;
 
   // Assure que les valeurs sont dans la plage [0, 255]
@@ -145,47 +145,59 @@ const hsvToHsl = (hsv) => {
 };
 
 //contrastes §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
-const contrast = (hsv) => {
+const contrast = (hsl) => {
   const colorHues = {
     yellow: { hue: 60, darkRatioHarmony: 3, lightRatioHarmony: 9 },
     red: { hue: 0, darkRatioHarmony: 6, lightRatioHarmony: 6 },
     red2: { hue: 360, darkRatioHarmony: 6, lightRatioHarmony: 6 },
     blue: { hue: 240, darkRatioHarmony: 8, lightRatioHarmony: 4 },
     green: { hue: 120, darkRatioHarmony: 6, lightRatioHarmony: 6 },
-    purple: { hue: 300, darkRatioHarmony: 9, lightRatioHarmony: 3 },
+    purple: { hue: 270, darkRatioHarmony: 9, lightRatioHarmony: 3 },
     orange: { hue: 30, darkRatioHarmony: 4, lightRatioHarmony: 8 },
+    cyan: { hue: 180, darkRatioHarmony: 3, lightRatioHarmony: 9 },
+    magenta: { hue: 300, darkRatioHarmony: 7, lightRatioHarmony: 5 },
   };
 
   // console.log(hsv.h);
   const distances = {
     yellow: Math.min(
-      Math.abs(hsv.h - colorHues.yellow.hue),
-      Math.abs(hsv.h - colorHues.yellow.hue + 360),
-      Math.abs(hsv.h - colorHues.yellow.hue - 360)
+      Math.abs(hsl.h - colorHues.yellow.hue),
+      Math.abs(hsl.h - colorHues.yellow.hue + 360),
+      Math.abs(hsl.h - colorHues.yellow.hue - 360)
     ),
     red: Math.min(
-      Math.abs(hsv.h - colorHues.red.hue),
-      Math.abs(hsv.h - colorHues.red2.hue)
+      Math.abs(hsl.h - colorHues.red.hue),
+      Math.abs(hsl.h - colorHues.red2.hue)
     ),
     blue: Math.min(
-      Math.abs(hsv.h - colorHues.blue.hue),
-      Math.abs(hsv.h - colorHues.blue.hue + 360),
-      Math.abs(hsv.h - colorHues.blue.hue - 360)
+      Math.abs(hsl.h - colorHues.blue.hue),
+      Math.abs(hsl.h - colorHues.blue.hue + 360),
+      Math.abs(hsl.h - colorHues.blue.hue - 360)
     ),
     green: Math.min(
-      Math.abs(hsv.h - colorHues.green.hue),
-      Math.abs(hsv.h - colorHues.green.hue + 360),
-      Math.abs(hsv.h - colorHues.green.hue - 360)
+      Math.abs(hsl.h - colorHues.green.hue),
+      Math.abs(hsl.h - colorHues.green.hue + 360),
+      Math.abs(hsl.h - colorHues.green.hue - 360)
     ),
     purple: Math.min(
-      Math.abs(hsv.h - colorHues.purple.hue),
-      Math.abs(hsv.h - colorHues.purple.hue + 360),
-      Math.abs(hsv.h - colorHues.purple.hue - 360)
+      Math.abs(hsl.h - colorHues.purple.hue),
+      Math.abs(hsl.h - colorHues.purple.hue + 360),
+      Math.abs(hsl.h - colorHues.purple.hue - 360)
     ),
     orange: Math.min(
-      Math.abs(hsv.h - colorHues.orange.hue),
-      Math.abs(hsv.h - colorHues.orange.hue + 360),
-      Math.abs(hsv.h - colorHues.orange.hue - 360)
+      Math.abs(hsl.h - colorHues.orange.hue),
+      Math.abs(hsl.h - colorHues.orange.hue + 360),
+      Math.abs(hsl.h - colorHues.orange.hue - 360)
+    ),
+    cyan: Math.min(
+      Math.abs(hsl.h - colorHues.cyan.hue),
+      Math.abs(hsl.h - colorHues.cyan.hue + 360),
+      Math.abs(hsl.h - colorHues.cyan.hue - 360)
+    ),
+    magenta: Math.min(
+      Math.abs(hsl.h - colorHues.magenta.hue),
+      Math.abs(hsl.h - colorHues.magenta.hue + 360),
+      Math.abs(hsl.h - colorHues.magenta.hue - 360)
     ),
   };
   // console.log(distances);
@@ -198,6 +210,19 @@ const contrast = (hsv) => {
   const { darkRatioHarmony, lightRatioHarmony } = colorHues[closestColor];
   return { darkRatioHarmony, lightRatioHarmony, closestColor };
 };
+// determinatif chaud-froid §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+const ofOppositeTemperature = (rgb) => {
+  const hsl = rgbToHsl(rgb);
+  const warms = [
+    0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 290, 300, 310, 320, 330, 340,
+    350,
+  ];
+  const cools = [
+    110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250,
+    260, 270, 280,
+  ];
+  return hsl.h < 100 || hsl.h > 280 ? cools : warms;
+};
 
 const InformationTranslationFuncs = {
   rgbToHsl,
@@ -207,6 +232,7 @@ const InformationTranslationFuncs = {
   hslToHsv,
   hsvToHsl,
   contrast,
+  ofOppositeTemperature,
 };
 
 export default InformationTranslationFuncs;

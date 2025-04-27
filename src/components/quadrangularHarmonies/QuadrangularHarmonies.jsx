@@ -4,7 +4,7 @@ import colorManagementFuncs from "../../../utilities/complementaries.js";
 import { useState, useEffect } from "react";
 import tetradHarmony from "../../assets/svg/harmonie-tetradiques.svg";
 import pureSquareHarmony from "../../assets/svg/harmonie-carré.svg";
-const QuadrangularHarmonies = ({ rgb }) => {
+const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const [hex2, setHex2] = useState("");
   const [hex3, setHex3] = useState("");
   const [hex4, setHex4] = useState("");
@@ -12,19 +12,10 @@ const QuadrangularHarmonies = ({ rgb }) => {
   const [hex6, setHex6] = useState("");
   const [hex7, setHex7] = useState("");
   const [hex8, setHex8] = useState("");
-  const [lightness, setLightness] = useState([0, 0, 0]);
   const { rgbVersHex } = InformationTranslationFuncs;
   const { squareHarmony, rectangleHarmony1, rectangleHarmony2, opposite } =
     colorManagementFuncs;
   useEffect(() => {
-    let checklightness = 0;
-    rgb.map((val) => {
-      checklightness += val;
-    });
-    // console.log(checklightness);
-    checklightness > 382
-      ? setLightness([0, 0, 0])
-      : setLightness([255, 255, 255]);
     console.log("squareHarmony =====>", squareHarmony(rgb));
     console.log("rectangleHarmony1 =====>", rectangleHarmony1(rgb));
     console.log("rectangleHarmony2 =====>", rectangleHarmony2(rgb));
@@ -46,8 +37,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: rgbVersHex(rgb),
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           ></div>
           <div
@@ -55,8 +46,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex2,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex2.toUpperCase()}
@@ -66,8 +57,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex5,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex5.toUpperCase()}
@@ -77,8 +68,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex7,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex7.toUpperCase()}
@@ -93,8 +84,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: rgbVersHex(rgb),
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           ></div>
           <div
@@ -102,8 +93,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex2,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex2.toUpperCase()}
@@ -113,8 +104,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex3,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex3.toUpperCase()}
@@ -124,8 +115,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex4,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex4.toUpperCase()}
@@ -144,8 +135,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: rgbVersHex(rgb),
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           ></div>
           <div
@@ -153,8 +144,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex2,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex2.toUpperCase()}
@@ -164,8 +155,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex6,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex6.toUpperCase()}
@@ -175,8 +166,8 @@ const QuadrangularHarmonies = ({ rgb }) => {
             style={{
               backgroundColor: hex8,
               borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(lightness),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(lightness))}`,
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex8.toUpperCase()}

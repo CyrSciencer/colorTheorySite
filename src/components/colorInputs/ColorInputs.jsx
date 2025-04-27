@@ -14,6 +14,7 @@ const ColorInputs = ({
 }) => {
   const { handleRgbChange, handleHslChange, handleHexChange, handleHsvChange } =
     handleChanges;
+  console.log({ hsl, hsv });
   return (
     <>
       <div className="rgb-input" style={{ borderColor: oppositeColor }}>
@@ -163,7 +164,7 @@ const ColorInputs = ({
         <input
           id="s-hsv"
           type="text"
-          value={Math.round(hsv.s * 2 * 100) + "%"}
+          value={Math.round(hsv.s * 100) + "%"}
           onChange={(e) =>
             handleHsvChange(
               "s",
