@@ -46,6 +46,8 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
                 style={{
                   "--i": index,
                   "--item-color": rgbVersHex(hslToRgb(neoHSL)),
+                  "--color-opposite": rgbVersHex(contrastColorRgb),
+                  "--shadow-color": rgbVersHex(opposite(contrastColorRgb)),
                 }}
               >
                 {rgbVersHex(hslToRgb(neoHSL)).toUpperCase()}

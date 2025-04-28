@@ -45,7 +45,6 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: rgbVersHex(rgb),
-              borderColor: rgbVersHex(opposite(rgb)),
             }}
           ></div>
         </div>
@@ -54,7 +53,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex2,
-              borderColor: rgbVersHex(opposite(rgb)),
+
               color: rgbVersHex(contrastColorRgb),
               textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
@@ -65,7 +64,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex3,
-              borderColor: rgbVersHex(opposite(rgb)),
+
               color: rgbVersHex(contrastColorRgb),
               textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
@@ -82,7 +81,6 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: rgbVersHex(rgb),
-              borderColor: rgbVersHex(opposite(rgb)),
             }}
           ></div>
         </div>
@@ -91,7 +89,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex4,
-              borderColor: rgbVersHex(opposite(rgb)),
+
               color: rgbVersHex(contrastColorRgb),
               textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
@@ -102,7 +100,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex5,
-              borderColor: rgbVersHex(opposite(rgb)),
+
               color: rgbVersHex(contrastColorRgb),
               textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
@@ -118,7 +116,6 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: rgbVersHex(rgb),
-              borderColor: rgbVersHex(opposite(rgb)),
             }}
           ></div>
         </div>
@@ -126,24 +123,24 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
           <div
             className="tip"
             style={{
-              backgroundColor: hex6,
-              borderColor: rgbVersHex(opposite(rgb)),
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex6.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
               backgroundColor: hex7,
-              borderColor: rgbVersHex(opposite(rgb)),
+
               color: rgbVersHex(contrastColorRgb),
               textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex7.toUpperCase()}
+          </div>
+          <div
+            className="tip"
+            style={{
+              backgroundColor: hex6,
+
+              color: rgbVersHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+            }}
+          >
+            {hex6.toUpperCase()}
           </div>
         </div>
       </div>

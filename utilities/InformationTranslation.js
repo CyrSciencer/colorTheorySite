@@ -148,13 +148,13 @@ const hsvToHsl = (hsv) => {
 const contrast = (hsl) => {
   const colorHues = {
     yellow: { hue: 60, darkRatioHarmony: 3, lightRatioHarmony: 9 },
-    red: { hue: 0, darkRatioHarmony: 6, lightRatioHarmony: 6 },
-    red2: { hue: 360, darkRatioHarmony: 6, lightRatioHarmony: 6 },
+    red: { hue: 0, darkRatioHarmony: 7, lightRatioHarmony: 5 },
+    red2: { hue: 360, darkRatioHarmony: 7, lightRatioHarmony: 5 },
     blue: { hue: 240, darkRatioHarmony: 8, lightRatioHarmony: 4 },
-    green: { hue: 120, darkRatioHarmony: 6, lightRatioHarmony: 6 },
+    green: { hue: 120, darkRatioHarmony: 4, lightRatioHarmony: 8 },
     purple: { hue: 270, darkRatioHarmony: 9, lightRatioHarmony: 3 },
-    orange: { hue: 30, darkRatioHarmony: 4, lightRatioHarmony: 8 },
-    cyan: { hue: 180, darkRatioHarmony: 3, lightRatioHarmony: 9 },
+    orange: { hue: 30, darkRatioHarmony: 5, lightRatioHarmony: 7 },
+    cyan: { hue: 180, darkRatioHarmony: 4, lightRatioHarmony: 8 },
     magenta: { hue: 300, darkRatioHarmony: 7, lightRatioHarmony: 5 },
   };
 

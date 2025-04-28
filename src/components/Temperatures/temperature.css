@@ -63,6 +63,7 @@
   text-align: center;
   background-color: var(--item-color);
   color: var(--color-opposite);
+  text-shadow: 0 0 5px var(--shadow-color);
   position: absolute;
   top: 50%;
   left: 50%;

@@ -18,7 +18,7 @@
   flex-direction: column;
 }
 .isosceles-triangle .top-tip {
-  left: 95px;
+  left: 97px;
   position: absolute;
   top: -25px;
 }
@@ -27,7 +27,7 @@
   width: 100%;
   display: flex;
   position: absolute;
-  bottom: -10px;
+  bottom: -5px;
   justify-content: center;
   gap: 70px;
 }
@@ -45,12 +45,12 @@
 .equilateral-triangle .top-tip {
   position: absolute;
   top: -25px;
-  left: 100px;
+  left: 102px;
 }
 .equilateral-triangle .bottom-tips {
   position: absolute;
   display: flex;
-  bottom: 40px;
+  bottom: 45px;
   justify-content: center;
   gap: 150px;
 }
@@ -69,13 +69,13 @@
 .analogue-triangle .top-tip {
   position: absolute;
   top: -25px;
-  left: 98px;
+  left: 100px;
 }
 .analogue-triangle .bottom-tips {
   position: absolute;
   display: flex;
-  top: -10px;
-  left: 35px;
+  top: -5px;
+  left: 40px;
   justify-content: center;
   flex-direction: row;
   gap: 70px;
