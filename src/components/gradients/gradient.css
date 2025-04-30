@@ -1,0 +1,15 @@
+.gradient-container {
+  display: flex;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+  width: 40%;
+  margin: 5px auto;
+}
+.gradient-sub-container {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+  /* border: 1px solid black; */
+}

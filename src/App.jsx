@@ -9,6 +9,9 @@ import CompositionHarmony from "./components/compositionHarmony/CompositionHarmo
 import TriangularHarmonies from "./components/triangularHamonies/TriangularHarmonies";
 import QuadrangularHarmonies from "./components/quadrangularHarmonies/QuadrangularHarmonies.jsx";
 import Temperatures from "./components/Temperatures/Temperatures";
+import ColorGradients from "./components/gradients/ColorGradients";
+import SquareHarmonyComposition from "./components/compositionHarmony/SquareHarmonyComposition";
+import TriangleHarmonyComposition from "./components/compositionHarmony/TriangleHarmonyComposition";
 function App() {
   //states définisant les couleurs
   const [rgb, setRgb] = useState([0, 0, 0]);
@@ -123,14 +126,22 @@ function App() {
           </div>
         </div>
         <div className="opposite-temperature">
-          <h2>Opposite temperature</h2>
+          <h2>Of opposite temperature</h2>
           <div className="opposite-temperature-container">
             <Temperatures rgb={rgb} contrastColorRgb={contrastColorRgb} />
           </div>
         </div>
         <div className="composition-harmony">
           <h2>Composition harmony</h2>
-          <CompositionHarmony hsl={hsl} />
+          <div className="composition-harmony-container">
+            <CompositionHarmony hsl={hsl} />
+            <SquareHarmonyComposition hsl={hsl} />
+            <TriangleHarmonyComposition hsl={hsl} />
+          </div>
+        </div>
+        <div className="gradient">
+          <h2>Gradients</h2>
+          <ColorGradients rgb={rgb} />
         </div>
       </main>
     </>

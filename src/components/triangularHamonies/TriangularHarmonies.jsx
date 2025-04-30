@@ -15,13 +15,8 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const [hex6, setHex6] = useState("");
   const [hex7, setHex7] = useState("");
   const { rgbVersHex } = InformationTranslationFuncs;
-  const {
-    triangleHarmony,
-    siblingOfComplementary,
-    opposite,
-    analogue,
-    complementary,
-  } = colorManagementFuncs;
+  const { triangleHarmony, siblingOfComplementary, opposite, analogue } =
+    colorManagementFuncs;
   const equilateralHarmony = triangleHarmony(rgb);
   const siblingOfComplementaryHarmony = siblingOfComplementary(rgb);
   const analogueHarmony = analogue(rgb);
