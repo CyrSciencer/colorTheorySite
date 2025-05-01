@@ -1,9 +1,9 @@
 import { useState } from "react";
 import colorManagementFuncs from "./complementaries";
-import InformationTranslationFuncs from "./InformationTranslation.js";
+import InformationTranslationFuncs from "./InformationTranslation";
 
 //usages
-const { rgbToHsl, hslToRgb, rgbVersHex, HexVersRGB, hslToHsv, hsvToHsl } =
+const { rgbToHsl, hslToRgb, rgbToHex, hexToRgb, hslToHsv, hsvToHsl } =
   InformationTranslationFuncs;
 
 //fonctions handle changes
@@ -32,7 +32,7 @@ const handleRgbChange = (
   // Assuming conversion functions now handle numeric HSL/HSV values (0-100 for s, l, v)
   const newHsl = rgbToHsl(newRgb);
   setHsl(newHsl);
-  const newHex = rgbVersHex(newRgb);
+  const newHex = rgbToHex(newRgb);
   setHex(newHex);
   const newHsv = hslToHsv(newHsl);
   setHsv(newHsv);
@@ -76,7 +76,7 @@ const handleHslChange = (
   // Assuming conversion functions now handle numeric HSL/HSV values
   const newRgb = hslToRgb(newHsl);
   setRgb(newRgb);
-  const newHex = rgbVersHex(newRgb);
+  const newHex = rgbToHex(newRgb);
   setHex(newHex);
   const newHsv = hslToHsv(newHsl);
   setHsv(newHsv);
@@ -87,7 +87,7 @@ const handleHexChange = (value, setRgb, setHsl, setHex, setHsv) => {
   if (/^#[0-9A-Fa-f]{0,6}$/.test(value)) {
     setHex(value); // Update hex state immediately
     if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
-      const newRgb = HexVersRGB(value);
+      const newRgb = hexToRgb(value);
       setRgb(newRgb);
       // Assuming conversion functions now handle numeric HSL/HSV values
       const newHsl = rgbToHsl(newRgb);
@@ -139,7 +139,7 @@ const handleHsvChange = (
   setHsl(newHsl);
   const newRgb = hslToRgb(newHsl);
   setRgb(newRgb);
-  const newHex = rgbVersHex(newRgb);
+  const newHex = rgbToHex(newRgb);
   setHex(newHex);
 };
 

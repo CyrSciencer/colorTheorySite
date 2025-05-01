@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "../App.css"; // Adjust path if necessary
 import ColorInputs from "../components/colorInputs/ColorInputs"; // Adjust path
-import colorManagementFuncs from "../../utilities/complementaries"; // Adjust path
-import InformationTranslationFuncs from "../../utilities/InformationTranslation.js"; // Adjust path
+import colorManagementFuncs from "../../utilities/complementaries"; // Corrected path
+import InformationTranslationFuncs from "../../utilities/InformationTranslation"; // Corrected path
 import ColorTriangles from "../components/colorTriangles/ColorTriangles"; // Adjust path
 import SquareComposition from "../components/squareComposition/SquareComposition"; // Adjust path
 import CompositionHarmony from "../components/compositionHarmony/CompositionHarmony"; // Adjust path
@@ -13,6 +13,7 @@ import ColorGradients from "../components/gradients/ColorGradients"; // Adjust p
 import SquareHarmonyComposition from "../components/compositionHarmony/SquareHarmonyComposition"; // Adjust path
 import TriangleHarmonyComposition from "../components/compositionHarmony/TriangleHarmonyComposition"; // Adjust path
 import { Link } from "react-router-dom";
+
 function SingleColorPage() {
   // Renamed from App
   //states définisant les couleurs
@@ -23,15 +24,15 @@ function SingleColorPage() {
   const [oppositeColor, setoppositeColor] = useState([255, 255, 255]);
   const [complementaryColor, setComplementaryColor] = useState([255, 255, 255]);
   const [contrastColorRgb, setContrastColorRgb] = useState([255, 255, 255]);
-  const { rgbVersHex } = InformationTranslationFuncs;
-  const { opposite, complementary } = colorManagementFuncs;
+  const { rgbToHex } = InformationTranslationFuncs;
+  const { complementary, opposite } = colorManagementFuncs;
   console.log({ hsl, hsv });
   //useEffect pour mettre à jour la couleur opposée
   // console.log({ complementaryColor });
   useEffect(() => {
     // console.log(funcs.opposite(rgb));
-    setoppositeColor(rgbVersHex(opposite(rgb)));
-    setComplementaryColor(rgbVersHex(complementary(rgb)));
+    setoppositeColor(rgbToHex(opposite(rgb)));
+    setComplementaryColor(rgbToHex(complementary(rgb)));
 
     // Calculate contrast color (black or white) based on rgb brightness
     let checklightness = 0;
@@ -78,14 +79,14 @@ function SingleColorPage() {
             Complementary color:
             <span
               style={{
-                color: rgbVersHex(contrastColorRgb),
-                textShadow: `0 1px 2px ${rgbVersHex(
-                  opposite(contrastColorRgb)
-                )} , 0 -1px 2px ${rgbVersHex(opposite(contrastColorRgb))} `,
-                backgroundColor: rgbVersHex(complementary(rgb)),
+                color: rgbToHex(contrastColorRgb),
+                textShadow: `0 1px 2px ${rgbToHex(
+                  contrastColorRgb
+                )} , 0 -1px 2px ${rgbToHex(opposite(contrastColorRgb))} `,
+                backgroundColor: rgbToHex(complementary(rgb)),
               }}
             >
-              {rgbVersHex(complementary(rgb)).toUpperCase()}
+              {rgbToHex(complementary(rgb)).toUpperCase()}
             </span>
           </h3>
           <div>

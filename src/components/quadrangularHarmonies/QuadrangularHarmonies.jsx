@@ -1,6 +1,6 @@
 import "./quadrangularHarmonies.css";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation.js";
-import colorManagementFuncs from "../../../utilities/complementaries.js";
+import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
+import colorManagementFuncs from "../../../utilities/complementaries";
 import { useState, useEffect } from "react";
 import tetradHarmony from "../../assets/svg/harmonie-tetradiques.svg";
 import pureSquareHarmony from "../../assets/svg/harmonie-carré.svg";
@@ -12,20 +12,20 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const [hex6, setHex6] = useState("");
   const [hex7, setHex7] = useState("");
   const [hex8, setHex8] = useState("");
-  const { rgbVersHex } = InformationTranslationFuncs;
+  const { rgbToHex } = InformationTranslationFuncs;
   const { squareHarmony, rectangleHarmony1, rectangleHarmony2, opposite } =
     colorManagementFuncs;
   useEffect(() => {
     console.log("squareHarmony =====>", squareHarmony(rgb));
     console.log("rectangleHarmony1 =====>", rectangleHarmony1(rgb));
     console.log("rectangleHarmony2 =====>", rectangleHarmony2(rgb));
-    setHex2(rgbVersHex(squareHarmony(rgb).rgb2));
-    setHex3(rgbVersHex(squareHarmony(rgb).rgb3));
-    setHex4(rgbVersHex(squareHarmony(rgb).rgb4));
-    setHex5(rgbVersHex(rectangleHarmony1(rgb).rgb2));
-    setHex6(rgbVersHex(rectangleHarmony2(rgb).rgb2));
-    setHex7(rgbVersHex(rectangleHarmony1(rgb).rgb4));
-    setHex8(rgbVersHex(rectangleHarmony2(rgb).rgb4));
+    setHex2(rgbToHex(squareHarmony(rgb).rgb2));
+    setHex3(rgbToHex(squareHarmony(rgb).rgb3));
+    setHex4(rgbToHex(squareHarmony(rgb).rgb4));
+    setHex5(rgbToHex(rectangleHarmony1(rgb).rgb2));
+    setHex6(rgbToHex(rectangleHarmony2(rgb).rgb2));
+    setHex7(rgbToHex(rectangleHarmony1(rgb).rgb4));
+    setHex8(rgbToHex(rectangleHarmony2(rgb).rgb4));
   }, [rgb]);
   return (
     <div className="quadrangular-harmonies">
@@ -35,19 +35,17 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
           <div
             className="tip"
             style={{
-              backgroundColor: rgbVersHex(rgb),
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              backgroundColor: rgbToHex(rgb),
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           ></div>
           <div
             className="tip"
             style={{
               backgroundColor: hex2,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex2.toUpperCase()}
@@ -56,9 +54,8 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex5,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex5.toUpperCase()}
@@ -67,9 +64,8 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex7,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex7.toUpperCase()}
@@ -82,19 +78,17 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
           <div
             className="tip"
             style={{
-              backgroundColor: rgbVersHex(rgb),
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              backgroundColor: rgbToHex(rgb),
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           ></div>
           <div
             className="tip"
             style={{
               backgroundColor: hex2,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex2.toUpperCase()}
@@ -103,9 +97,8 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex3,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex3.toUpperCase()}
@@ -114,9 +107,8 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex4,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex4.toUpperCase()}
@@ -133,19 +125,17 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
           <div
             className="tip"
             style={{
-              backgroundColor: rgbVersHex(rgb),
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              backgroundColor: rgbToHex(rgb),
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           ></div>
           <div
             className="tip"
             style={{
               backgroundColor: hex2,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex2.toUpperCase()}
@@ -154,9 +144,8 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex6,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex6.toUpperCase()}
@@ -165,9 +154,8 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
             className="tip"
             style={{
               backgroundColor: hex8,
-
-              color: rgbVersHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbVersHex(opposite(contrastColorRgb))}`,
+              color: rgbToHex(contrastColorRgb),
+              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
             }}
           >
             {hex8.toUpperCase()}

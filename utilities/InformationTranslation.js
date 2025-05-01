@@ -70,7 +70,7 @@ const hslToRgb = (hsl) => {
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 };
 
-const rgbVersHex = (rgb) => {
+const rgbToHex = (rgb) => {
   //"Convertit un tableau de 3 valeurs RGB en code hexadécimal."
   // console.log({ rgb });
   const [rouge, vert, bleu] = rgb;
@@ -90,7 +90,7 @@ const rgbVersHex = (rgb) => {
   return codeHex;
 };
 
-const HexVersRGB = (hex) => {
+const hexToRgb = (hex) => {
   const rouge = parseInt(hex.slice(1, 3), 16);
   const vert = parseInt(hex.slice(3, 5), 16);
   const bleu = parseInt(hex.slice(5, 7), 16);
@@ -227,8 +227,8 @@ const ofOppositeTemperature = (rgb) => {
 const InformationTranslationFuncs = {
   rgbToHsl,
   hslToRgb,
-  rgbVersHex,
-  HexVersRGB,
+  rgbToHex,
+  hexToRgb,
   hslToHsv,
   hsvToHsl,
   contrast,

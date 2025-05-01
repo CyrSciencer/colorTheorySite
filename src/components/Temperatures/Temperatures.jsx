@@ -2,7 +2,8 @@ import InformationTranslationFuncs from "../../../utilities/InformationTranslati
 import { useState, useEffect } from "react";
 import "./temperature.css";
 import colorManagementFuncs from "../../../utilities/complementaries";
-const { ofOppositeTemperature } = InformationTranslationFuncs;
+const { rgbToHex, hslToRgb, rgbToHsl, ofOppositeTemperature } =
+  InformationTranslationFuncs;
 const { opposite } = colorManagementFuncs;
 const Temperatures = ({ rgb, contrastColorRgb }) => {
   const [oppositeTemperature, setOppositeTemperature] = useState(null);
@@ -23,11 +24,11 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
         <div
           className="center-item"
           style={{
-            "--color": rgbVersHex(rgb),
-            "--color-opposite": rgbVersHex(contrastColorRgb),
+            "--color": rgbToHex(rgb),
+            "--color-opposite": rgbToHex(contrastColorRgb),
           }}
         >
-          {rgbVersHex(rgb).toUpperCase()}
+          {rgbToHex(rgb).toUpperCase()}
         </div>
         <div
           className="circle-items-container"
@@ -45,12 +46,12 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
                 className="circle-item"
                 style={{
                   "--i": index,
-                  "--item-color": rgbVersHex(hslToRgb(neoHSL)),
-                  "--color-opposite": rgbVersHex(contrastColorRgb),
-                  "--shadow-color": rgbVersHex(opposite(contrastColorRgb)),
+                  "--item-color": rgbToHex(hslToRgb(neoHSL)),
+                  "--color-opposite": rgbToHex(contrastColorRgb),
+                  "--shadow-color": rgbToHex(opposite(contrastColorRgb)),
                 }}
               >
-                {rgbVersHex(hslToRgb(neoHSL)).toUpperCase()}
+                {rgbToHex(hslToRgb(neoHSL)).toUpperCase()}
               </div>
             );
           })}

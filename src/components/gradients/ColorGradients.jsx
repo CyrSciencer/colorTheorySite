@@ -39,11 +39,11 @@ const ColorGradients = ({ rgb }) => {
       const currentRgb = InformationTranslationFuncs.hslToRgb
         ? InformationTranslationFuncs.hslToRgb(currentHsl)
         : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbVersHex
-        ? InformationTranslationFuncs.rgbVersHex(currentRgb)
-        : "#000000"; // Fallback
+      const currentHex = InformationTranslationFuncs.rgbToHex
+        ? InformationTranslationFuncs.rgbToHex(currentRgb)
+        : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbVersHex(contrastRgb); // Pass array
+      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
       const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
         currentHsl.l * 100
       }%)`;
@@ -67,11 +67,11 @@ const ColorGradients = ({ rgb }) => {
       const currentRgb = InformationTranslationFuncs.hslToRgb
         ? InformationTranslationFuncs.hslToRgb(currentHsl)
         : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbVersHex
-        ? InformationTranslationFuncs.rgbVersHex(currentRgb)
-        : "#000000";
+      const currentHex = InformationTranslationFuncs.rgbToHex
+        ? InformationTranslationFuncs.rgbToHex(currentRgb)
+        : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbVersHex(contrastRgb); // Pass array
+      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
       const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
         currentHsl.l * 100
       }%)`;
@@ -95,11 +95,11 @@ const ColorGradients = ({ rgb }) => {
       const currentRgb = InformationTranslationFuncs.hslToRgb
         ? InformationTranslationFuncs.hslToRgb(currentHsl)
         : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbVersHex
-        ? InformationTranslationFuncs.rgbVersHex(currentRgb)
-        : "#000000";
+      const currentHex = InformationTranslationFuncs.rgbToHex
+        ? InformationTranslationFuncs.rgbToHex(currentRgb)
+        : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbVersHex(contrastRgb); // Pass array
+      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
       const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
         currentHsl.l * 100
       }%)`;

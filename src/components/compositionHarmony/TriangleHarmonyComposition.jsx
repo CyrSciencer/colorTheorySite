@@ -1,12 +1,13 @@
 import colorManagementFuncs from "../../../utilities/complementaries";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation.js";
+import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
 import "./compositionHarmony.css"; // Reuse the same CSS for now
 import RatioSection from "./RatioSection";
 
 const TriangleHarmonyComposition = ({ hsl }) => {
-  const { contrast, hslToRgb, rgbToHsl, rgbVersHex } =
+  const { contrast, hslToRgb, rgbToHsl, rgbToHex } =
     InformationTranslationFuncs;
-  const { triangleHarmony } = colorManagementFuncs;
+  const { triangleHarmony, siblingOfComplementary, analogue } =
+    colorManagementFuncs;
 
   // 1. Calculate data for the base color
   const contrastSelected = contrast(hsl);
@@ -42,6 +43,9 @@ const TriangleHarmonyComposition = ({ hsl }) => {
     },
   ];
 
+  const siblingOfComplementaryHarmony = siblingOfComplementary(rgb);
+  const analogueHarmony = analogue(rgb);
+
   return (
     <div className="composition-harmony-wrapper">
       {/* Use the inner component for the Light Ratio section */}
@@ -49,7 +53,7 @@ const TriangleHarmonyComposition = ({ hsl }) => {
         title="Light Ratio Harmony (Triangle)"
         ratioKey="lightRatioHarmony" // Pass the key for the light ratio
         colorDataArray={colorDataArrayofThree}
-        rgbVersHex={rgbVersHex} // Pass the conversion function
+        rgbToHex={rgbToHex} // Pass the conversion function
       />
 
       {/* Use the inner component for the Dark Ratio section */}
@@ -57,7 +61,7 @@ const TriangleHarmonyComposition = ({ hsl }) => {
         title="Dark Ratio Harmony (Triangle)"
         ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
         colorDataArray={colorDataArrayofThree}
-        rgbVersHex={rgbVersHex} // Pass the conversion function
+        rgbToHex={rgbToHex} // Pass the conversion function
       />
     </div>
   );

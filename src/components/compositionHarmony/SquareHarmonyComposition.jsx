@@ -1,10 +1,10 @@
 import colorManagementFuncs from "../../../utilities/complementaries";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation.js";
+import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
 import "./compositionHarmony.css"; // Reuse the same CSS for now
 import RatioSection from "./RatioSection";
 
 const SquareHarmonyComposition = ({ hsl }) => {
-  const { contrast, hslToRgb, rgbToHsl, rgbVersHex } =
+  const { contrast, hslToRgb, rgbToHsl, rgbToHex } =
     InformationTranslationFuncs;
   const { squareHarmony } = colorManagementFuncs;
 
@@ -57,7 +57,7 @@ const SquareHarmonyComposition = ({ hsl }) => {
         title="Light Ratio Harmony (Square)"
         ratioKey="lightRatioHarmony" // Pass the key for the light ratio
         colorDataArray={colorDataArrayofFour}
-        rgbVersHex={rgbVersHex} // Pass the conversion function
+        rgbToHex={rgbToHex} // Pass the conversion function
       />
 
       {/* Use the inner component for the Dark Ratio section */}
@@ -65,7 +65,7 @@ const SquareHarmonyComposition = ({ hsl }) => {
         title="Dark Ratio Harmony (Square)"
         ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
         colorDataArray={colorDataArrayofFour}
-        rgbVersHex={rgbVersHex} // Pass the conversion function
+        rgbToHex={rgbToHex} // Pass the conversion function
       />
     </div>
   );

@@ -14,7 +14,7 @@ const HomePage = () => {
               <Link to="/single-color">Single Color Analysis</Link>
             </li>
             <li>
-              <Link to="/codes">Code Snippets</Link>
+              <Link to="/composition-of-two">Composition of Two Colors</Link>
             </li>
           </ul>
         </nav>
