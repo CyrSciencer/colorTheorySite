@@ -144,18 +144,76 @@ const hsvToHsl = (hsv) => {
   };
 };
 
+// Add the new HSV to RGB function here
+const hsvToRgb = (hsv) => {
+  // Expects h=[0, 360], s=[0, 1], v=[0, 1]
+  let h = hsv.h / 60; // Normalize h to [0, 6)
+  let s = Math.max(0, Math.min(1, hsv.s)); // Clamp s
+  let v = Math.max(0, Math.min(1, hsv.v)); // Clamp v
+  let r, g, b;
+
+  const i = Math.floor(h);
+  const f = h - i;
+  const p = v * (1 - s);
+  const q = v * (1 - f * s);
+  const t = v * (1 - (1 - f) * s);
+
+  switch (i % 6) {
+    case 0:
+      r = v;
+      g = t;
+      b = p;
+      break;
+    case 1:
+      r = q;
+      g = v;
+      b = p;
+      break;
+    case 2:
+      r = p;
+      g = v;
+      b = t;
+      break;
+    case 3:
+      r = p;
+      g = q;
+      b = v;
+      break;
+    case 4:
+      r = t;
+      g = p;
+      b = v;
+      break;
+    case 5:
+      r = v;
+      g = p;
+      b = q;
+      break;
+  }
+
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+};
+
+// Add the new RGB to HSV function here
+const rgbToHsv = (rgb) => {
+  // Convert RGB to HSL first
+  const hsl = rgbToHsl(rgb);
+  // Then convert HSL to HSV
+  return hslToHsv(hsl);
+};
+
 //contrastes §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const contrast = (hsl) => {
   const colorHues = {
-    yellow: { hue: 60, darkRatioHarmony: 3, lightRatioHarmony: 9 },
-    red: { hue: 0, darkRatioHarmony: 7, lightRatioHarmony: 5 },
-    red2: { hue: 360, darkRatioHarmony: 7, lightRatioHarmony: 5 },
-    blue: { hue: 240, darkRatioHarmony: 8, lightRatioHarmony: 4 },
-    green: { hue: 120, darkRatioHarmony: 4, lightRatioHarmony: 8 },
-    purple: { hue: 270, darkRatioHarmony: 9, lightRatioHarmony: 3 },
-    orange: { hue: 30, darkRatioHarmony: 5, lightRatioHarmony: 7 },
-    cyan: { hue: 180, darkRatioHarmony: 4, lightRatioHarmony: 8 },
-    magenta: { hue: 300, darkRatioHarmony: 7, lightRatioHarmony: 5 },
+    yellow: { hue: 60, darkRatio: 3, lightRatio: 9 },
+    red: { hue: 0, darkRatio: 7, lightRatio: 5 },
+    red2: { hue: 360, darkRatio: 7, lightRatio: 5 },
+    blue: { hue: 240, darkRatio: 9, lightRatio: 3 },
+    green: { hue: 120, darkRatio: 4, lightRatio: 8 },
+    purple: { hue: 270, darkRatio: 8, lightRatio: 4 },
+    orange: { hue: 30, darkRatio: 5, lightRatio: 7 },
+    cyan: { hue: 180, darkRatio: 4, lightRatio: 8 },
+    magenta: { hue: 300, darkRatio: 6, lightRatio: 6 },
   };
 
   // console.log(hsv.h);
@@ -205,9 +263,18 @@ const contrast = (hsl) => {
   const closestColor = Object.keys(distances).find(
     (key) => distances[key] === minDistance
   );
+  const hsv = hslToHsv(hsl);
   // console.log({ closestColor });
   // console.log(colorHues[closestColor]);
-  const { darkRatioHarmony, lightRatioHarmony } = colorHues[closestColor];
+  const { darkRatio, lightRatio } = colorHues[closestColor];
+  let darkRatioHarmony;
+  hsl.l === 0
+    ? (darkRatioHarmony = darkRatio * 50)
+    : (darkRatioHarmony = darkRatio / hsv.v);
+  let lightRatioHarmony;
+  hsl.l === 0
+    ? (lightRatioHarmony = lightRatio / 50)
+    : (lightRatioHarmony = lightRatio * hsv.v);
   return { darkRatioHarmony, lightRatioHarmony, closestColor };
 };
 // determinatif chaud-froid §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
@@ -223,7 +290,7 @@ const ofOppositeTemperature = (rgb) => {
   ];
   return hsl.h < 100 || hsl.h > 280 ? cools : warms;
 };
-
+// de nom à hex §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const InformationTranslationFuncs = {
   rgbToHsl,
   hslToRgb,
@@ -231,6 +298,8 @@ const InformationTranslationFuncs = {
   hexToRgb,
   hslToHsv,
   hsvToHsl,
+  hsvToRgb,
+  rgbToHsv,
   contrast,
   ofOppositeTemperature,
 };

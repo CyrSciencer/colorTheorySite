@@ -3,8 +3,16 @@ import colorManagementFuncs from "./complementaries";
 import InformationTranslationFuncs from "./InformationTranslation";
 
 //usages
-const { rgbToHsl, hslToRgb, rgbToHex, hexToRgb, hslToHsv, hsvToHsl } =
-  InformationTranslationFuncs;
+const {
+  rgbToHsl,
+  hslToRgb,
+  rgbToHex,
+  hexToRgb,
+  hslToHsv,
+  hsvToHsl,
+  rgbToHsv,
+  hsvToRgb,
+} = InformationTranslationFuncs;
 
 //fonctions handle changes
 const handleRgbChange = (
@@ -29,12 +37,11 @@ const handleRgbChange = (
   }
 
   setRgb(newRgb);
-  // Assuming conversion functions now handle numeric HSL/HSV values (0-100 for s, l, v)
   const newHsl = rgbToHsl(newRgb);
   setHsl(newHsl);
   const newHex = rgbToHex(newRgb);
   setHex(newHex);
-  const newHsv = hslToHsv(newHsl);
+  const newHsv = rgbToHsv(newRgb);
   setHsv(newHsv);
 };
 
@@ -89,10 +96,9 @@ const handleHexChange = (value, setRgb, setHsl, setHex, setHsv) => {
     if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
       const newRgb = hexToRgb(value);
       setRgb(newRgb);
-      // Assuming conversion functions now handle numeric HSL/HSV values
       const newHsl = rgbToHsl(newRgb);
       setHsl(newHsl);
-      const newHsv = hslToHsv(newHsl);
+      const newHsv = rgbToHsv(newRgb);
       setHsv(newHsv);
     }
   }
@@ -134,10 +140,9 @@ const handleHsvChange = (
   }
 
   setHsv(newHsv);
-  // Assuming conversion functions now handle numeric HSL/HSV values
   const newHsl = hsvToHsl(newHsv);
   setHsl(newHsl);
-  const newRgb = hslToRgb(newHsl);
+  const newRgb = hsvToRgb(newHsv);
   setRgb(newRgb);
   const newHex = rgbToHex(newRgb);
   setHex(newHex);

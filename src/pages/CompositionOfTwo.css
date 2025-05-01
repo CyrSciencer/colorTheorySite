@@ -1,0 +1,13 @@
+.composition-of-two-page header {
+  /* Styles specific to CompositionOfTwo header if any */
+}
+
+.composition-of-two-page main {
+  /* Styles specific to CompositionOfTwo main if any */
+}
+
+.hex-inputs-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

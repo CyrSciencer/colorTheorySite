@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../App.css"; // Adjust path if necessary
+import "./SingleColorPage.css"; // Import page-specific CSS
 import ColorInputs from "../components/colorInputs/ColorInputs"; // Adjust path
 import colorManagementFuncs from "../../utilities/complementaries"; // Corrected path
 import InformationTranslationFuncs from "../../utilities/InformationTranslation"; // Corrected path

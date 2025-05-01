@@ -11,10 +11,15 @@ const getContrastColor = (rgbArray) => {
 };
 
 const ColorGradients = ({ rgb }) => {
-  // Convert input RGB color to HSL using the object format
-  const hsl1 = InformationTranslationFuncs.rgbToHsl
-    ? InformationTranslationFuncs.rgbToHsl(rgb) // rgb is already an array
-    : { h: 0, s: 1, l: 0.5 }; // Fallback
+  // Convert input RGB color directly to HSV
+  const hsv1 = InformationTranslationFuncs.rgbToHsv
+    ? InformationTranslationFuncs.rgbToHsv(rgb) // rgb is already an array
+    : { h: 0, s: 1, v: 1 }; // Fallback HSV
+
+  // Convert to HSL as well if needed for other gradients (e.g., lightness/saturation)
+  const hsl1 = InformationTranslationFuncs.hsvToHsl
+    ? InformationTranslationFuncs.hsvToHsl(hsv1)
+    : { h: 0, s: 1, l: 0.5 }; // Fallback HSL
 
   const h1 = hsl1.h;
   const s1 = hsl1.s;
@@ -115,6 +120,58 @@ const ColorGradients = ({ rgb }) => {
     });
   };
 
+  // --- HSV Saturation Gradient --- //
+  const renderHSVSaturationGradient = () => {
+    return Array.from({ length: 10 }, (_, i) => {
+      const currentS = i / 9; // Go from S=0 to S=1 in HSV
+      const currentHsv = { h: hsv1.h, s: currentS, v: hsv1.v };
+      const currentRgb = InformationTranslationFuncs.hsvToRgb
+        ? InformationTranslationFuncs.hsvToRgb(currentHsv)
+        : [0, 0, 0]; // Fallback RGB array
+      const currentHex = InformationTranslationFuncs.rgbToHex
+        ? InformationTranslationFuncs.rgbToHex(currentRgb)
+        : "#000000"; // Default hex
+      const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
+      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
+
+      return (
+        <div
+          key={`hsv-saturation-${i}`}
+          className="tip"
+          style={{ backgroundColor: currentHex, color: contrastHex }} // Use hex directly
+        >
+          {currentHex.toUpperCase()}
+        </div>
+      );
+    });
+  };
+
+  // --- HSV Value Gradient --- //
+  const renderHSVValueGradient = () => {
+    return Array.from({ length: 10 }, (_, i) => {
+      const currentV = i / 9; // Go from V=0 to V=1 in HSV
+      const currentHsv = { h: hsv1.h, s: hsv1.s, v: currentV };
+      const currentRgb = InformationTranslationFuncs.hsvToRgb
+        ? InformationTranslationFuncs.hsvToRgb(currentHsv)
+        : [0, 0, 0]; // Fallback RGB array
+      const currentHex = InformationTranslationFuncs.rgbToHex
+        ? InformationTranslationFuncs.rgbToHex(currentRgb)
+        : "#000000"; // Default hex
+      const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
+      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
+
+      return (
+        <div
+          key={`hsv-value-${i}`}
+          className="tip"
+          style={{ backgroundColor: currentHex, color: contrastHex }} // Use hex directly
+        >
+          {currentHex.toUpperCase()}
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="gradient-container">
       {/* Hue Shortest Path */}
@@ -129,6 +186,12 @@ const ColorGradients = ({ rgb }) => {
       <div className="gradient-sub-container">{renderLightnessGradient()}</div>
       {/* Saturation Gradient */}
       <div className="gradient-sub-container">{renderSaturationGradient()}</div>
+      {/* HSV Saturation Gradient */}
+      <div className="gradient-sub-container">
+        {renderHSVSaturationGradient()}
+      </div>
+      {/* HSV Value Gradient */}
+      <div className="gradient-sub-container">{renderHSVValueGradient()}</div>
     </div>
   );
 };

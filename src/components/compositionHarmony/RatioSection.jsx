@@ -1,7 +1,6 @@
 import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
 const { rgbToHex } = InformationTranslationFuncs;
 const RatioSection = ({ title, ratioKey, colorDataArray }) => {
-  console.log({ colorDataArray });
   // Sort the array based on the specified ratio key
   const sortedColorDataArray = [...colorDataArray].sort(
     (a, b) => a.contrastInfo[ratioKey] - b.contrastInfo[ratioKey]

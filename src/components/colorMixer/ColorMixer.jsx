@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
 import colorManagementFuncs from "../../../utilities/complementaries"; // Contains hslMixer
+import SquareComposition from "../squareComposition/SquareComposition";
+
 import "./ColorMixer.css";
 const { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } = InformationTranslationFuncs;
 const { inputOfTwoColorForAThird } = colorManagementFuncs; // Assuming hslMixer is exported directly or within the default export
 
-const ColorMixer = ({ hex1, hex2 }) => {
+const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
   const [mixPercent, setMixPercent] = useState(50); // Default mix percentage
   const [mixedHex, setMixedHex] = useState("#808080"); // Default mixed color (grey)
   const [contrastColor, setContrastColor] = useState("#FFFFFF"); // Default contrast
@@ -24,8 +26,7 @@ const ColorMixer = ({ hex1, hex2 }) => {
 
       // Convert back to RGB and then Hex
       const mixedRgb = RgbSet.rgb3;
-      const newMixedHex = rgbToHex(mixedRgb);
-      setMixedHex(newMixedHex);
+      setMixedColor(rgbToHex(mixedRgb));
 
       // Calculate contrast color for the mixed hex
       const brightness =
@@ -44,24 +45,33 @@ const ColorMixer = ({ hex1, hex2 }) => {
   };
 
   return (
-    <div
-      className="color-mixer-container"
-      style={{ backgroundColor: mixedHex, color: contrastColor }}
-    >
-      <div className="mixed-color-display">
-        Short path mixing: {mixedHex.toUpperCase()}
+    <div className="mixer-container">
+      <div
+        className="color-mixer-container"
+        style={{ backgroundColor: mixedColor, color: contrastColor }}
+      >
+        <div className="mixed-color-display">
+          mixed: {mixedColor.toUpperCase()}
+        </div>
+        <div className="mixer-controls">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={mixPercent}
+            onChange={handleSliderChange}
+            className="mix-slider"
+          />
+          <span>{mixPercent}%</span>
+        </div>
       </div>
-      <div className="mixer-controls">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={mixPercent}
-          onChange={handleSliderChange}
-          className="mix-slider"
-        />
-        <span>{mixPercent}%</span>
+      <div className="squares-container">
+        <SquareComposition innerColor={mixedColor} outerColor={hex2} />
+        <SquareComposition innerColor={mixedColor} outerColor={hex1} />
+        <SquareComposition innerColor={hex2} outerColor={mixedColor} />
+        <SquareComposition innerColor={hex1} outerColor={mixedColor} />
       </div>
+      <div className="ratios-container"></div>
     </div>
   );
 };
