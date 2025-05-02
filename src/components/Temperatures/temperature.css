@@ -1,0 +1,86 @@
+.temperature-layout-wrapper {
+  /* Optional: If you want to center the whole thing on the page */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 2em;
+  /* border: solid 1px #ccc; */
+  margin: 2em;
+}
+.temperature-layout-container {
+  position: relative; /* Crucial for positioning children absolutely */
+  /* Ensure the container is large enough to hold the circle + center */
+  /* Width/height will be roughly circle-size + item-size */
+  width: calc(var(--circle-size, 20em) + var(--item-size, 6em));
+  height: calc(var(--circle-size, 20em) + var(--item-size, 6em));
+  display: flex; /* Use flex to center the circle container */
+  justify-content: center;
+  align-items: center;
+  margin: auto; /* Center container if wrapper isn't flex */
+}
+
+.center-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Style your center item */
+  width: 8em; /* Example size */
+  height: 8em; /* Example size */
+  background-color: var(--color);
+  color: var(--color-opposite);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1; /* Ensure it's above circle items */
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+
+.circle-items-container {
+  /* Inherit variables set inline */
+  --n: 1; /* Default item count */
+  --circle-size: 30em; /* Default circle diameter */
+  --item-size: 6em; /* Default item diameter */
+
+  position: relative; /* Children positioned relative to this */
+  width: var(--circle-size);
+  height: var(--circle-size);
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+  /* border: solid 1px #ccc; /* Uncomment to visualize */
+  margin: 0; /* Reset default margins */
+}
+
+.circle-item {
+  display: flex; /* To center content inside */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: var(--item-color);
+  color: var(--color-opposite);
+  text-shadow: 0 0 5px var(--shadow-color);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--item-size);
+  height: var(--item-size);
+  margin: calc(var(--item-size) / -2); /* Center the item origin */
+
+  /* Dynamic rotation and translation */
+  --angle: calc(360deg / var(--n));
+  --rotation: calc(var(--i) * var(--angle)); /* Use item's index */
+
+  transform: rotate(var(--rotation)) translate(calc(var(--circle-size) / 2))
+    rotate(calc(-1 * var(--rotation)));
+
+  /* Style your circle items */
+
+  border-radius: 50%;
+  padding: 0.5em;
+  box-sizing: border-box;
+}

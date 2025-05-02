@@ -1,0 +1,15 @@
+.hex-input {
+  border: 1px solid #000000;
+  border-radius: 5px;
+  margin: 5px;
+
+  height: 90px;
+}
+.hex-input input {
+  border-radius: 5px;
+  width: 50px;
+
+  padding: 5px;
+  margin: 5px;
+  background: none;
+}

@@ -1,0 +1,56 @@
+.color-inputs {
+  display: flex;
+  flex-direction: row;
+  margin: auto 100px;
+  gap: 1rem;
+}
+
+.color-triangles-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.square-composition-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.square-composition-container > div {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.square-composition-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 25%;
+  gap: 1rem;
+}
+
+.three-hue-harmonies,
+.four-hue-harmonies,
+.opposite-temperature,
+.composition-harmony,
+.gradient {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid black; */
+}
+
+.composition-harmony-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

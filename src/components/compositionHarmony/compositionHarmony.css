@@ -1,0 +1,12 @@
+.composition-light-dark-container {
+  display: flex;
+  flex-direction: row;
+  height: 75px;
+  width: 400px;
+  background-color: aliceblue;
+}
+
+.color-container {
+  flex: var(--ratio);
+  background-color: var(--color);
+}

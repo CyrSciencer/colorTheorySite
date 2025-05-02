@@ -1,0 +1,244 @@
+import { useState, useEffect } from "react";
+import HexInput from "../hexInput/HexInput"; // Adjust path as needed
+import colorManagementFuncs from "../../utilities/complementaries.js";
+import InformationTranslationFuncs from "../../utilities/InformationTranslation.js";
+import "./tripleHexInput.css";
+import SquareComposition from "../squareComposition/SquareComposition";
+const { generateIntermediateColors, opposite } = colorManagementFuncs;
+const { hexToRgb, rgbToHex } = InformationTranslationFuncs;
+
+// Helper function to determine contrast color based on RGB sum
+const getContrastColorFromRgb = (rgb) => {
+  let brightnessSum = 0;
+  rgb.forEach((val) => {
+    brightnessSum += val;
+  });
+  // If sum > 382 (threshold from SingleColorPage), use black text, else white
+  const contrastRgb = brightnessSum > 382 ? [0, 0, 0] : [255, 255, 255];
+  return rgbToHex(contrastRgb); // Return as hex string
+};
+
+const TripleHexInput1 = ({ title = "Intermediate Colors" }) => {
+  const [hexA, setHexA] = useState("#ff0000"); // Example initial red
+  const [hexB, setHexB] = useState("#00ff00"); // Example initial green
+  const [hexC, setHexC] = useState("#0000ff"); // Example initial blue (target)
+  const [factor, setFactor] = useState(0.5);
+  const [intermediateColors, setIntermediateColors] = useState({
+    hex3: null,
+    hex4: null,
+    contrast3: "#000000", // Default contrast
+    contrast4: "#000000", // Default contrast
+    shadow3: "#FFFFFF", // Added default shadow
+    shadow4: "#FFFFFF", // Added default shadow
+    contrastA: "#000000",
+    contrastB: "#000000",
+    contrastC: "#000000",
+    // Shadows for A, B, C handled by HexInput component
+  });
+
+  useEffect(() => {
+    try {
+      const rgb1 = hexToRgb(hexA);
+      const rgb2 = hexToRgb(hexB);
+      const targetRGB = hexToRgb(hexC);
+
+      const { rgb3, rgb4 } = generateIntermediateColors(
+        rgb1,
+        rgb2,
+        targetRGB,
+        factor
+      );
+
+      const finalHex3 = rgbToHex(rgb3);
+      const finalHex4 = rgbToHex(rgb4);
+      const finalContrast3 = getContrastColorFromRgb(rgb3);
+      const finalContrast4 = getContrastColorFromRgb(rgb4);
+
+      // Calculate shadow colors for intermediate results
+      const finalShadow3 = rgbToHex(opposite(hexToRgb(finalContrast3)));
+      const finalShadow4 = rgbToHex(opposite(hexToRgb(finalContrast4)));
+
+      // Calculate contrast for inputs (shadows handled within HexInput)
+      const finalContrastA = getContrastColorFromRgb(rgb1);
+      const finalContrastB = getContrastColorFromRgb(rgb2);
+      const finalContrastC = getContrastColorFromRgb(targetRGB);
+
+      setIntermediateColors({
+        hex3: finalHex3,
+        hex4: finalHex4,
+        contrast3: finalContrast3,
+        contrast4: finalContrast4,
+        shadow3: finalShadow3, // Set shadow state
+        shadow4: finalShadow4, // Set shadow state
+        contrastA: finalContrastA,
+        contrastB: finalContrastB,
+        contrastC: finalContrastC,
+      });
+    } catch (error) {
+      console.error("Error generating intermediate colors:", error);
+      setIntermediateColors((prev) => ({
+        // Reset using previous state structure
+        ...prev, // Keep existing keys
+        hex3: null,
+        hex4: null,
+        contrast3: "#000000",
+        contrast4: "#000000",
+        shadow3: "#FFFFFF", // Reset shadow
+        shadow4: "#FFFFFF", // Reset shadow
+        contrastA: "#000000",
+        contrastB: "#000000",
+        contrastC: "#000000",
+      }));
+    }
+  }, [hexA, hexB, hexC, factor]); // Recalculate when inputs or factor change
+
+  return (
+    <div className="triple-hex-input-one-container">
+      <h4>{title}</h4>
+      <div className="logic-container">
+        <div className="square-container">
+          <div className="square-wrapper">
+            <SquareComposition outerColor={hexC} innerColor={hexA} />
+            <SquareComposition outerColor={hexC} innerColor={hexB} />
+          </div>
+          <div className="square-wrapper">
+            <SquareComposition outerColor={hexA} innerColor={hexC} />
+            <SquareComposition outerColor={hexB} innerColor={hexC} />
+          </div>
+          <div className="square-wrapper">
+            <SquareComposition
+              outerColor={hexC}
+              innerColor={intermediateColors.hex3}
+            />
+            <SquareComposition
+              outerColor={hexC}
+              innerColor={intermediateColors.hex4}
+            />
+          </div>
+          <div className="square-wrapper">
+            <SquareComposition
+              outerColor={intermediateColors.hex3}
+              innerColor={hexA}
+            />
+            <SquareComposition
+              outerColor={intermediateColors.hex4}
+              innerColor={hexB}
+            />
+          </div>
+        </div>
+
+        <div className="inputs-wrapper">
+          <HexInput
+            hex={hexA}
+            setHex={setHexA}
+            title="Color A"
+            contrastColor={intermediateColors.contrastA}
+          />
+          <HexInput
+            hex={hexB}
+            setHex={setHexB}
+            title="Color B"
+            contrastColor={intermediateColors.contrastB}
+          />
+          <HexInput
+            hex={hexC}
+            setHex={setHexC}
+            title="Target Color C"
+            contrastColor={intermediateColors.contrastC}
+          />
+        </div>
+        <div>
+          <div className="factor-slider-container">
+            <label htmlFor="factor-slider">
+              Interpolation Factor: {factor}
+            </label>
+            <input
+              type="range"
+              id="factor-slider"
+              min="0"
+              max="1"
+              step="0.01"
+              value={factor}
+              onChange={(e) => setFactor(parseFloat(e.target.value))}
+              className="factor-slider"
+            />
+          </div>
+
+          <div className="results-wrapper">
+            <h5>Intermediate Colors:</h5>
+            <div className="results-container">
+              {intermediateColors.hex3 && (
+                <div
+                  className="result-item"
+                  style={{
+                    backgroundColor: intermediateColors.hex3,
+                    color: intermediateColors.contrast3,
+                    textShadow: `0 0 3px ${intermediateColors.shadow3}`, // Apply shadow 3
+                  }}
+                >
+                  <p>{intermediateColors.hex3.toUpperCase()}</p>
+                </div>
+              )}
+              {intermediateColors.hex4 && (
+                <div
+                  className="result-item"
+                  style={{
+                    backgroundColor: intermediateColors.hex4,
+                    color: intermediateColors.contrast4,
+                    textShadow: `0 0 3px ${intermediateColors.shadow4}`, // Apply shadow 4
+                  }}
+                >
+                  <p>{intermediateColors.hex4.toUpperCase()}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="square-container">
+          <div className="square-wrapper">
+            <SquareComposition
+              outerColor={hexA}
+              innerColor={intermediateColors.hex3}
+            />
+            <SquareComposition
+              outerColor={hexB}
+              innerColor={intermediateColors.hex3}
+            />
+          </div>
+          <div className="square-wrapper">
+            <SquareComposition
+              outerColor={intermediateColors.hex3}
+              innerColor={hexA}
+            />
+            <SquareComposition
+              outerColor={intermediateColors.hex3}
+              innerColor={hexB}
+            />
+          </div>
+          <div className="square-wrapper">
+            <SquareComposition
+              outerColor={hexA}
+              innerColor={intermediateColors.hex4}
+            />
+            <SquareComposition
+              outerColor={hexB}
+              innerColor={intermediateColors.hex4}
+            />
+          </div>
+          <div className="square-wrapper">
+            <SquareComposition
+              outerColor={intermediateColors.hex4}
+              innerColor={hexA}
+            />
+            <SquareComposition
+              outerColor={intermediateColors.hex4}
+              innerColor={hexB}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TripleHexInput1;

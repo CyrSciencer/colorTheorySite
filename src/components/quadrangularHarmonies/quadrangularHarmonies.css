@@ -1,0 +1,68 @@
+.quadrangularShifted {
+  transform: scaleX(-1);
+}
+.quadrangular-harmonies {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+.tetrad-harmony,
+.pure-square-harmony {
+  width: 250px;
+  height: 250px;
+  display: flex;
+  position: relative;
+  /* border: 1px solid red; */
+  justify-content: center;
+  flex-direction: column;
+}
+.quadrangular-harmonies img {
+  width: 100%;
+  height: 100%;
+  /* border: 1px solid red; */
+}
+.tetrad-harmony .tip,
+.pure-square-harmony .tip {
+  position: absolute;
+}
+.tetrad-harmony .tip:nth-child(1),
+.pure-square-harmony .tip:nth-child(1) {
+  top: -25px;
+  left: 100px;
+}
+.tetrad-harmony .tip:nth-child(2),
+.pure-square-harmony .tip:nth-child(2) {
+  bottom: -25px;
+  left: 102px;
+}
+
+.tetrad-harmony:nth-child(1) .tip:nth-child(4) {
+  bottom: 35px;
+  left: -10px;
+}
+.tetrad-harmony:nth-child(3) .tip:nth-child(4) {
+  bottom: 35px;
+  right: -10px;
+}
+.tetrad-harmony:nth-child(1) .tip:nth-child(3) {
+  top: 35px;
+  right: -10px;
+}
+.tetrad-harmony:nth-child(3) .tip:nth-child(3) {
+  top: 35px;
+  left: -10px;
+}
+.pure-square-harmony .tip:nth-child(3),
+.pure-square-harmony .tip:nth-child(4) {
+  bottom: 100px;
+}
+.pure-square-harmony .tip:nth-child(3) {
+  right: -25px;
+}
+.pure-square-harmony .tip:nth-child(4) {
+  left: -25px;
+}
