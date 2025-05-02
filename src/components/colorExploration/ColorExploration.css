@@ -1,0 +1,63 @@
+.color-exploration-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-exploration-container button {
+  padding: 10px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.results-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.color-swatches div {
+  padding: 10px;
+  font-size: 1.2em;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  color: #fff; /* Basic text color, might need adjustment based on background */
+  text-shadow: 1px 1px 1px #000; /* Improve readability */
+  min-width: 150px;
+  text-align: center;
+}
+.color-swatches input {
+  margin-left: 10px;
+  border: 1px solid #000000;
+  width: 30px;
+  height: 30px;
+}
+.compositions-grid {
+  width: 75%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Add styles for BigSquareComposition elements if needed, */
+/* assuming they inherit or are styled in squareComposition.css */
+
+.gradient-display {
+  margin-top: 10px;
+}

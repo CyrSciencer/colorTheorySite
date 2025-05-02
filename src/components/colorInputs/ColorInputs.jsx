@@ -19,11 +19,14 @@ const ColorInputs = ({
     <>
       <div className="rgb-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="r" style={{ color: oppositeColor }}>
-          R
+          <p>R</p>
+          <p>{rgb[0]}</p>
         </label>
         <input
           id="r"
-          type="text"
+          type="range"
+          min="0"
+          max="255"
           value={rgb[0]}
           onChange={(e) =>
             handleRgbChange(
@@ -36,14 +39,16 @@ const ColorInputs = ({
               setHsv
             )
           }
-          maxLength="3"
         />
         <label htmlFor="g" style={{ color: oppositeColor }}>
-          G
+          <p>G</p>
+          <p>{rgb[1]}</p>
         </label>
         <input
           id="g"
-          type="text"
+          type="range"
+          min="0"
+          max="255"
           value={rgb[1]}
           onChange={(e) =>
             handleRgbChange(
@@ -56,14 +61,16 @@ const ColorInputs = ({
               setHsv
             )
           }
-          maxLength="3"
         />
         <label htmlFor="b" style={{ color: oppositeColor }}>
-          B
+          <p>B</p>
+          <p>{rgb[2]}</p>
         </label>
         <input
           id="b"
-          type="text"
+          type="range"
+          min="0"
+          max="255"
           value={rgb[2]}
           onChange={(e) =>
             handleRgbChange(
@@ -76,17 +83,20 @@ const ColorInputs = ({
               setHsv
             )
           }
-          maxLength="3"
         />
       </div>
       <div className="hsl-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="h-hsl" style={{ color: oppositeColor }}>
-          H
+          <p>H</p>
+          <p>{hsl.h}</p>
         </label>
         <input
           id="h-hsl"
-          type="text"
-          value={Math.round(hsl.h) + "°"}
+          type="range"
+          min="0"
+          max="360"
+          step="1"
+          value={hsl.h}
           onChange={(e) =>
             handleHslChange(
               "h",
@@ -100,12 +110,16 @@ const ColorInputs = ({
           }
         />
         <label htmlFor="s-hsl" style={{ color: oppositeColor }}>
-          S
+          <p>S</p>
+          <p>{Math.round(hsl.s * 100)}%</p>
         </label>
         <input
           id="s-hsl"
-          type="text"
-          value={Math.round(hsl.s * 100) + "%"}
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={hsl.s}
           onChange={(e) =>
             handleHslChange(
               "s",
@@ -119,12 +133,16 @@ const ColorInputs = ({
           }
         />
         <label htmlFor="l-hsl" style={{ color: oppositeColor }}>
-          L
+          <p>L</p>
+          <p>{Math.round(hsl.l * 100)}%</p>
         </label>
         <input
           id="l-hsl"
-          type="text"
-          value={Math.round(hsl.l * 100) + "%"}
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={hsl.l}
           onChange={(e) =>
             handleHslChange(
               "l",
@@ -140,12 +158,16 @@ const ColorInputs = ({
       </div>
       <div className="hsv-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="h-hsv" style={{ color: oppositeColor }}>
-          H
+          <p>H</p>
+          <p>{hsv.h}</p>
         </label>
         <input
           id="h-hsv"
-          type="text"
-          value={Math.round(hsv.h) + "°"}
+          type="range"
+          min="0"
+          max="360"
+          step="1"
+          value={hsv.h}
           onChange={(e) =>
             handleHsvChange(
               "h",
@@ -159,12 +181,16 @@ const ColorInputs = ({
           }
         />
         <label htmlFor="s-hsv" style={{ color: oppositeColor }}>
-          S
+          <p>S</p>
+          <p>{Math.round(hsv.s * 100)}%</p>
         </label>
         <input
           id="s-hsv"
-          type="text"
-          value={Math.round(hsv.s * 100) + "%"}
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={hsv.s}
           onChange={(e) =>
             handleHsvChange(
               "s",
@@ -178,12 +204,16 @@ const ColorInputs = ({
           }
         />
         <label htmlFor="v-hsv" style={{ color: oppositeColor }}>
-          V
+          <p>V</p>
+          <p>{Math.round(hsv.v * 100)}%</p>
         </label>
         <input
           id="v-hsv"
-          type="text"
-          value={Math.round(hsv.v * 100) + "%"}
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={hsv.v}
           onChange={(e) =>
             handleHsvChange(
               "v",

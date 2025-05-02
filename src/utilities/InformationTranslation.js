@@ -73,6 +73,13 @@ const hslToRgb = (hsl) => {
 const rgbToHex = (rgb) => {
   //"Convertit un tableau de 3 valeurs RGB en code hexadécimal."
   // console.log({ rgb });
+
+  // Add check for valid array input
+  if (!Array.isArray(rgb) || rgb.length !== 3) {
+    console.warn("Invalid input to rgbToHex:", rgb);
+    return "#000000"; // Return black or another default for invalid input
+  }
+
   const [rouge, vert, bleu] = rgb;
 
   // Assure que les valeurs sont dans la plage [0, 255]
@@ -205,15 +212,15 @@ const rgbToHsv = (rgb) => {
 //contrastes §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const contrast = (hsl) => {
   const colorHues = {
-    yellow: { hue: 60, darkRatio: 3, lightRatio: 9 },
-    red: { hue: 0, darkRatio: 7, lightRatio: 5 },
-    red2: { hue: 360, darkRatio: 7, lightRatio: 5 },
-    blue: { hue: 240, darkRatio: 9, lightRatio: 3 },
-    green: { hue: 120, darkRatio: 4, lightRatio: 8 },
-    purple: { hue: 270, darkRatio: 8, lightRatio: 4 },
-    orange: { hue: 30, darkRatio: 5, lightRatio: 7 },
-    cyan: { hue: 180, darkRatio: 4, lightRatio: 8 },
-    magenta: { hue: 300, darkRatio: 6, lightRatio: 6 },
+    yellow: { hue: 60, darkRatio: 5, lightRatio: 15 },
+    red: { hue: 0, darkRatio: 12, lightRatio: 8 },
+    red2: { hue: 360, darkRatio: 12, lightRatio: 8 },
+    blue: { hue: 240, darkRatio: 15, lightRatio: 5 },
+    green: { hue: 120, darkRatio: 9, lightRatio: 11 },
+    purple: { hue: 280, darkRatio: 14, lightRatio: 6 },
+    orange: { hue: 30, darkRatio: 10, lightRatio: 10 },
+    cyan: { hue: 180, darkRatio: 7, lightRatio: 13 },
+    magenta: { hue: 300, darkRatio: 11, lightRatio: 9 },
   };
 
   // console.log(hsv.h);
@@ -267,14 +274,20 @@ const contrast = (hsl) => {
   // console.log({ closestColor });
   // console.log(colorHues[closestColor]);
   const { darkRatio, lightRatio } = colorHues[closestColor];
-  let darkRatioHarmony;
-  hsl.l === 0
-    ? (darkRatioHarmony = darkRatio * 50)
-    : (darkRatioHarmony = darkRatio / hsv.v);
-  let lightRatioHarmony;
-  hsl.l === 0
-    ? (lightRatioHarmony = lightRatio / 50)
-    : (lightRatioHarmony = lightRatio * hsv.v);
+
+  // Intensity (hsl.s) boosts the effect of brightness (hsv.v) and lightness (hsl.l)
+  const saturationBoost = 1 + hsl.s; // Range [1, 2]
+  // Average brightness (v) and lightness (l) before applying saturation boost
+  const rawAdjustment = ((hsv.v + hsl.l) / 2) * saturationBoost;
+
+  // Use a small epsilon to prevent division by zero or extreme values when v=0 or l=0
+  const epsilon = 0.01;
+  const finalAdjustment = Math.max(epsilon, rawAdjustment);
+
+  // Adjust base ratios
+  const darkRatioHarmony = darkRatio / finalAdjustment;
+  const lightRatioHarmony = lightRatio * finalAdjustment;
+
   return { darkRatioHarmony, lightRatioHarmony, closestColor };
 };
 // determinatif chaud-froid §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§

@@ -16,7 +16,10 @@
   font-family: sans-serif;
   margin-bottom: 1rem; /* Add some space below */
 }
-
+.color-suggester input {
+  border: none;
+  width: 90%;
+}
 .toggle-button {
   position: sticky; /* Make the button sticky relative to the container */
   top: 15px; /* Adjust based on container padding */

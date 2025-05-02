@@ -21,7 +21,7 @@ const HexInput = ({ hex, setHex, contrastColor = "#000000", title }) => {
       }}
     >
       <label
-        htmlFor={title + "-hex-only"}
+        htmlFor={title + "-hex-only"} // Keep association for the color picker
         style={{
           color: contrastColor,
           textShadow: "0 0 3px var(--shadow-color)",
@@ -29,12 +29,24 @@ const HexInput = ({ hex, setHex, contrastColor = "#000000", title }) => {
       >
         {title}
       </label>
+      {/* Display hex code as text */}
+      <span
+        style={{
+          color: contrastColor, // Use contrast color for text
+
+          textShadow: "0 0 3px var(--shadow-color)", // Same shadow as label
+        }}
+        aria-label={`${title} hex value`}
+      >
+        {hex.toUpperCase()}
+      </span>
+      {/* Color picker input */}
       <input
         id={title + "-hex-only"}
-        type="text"
-        value={hex.toUpperCase()}
+        type="color"
+        value={hex}
         onChange={(e) => setHex(e.target.value)}
-        maxLength="7"
+        style={{ border: ` 5px inset ${contrastColor}` }}
       />
     </div>
   );

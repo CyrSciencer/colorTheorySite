@@ -3,7 +3,7 @@ import "./compositionTool.css";
 import TripleHexInput1 from "../components/tripleHexInputs/TripleHexInput1";
 import TripleHexInput2 from "../components/tripleHexInputs/TripleHexInput2";
 import ConfigurableContrastChecker from "../components/configurableContrastChecker/ConfigurableContrastChecker";
-
+import ColorExploration from "../components/colorExploration/ColorExploration";
 const CompositionTool = () => {
   return (
     <section className="composition-tool-page">
@@ -18,6 +18,7 @@ const CompositionTool = () => {
           <TripleHexInput1 />
           <TripleHexInput2 />
           <ConfigurableContrastChecker />
+          <ColorExploration />
         </div>
       </main>
     </section>

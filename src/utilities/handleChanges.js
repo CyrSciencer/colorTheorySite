@@ -56,10 +56,10 @@ const handleHslChange = (
 ) => {
   const newHsl = { ...currentHsl };
   // Validation for numeric HSL
-  // Remove '%' or '°' before parsing
-  const rawValue = value.replace(/[%°]/g, "");
+  // Remove '%' or '°' before parsing - REMOVED as range input value is numeric string
+  const rawValue = value; // Use value directly
   if (rawValue === "") {
-    newHsl[key] = 0; // Handle empty input as 0
+    newHsl[key] = 0; // Handle empty input as 0 (shouldn't happen with range?)
   } else {
     const numValue = parseFloat(rawValue);
     if (!isNaN(numValue)) {
@@ -68,11 +68,18 @@ const handleHslChange = (
       } else if (
         (key === "s" || key === "l") &&
         numValue >= 0 &&
-        numValue <= 100
+        numValue <= 1 // Check range 0-1
       ) {
-        newHsl[key] = numValue / 100; // Store as number 0-1
+        newHsl[key] = numValue; // Store value directly (already 0-1)
       } else {
-        return; // Ignore out-of-range input
+        // If key is s or l but value is outside 0-1, potentially clamp or ignore
+        // For now, we ignore, consistent with previous logic for out-of-range
+        if (key !== "h") {
+          // Only return if it's s or l outside 0-1
+          return;
+        }
+        // Allow h values outside 0-360? Or clamp? Current logic ignores. Let's keep ignoring.
+        return;
       }
     } else {
       return; // Ignore invalid non-numeric input
@@ -116,23 +123,30 @@ const handleHsvChange = (
 ) => {
   const newHsv = { ...currentHsv };
   // Validation for numeric HSV
-  // Remove '%' or '°' before parsing
-  const rawValue = value.replace(/[%°]/g, "");
+  // Remove '%' or '°' before parsing - REMOVED as range input value is numeric string
+  const rawValue = value; // Use value directly
   if (rawValue === "") {
-    newHsv[key] = 0; // Handle empty input as 0
+    newHsv[key] = 0; // Handle empty input as 0 (shouldn't happen with range?)
   } else {
     const numValue = parseFloat(rawValue);
     if (!isNaN(numValue)) {
       if (key === "h" && numValue >= 0 && numValue <= 360) {
         newHsv[key] = numValue;
       } else if (
-        (key === "s" || key === "v") &&
+        (key === "s" || key === "v") && // Changed l to v
         numValue >= 0 &&
-        numValue <= 100
+        numValue <= 1 // Check range 0-1
       ) {
-        newHsv[key] = numValue / 100; // Store as number 0-1
+        newHsv[key] = numValue; // Store value directly (already 0-1)
       } else {
-        return; // Ignore out-of-range input
+        // If key is s or v but value is outside 0-1, potentially clamp or ignore
+        // For now, we ignore, consistent with previous logic for out-of-range
+        if (key !== "h") {
+          // Only return if it's s or v outside 0-1
+          return;
+        }
+        // Allow h values outside 0-360? Or clamp? Current logic ignores. Let's keep ignoring.
+        return;
       }
     } else {
       return; // Ignore invalid non-numeric input
