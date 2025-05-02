@@ -5,12 +5,17 @@ import ColorMixer from "../components/colorMixer/ColorMixer";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import colorManagementFuncs from "../../utilities/complementaries";
 import RatioSection from "../components/compositionHarmony/RatioSection";
+import ColorGradients from "../components/gradients/ColorGradients";
 import "./CompositionOfTwo.css";
 const { rgbToHex, hexToRgb, rgbToHsl, contrast } = InformationTranslationFuncs;
 
 const CompositionOfTwo = () => {
   const [hex1, setHex1] = useState("#FF0000");
   const [hex2, setHex2] = useState("#0000FF");
+  const [rgb1, setRgb1] = useState([255, 0, 0]);
+  const [rgb2, setRgb2] = useState([0, 0, 255]);
+  const [rgb3, setRgb3] = useState([0, 0, 0]);
+
   const [contrastColorRgb1, setContrastColorRgb1] = useState([255, 255, 255]);
   const [contrastColorRgb2, setContrastColorRgb2] = useState([255, 255, 255]);
   const [oppositeLightness1, setOppositeLightness1] = useState("#FFFFFF");
@@ -18,8 +23,8 @@ const CompositionOfTwo = () => {
   const [mixedColor, setMixedColor] = useState("#FF00FF");
   const [mixedColorDataArray, setMixedColorDataArray] = useState([]);
   useEffect(() => {
-    const rgb1 = hexToRgb(hex1);
-    const rgb2 = hexToRgb(hex2);
+    setRgb1(hexToRgb(hex1));
+    setRgb2(hexToRgb(hex2));
     const mixedRgb = hexToRgb(mixedColor);
     let checklightness1 = 0;
     let checklightness2 = 0;
@@ -43,7 +48,7 @@ const CompositionOfTwo = () => {
     const rgb2Hsl = rgbToHsl(rgb2);
     const contrast1 = contrast(rgb1Hsl);
     const contrast2 = contrast(rgb2Hsl);
-
+    setRgb3(mixedRgb);
     //creation de l'array de couleurs
     const mixedColorDataArray = [
       {
@@ -76,13 +81,13 @@ const CompositionOfTwo = () => {
           <HexInput
             hex={hex1}
             setHex={setHex1}
-            oppositeColor={oppositeLightness1}
+            contrastColor={oppositeLightness1}
             title="Color 1"
           />
           <HexInput
             hex={hex2}
             setHex={setHex2}
-            oppositeColor={oppositeLightness2}
+            contrastColor={oppositeLightness2}
             title="Color 2"
           />
         </div>
@@ -109,6 +114,14 @@ const CompositionOfTwo = () => {
             colorDataArray={mixedColorDataArray}
             rgbVersHex={rgbToHex} // Pass the conversion function
           />
+        </div>
+        <div className="container-gradients">
+          <ColorGradients rgb={rgb1} gradientTypeIndex={1} />
+          <ColorGradients rgb={rgb1} gradientTypeIndex={2} />
+          <ColorGradients rgb={rgb3} gradientTypeIndex={1} />
+          <ColorGradients rgb={rgb3} gradientTypeIndex={2} />
+          <ColorGradients rgb={rgb2} gradientTypeIndex={1} />
+          <ColorGradients rgb={rgb2} gradientTypeIndex={2} />
         </div>
       </main>
     </div>

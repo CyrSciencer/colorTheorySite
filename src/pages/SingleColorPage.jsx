@@ -147,7 +147,12 @@ function SingleColorPage() {
         </div>
         <div className="gradient">
           <h2>Gradients</h2>
-          <ColorGradients rgb={rgb} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={1} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={2} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={3} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={4} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={5} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={6} />
         </div>
       </main>
     </>

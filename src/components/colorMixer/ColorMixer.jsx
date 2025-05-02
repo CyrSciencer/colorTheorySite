@@ -5,12 +5,12 @@ import SquareComposition from "../squareComposition/SquareComposition";
 
 import "./ColorMixer.css";
 const { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } = InformationTranslationFuncs;
-const { inputOfTwoColorForAThird } = colorManagementFuncs; // Assuming hslMixer is exported directly or within the default export
+const { inputOfTwoColorForAThird, opposite } = colorManagementFuncs; // Import opposite
 
 const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
   const [mixPercent, setMixPercent] = useState(50); // Default mix percentage
-  const [mixedHex, setMixedHex] = useState("#808080"); // Default mixed color (grey)
   const [contrastColor, setContrastColor] = useState("#FFFFFF"); // Default contrast
+  const [shadowColorHex, setShadowColorHex] = useState("#000000"); // Added state for shadow
 
   useEffect(() => {
     try {
@@ -26,19 +26,27 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
 
       // Convert back to RGB and then Hex
       const mixedRgb = RgbSet.rgb3;
-      setMixedColor(rgbToHex(mixedRgb));
+      const currentMixedHex = rgbToHex(mixedRgb);
+      setMixedColor(currentMixedHex);
 
       // Calculate contrast color for the mixed hex
       const brightness =
         (mixedRgb[0] * 299 + mixedRgb[1] * 587 + mixedRgb[2] * 114) / 1000;
-      setContrastColor(brightness > 128 ? "#000000" : "#FFFFFF");
+      const currentContrastColor = brightness > 128 ? "#000000" : "#FFFFFF";
+      setContrastColor(currentContrastColor);
+
+      // Calculate shadow color
+      const contrastRgb = hexToRgb(currentContrastColor);
+      const shadowRgb = opposite(contrastRgb);
+      setShadowColorHex(rgbToHex(shadowRgb));
     } catch (error) {
       console.error("Error mixing colors:", error);
       // Handle potential errors during conversion or mixing if necessary
-      setMixedHex("#808080"); // Reset to default on error
+      setMixedColor("#808080"); // Reset to default on error
       setContrastColor("#FFFFFF");
+      setShadowColorHex("#000000"); // Reset shadow on error
     }
-  }, [hex1, hex2, mixPercent]); // Recalculate when inputs or percentage change
+  }, [hex1, hex2, mixPercent, setMixedColor]); // Added setMixedColor dependency
 
   const handleSliderChange = (event) => {
     setMixPercent(Number(event.target.value));
@@ -50,7 +58,10 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
         className="color-mixer-container"
         style={{ backgroundColor: mixedColor, color: contrastColor }}
       >
-        <div className="mixed-color-display">
+        <div
+          className="mixed-color-display"
+          style={{ textShadow: `0 0 3px ${shadowColorHex}` }}
+        >
           mixed: {mixedColor.toUpperCase()}
         </div>
         <div className="mixer-controls">
@@ -62,7 +73,9 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
             onChange={handleSliderChange}
             className="mix-slider"
           />
-          <span>{mixPercent}%</span>
+          <span style={{ textShadow: `0 0 3px ${shadowColorHex}` }}>
+            {mixPercent}%
+          </span>
         </div>
       </div>
       <div className="squares-container">

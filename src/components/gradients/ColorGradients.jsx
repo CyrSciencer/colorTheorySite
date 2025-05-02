@@ -1,6 +1,9 @@
 import React from "react";
 import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
+import colorManagementFuncs from "../../../utilities/complementaries"; // Added import
 import "./gradient.css"; // Reusing the existing CSS for simplicity
+
+const { opposite } = colorManagementFuncs; // Destructure function
 
 // Function to determine contrast color (black or white) based on RGB array
 const getContrastColor = (rgbArray) => {
@@ -10,7 +13,7 @@ const getContrastColor = (rgbArray) => {
   return brightness > 128 ? [0, 0, 0] : [255, 255, 255]; // Return black or white RGB array
 };
 
-const ColorGradients = ({ rgb }) => {
+const ColorGradients = ({ rgb, gradientTypeIndex }) => {
   // Convert input RGB color directly to HSV
   const hsv1 = InformationTranslationFuncs.rgbToHsv
     ? InformationTranslationFuncs.rgbToHsv(rgb) // rgb is already an array
@@ -49,6 +52,8 @@ const ColorGradients = ({ rgb }) => {
         : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
       const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
+      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
+      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
       const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
         currentHsl.l * 100
       }%)`;
@@ -56,7 +61,11 @@ const ColorGradients = ({ rgb }) => {
         <div
           key={`hue-${hueStep}-${i}`}
           className="tip"
-          style={{ backgroundColor: cssHsl, color: contrastHex }}
+          style={{
+            backgroundColor: cssHsl,
+            color: contrastHex,
+            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
+          }}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -77,6 +86,8 @@ const ColorGradients = ({ rgb }) => {
         : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
       const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
+      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
+      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
       const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
         currentHsl.l * 100
       }%)`;
@@ -84,7 +95,11 @@ const ColorGradients = ({ rgb }) => {
         <div
           key={`lightness-${i}`}
           className="tip"
-          style={{ backgroundColor: cssHsl, color: contrastHex }}
+          style={{
+            backgroundColor: cssHsl,
+            color: contrastHex,
+            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
+          }}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -105,6 +120,8 @@ const ColorGradients = ({ rgb }) => {
         : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
       const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
+      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
+      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
       const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
         currentHsl.l * 100
       }%)`;
@@ -112,7 +129,11 @@ const ColorGradients = ({ rgb }) => {
         <div
           key={`saturation-${i}`}
           className="tip"
-          style={{ backgroundColor: cssHsl, color: contrastHex }}
+          style={{
+            backgroundColor: cssHsl,
+            color: contrastHex,
+            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
+          }}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -133,12 +154,18 @@ const ColorGradients = ({ rgb }) => {
         : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
       const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
+      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
+      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
 
       return (
         <div
           key={`hsv-saturation-${i}`}
           className="tip"
-          style={{ backgroundColor: currentHex, color: contrastHex }} // Use hex directly
+          style={{
+            backgroundColor: currentHex,
+            color: contrastHex, // Use hex directly
+            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
+          }}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -159,12 +186,18 @@ const ColorGradients = ({ rgb }) => {
         : "#000000"; // Default hex
       const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
       const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
+      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
+      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
 
       return (
         <div
           key={`hsv-value-${i}`}
           className="tip"
-          style={{ backgroundColor: currentHex, color: contrastHex }} // Use hex directly
+          style={{
+            backgroundColor: currentHex,
+            color: contrastHex, // Use hex directly
+            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
+          }}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -172,26 +205,30 @@ const ColorGradients = ({ rgb }) => {
     });
   };
 
+  const renderSelectedGradient = () => {
+    switch (gradientTypeIndex) {
+      case 1: // Hue Shortest Path
+        return renderHueGradient(hueStep_short, h_comp);
+      case 2: // Hue Longest Path
+        return renderHueGradient(hueStep_long, h_comp);
+      case 3: // Lightness Gradient
+        return renderLightnessGradient();
+      case 4: // Saturation Gradient
+        return renderSaturationGradient();
+      case 5: // HSV Saturation Gradient
+        return renderHSVSaturationGradient();
+      case 6: // HSV Value Gradient
+        return renderHSVValueGradient();
+      default: // Default to Hue Shortest Path or return null/error
+        return renderHueGradient(hueStep_short, h_comp);
+      // Or: return null;
+      // Or: return <div>Invalid gradient type</div>;
+    }
+  };
+
   return (
     <div className="gradient-container">
-      {/* Hue Shortest Path */}
-      <div className="gradient-sub-container">
-        {renderHueGradient(hueStep_short, h_comp)}
-      </div>
-      {/* Hue Longest Path */}
-      <div className="gradient-sub-container">
-        {renderHueGradient(hueStep_long, h_comp)}
-      </div>
-      {/* Lightness Gradient */}
-      <div className="gradient-sub-container">{renderLightnessGradient()}</div>
-      {/* Saturation Gradient */}
-      <div className="gradient-sub-container">{renderSaturationGradient()}</div>
-      {/* HSV Saturation Gradient */}
-      <div className="gradient-sub-container">
-        {renderHSVSaturationGradient()}
-      </div>
-      {/* HSV Value Gradient */}
-      <div className="gradient-sub-container">{renderHSVValueGradient()}</div>
+      <div className="gradient-sub-container">{renderSelectedGradient()}</div>
     </div>
   );
 };

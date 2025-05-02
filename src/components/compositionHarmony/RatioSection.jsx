@@ -7,7 +7,7 @@ const RatioSection = ({ title, ratioKey, colorDataArray }) => {
   );
 
   return (
-    <>
+    <div className="ratio-section-container">
       <h3>{title}</h3>
       <div className="composition-light-dark-container">
         {/* Map over the sorted array */}
@@ -17,7 +17,8 @@ const RatioSection = ({ title, ratioKey, colorDataArray }) => {
             className="color-container"
             style={{
               // Use the ratioKey prop to access the correct harmony value
-              "--ratio": colorData.contrastInfo[ratioKey],
+              "--ratio":
+                colorData.contrastInfo[ratioKey] || colorData.contrastInfo,
               "--color": rgbToHex(colorData.rgbValue),
             }}
             title={`${colorData.name}: ${rgbToHex(colorData.rgbValue)}, ${
@@ -28,7 +29,7 @@ const RatioSection = ({ title, ratioKey, colorDataArray }) => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
