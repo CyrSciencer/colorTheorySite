@@ -1,7 +1,7 @@
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
+import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import { useState, useEffect } from "react";
 import "./temperature.css";
-import colorManagementFuncs from "../../../utilities/complementaries";
+import colorManagementFuncs from "../../utilities/complementaries";
 const { rgbToHex, hslToRgb, rgbToHsl, ofOppositeTemperature } =
   InformationTranslationFuncs;
 const { opposite } = colorManagementFuncs;

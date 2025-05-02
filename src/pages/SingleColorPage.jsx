@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./SingleColorPage.css"; // Import page-specific CSS
 import ColorInputs from "../components/colorInputs/ColorInputs"; // Adjust path
-import colorManagementFuncs from "../../utilities/complementaries"; // Corrected path
-import InformationTranslationFuncs from "../../utilities/InformationTranslation"; // Corrected path
+import colorManagementFuncs from "../utilities/complementaries"; // Corrected path
+import InformationTranslationFuncs from "../utilities/InformationTranslation"; // Corrected path
 import ColorTriangles from "../components/colorTriangles/ColorTriangles"; // Adjust path
 import SquareComposition from "../components/squareComposition/SquareComposition"; // Adjust path
 import CompositionHarmony from "../components/compositionHarmony/CompositionHarmony"; // Adjust path

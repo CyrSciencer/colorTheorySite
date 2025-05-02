@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
   return (
     <div className="home-page">
-      <header>
+      <header className="home-page-header">
         <h1>Color Theory Site</h1>
       </header>
       <main>

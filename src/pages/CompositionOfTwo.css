@@ -19,3 +19,14 @@
   align-items: center;
   justify-content: center;
 }
+.composition-of-two-page header {
+  background: linear-gradient(
+    to right,
+    var(--color-1) 0%,
+    var(--color-3) 50%,
+    var(--color-2) 100%
+  );
+}
+.composition-of-two-page header h1 {
+  background-color: aliceblue;
+}

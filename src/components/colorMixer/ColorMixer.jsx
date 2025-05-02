@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
-import colorManagementFuncs from "../../../utilities/complementaries"; // Contains hslMixer
+import InformationTranslationFuncs from "../../utilities/InformationTranslation";
+import colorManagementFuncs from "../../utilities/complementaries"; // Contains hslMixer
 import SquareComposition from "../squareComposition/SquareComposition";
-
+import RatioSection from "../compositionHarmony/RatioSection";
 import "./ColorMixer.css";
 const { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } = InformationTranslationFuncs;
 const { inputOfTwoColorForAThird, opposite } = colorManagementFuncs; // Import opposite

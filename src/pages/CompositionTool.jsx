@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import "./compositionTool.css";
 import TripleHexInput1 from "../components/tripleHexInputs/TripleHexInput1";
 import TripleHexInput2 from "../components/tripleHexInputs/TripleHexInput2";
 import ConfigurableContrastChecker from "../components/configurableContrastChecker/ConfigurableContrastChecker";

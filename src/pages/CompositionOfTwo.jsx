@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HexInput from "../components/hexInput/HexInput";
 import ColorMixer from "../components/colorMixer/ColorMixer";
-import InformationTranslationFuncs from "../../utilities/InformationTranslation";
-import colorManagementFuncs from "../../utilities/complementaries";
+import InformationTranslationFuncs from "../utilities/InformationTranslation";
+import SquareComposition from "../components/squareComposition/SquareComposition";
 import RatioSection from "../components/compositionHarmony/RatioSection";
 import ColorGradients from "../components/gradients/ColorGradients";
 import "./CompositionOfTwo.css";
@@ -72,12 +72,19 @@ const CompositionOfTwo = () => {
 
   return (
     <div className="composition-of-two-page">
-      <header>
+      <header
+        style={{
+          "--color-1": hex1,
+          "--color-2": hex2,
+          "--color-3": mixedColor,
+        }}
+      >
         <h1>Composition of Two Colors</h1>
         <Link to="/">
           <button>HomePage</button>
         </Link>
         <div className="hex-inputs-container">
+          <SquareComposition innerColor={hex2} outerColor={hex1} />
           <HexInput
             hex={hex1}
             setHex={setHex1}
@@ -90,6 +97,7 @@ const CompositionOfTwo = () => {
             contrastColor={oppositeLightness2}
             title="Color 2"
           />
+          <SquareComposition innerColor={hex1} outerColor={hex2} />
         </div>
       </header>
       <main>

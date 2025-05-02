@@ -1,5 +1,5 @@
 import React from "react";
-import handleChanges from "../../../utilities/handleChanges";
+import handleChanges from "../../utilities/handleChanges";
 import "./colorInputs.css";
 const ColorInputs = ({
   rgb,

@@ -1,6 +1,6 @@
 import "./quadrangularHarmonies.css";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
-import colorManagementFuncs from "../../../utilities/complementaries";
+import InformationTranslationFuncs from "../../utilities/InformationTranslation";
+import colorManagementFuncs from "../../utilities/complementaries";
 import { useState, useEffect } from "react";
 import tetradHarmony from "../../assets/svg/harmonie-tetradiques.svg";
 import pureSquareHarmony from "../../assets/svg/harmonie-carré.svg";

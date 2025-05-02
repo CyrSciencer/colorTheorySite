@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import HexInput from "../hexInput/HexInput"; // Adjust path as needed
-import colorManagementFuncs from "../../../utilities/complementaries.js";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation.js";
+import colorManagementFuncs from "../../utilities/complementaries.js";
+import InformationTranslationFuncs from "../../utilities/InformationTranslation.js";
 import "./tripleHexInput.css";
 import SquareComposition from "../squareComposition/SquareComposition";
 const { generateIntermediateColors, opposite } = colorManagementFuncs;
@@ -168,31 +168,27 @@ const TripleHexInput1 = ({ title = "Intermediate Colors" }) => {
             <h5>Intermediate Colors:</h5>
             <div className="results-container">
               {intermediateColors.hex3 && (
-                <div className="result-item">
-                  <div
-                    className="color-swatch"
-                    style={{
-                      backgroundColor: intermediateColors.hex3,
-                      color: intermediateColors.contrast3,
-                      textShadow: `0 0 3px ${intermediateColors.shadow3}`, // Apply shadow 3
-                    }}
-                  >
-                    {intermediateColors.hex3.toUpperCase()}
-                  </div>
+                <div
+                  className="result-item"
+                  style={{
+                    backgroundColor: intermediateColors.hex3,
+                    color: intermediateColors.contrast3,
+                    textShadow: `0 0 3px ${intermediateColors.shadow3}`, // Apply shadow 3
+                  }}
+                >
+                  <p>{intermediateColors.hex3.toUpperCase()}</p>
                 </div>
               )}
               {intermediateColors.hex4 && (
-                <div className="result-item">
-                  <div
-                    className="color-swatch"
-                    style={{
-                      backgroundColor: intermediateColors.hex4,
-                      color: intermediateColors.contrast4,
-                      textShadow: `0 0 3px ${intermediateColors.shadow4}`, // Apply shadow 4
-                    }}
-                  >
-                    {intermediateColors.hex4.toUpperCase()}
-                  </div>
+                <div
+                  className="result-item"
+                  style={{
+                    backgroundColor: intermediateColors.hex4,
+                    color: intermediateColors.contrast4,
+                    textShadow: `0 0 3px ${intermediateColors.shadow4}`, // Apply shadow 4
+                  }}
+                >
+                  <p>{intermediateColors.hex4.toUpperCase()}</p>
                 </div>
               )}
             </div>

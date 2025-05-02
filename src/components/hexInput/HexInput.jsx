@@ -1,8 +1,8 @@
 import React from "react";
 import "../colorInputs/colorInputs.css"; // Reuse existing CSS for now
 import "./hexInput.css";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
-import colorManagementFuncs from "../../../utilities/complementaries";
+import InformationTranslationFuncs from "../../utilities/InformationTranslation";
+import colorManagementFuncs from "../../utilities/complementaries";
 
 const { hexToRgb, rgbToHex } = InformationTranslationFuncs;
 const { opposite } = colorManagementFuncs;

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import HexInput from "../hexInput/HexInput";
 import RatioSection from "../compositionHarmony/RatioSection"; // Import RatioSection
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation"; // Import utility functions
+// Import utility functions from the correct path
+import InformationTranslationFuncs from "../../utilities/InformationTranslation.js"; // Corrected path to root utilities
+const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
 import "../tripleHexInputs/tripleHexInput.css";
 
-// Import necessary functions from utilities
-const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
+// Destructuring assignment is no longer needed here
+// const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
 
 const ConfigurableContrastChecker = ({
   title = "Configurable Contrast Checker",
@@ -139,7 +141,7 @@ const ConfigurableContrastChecker = ({
       <div className="contrast-results">
         {/* Pass the array and necessary functions to RatioSection */}
         <RatioSection
-          title="Ratio Harmony"
+          title="Ratio Balance"
           colorDataArray={colorDataArray}
           // rgbToHex is needed by RatioSection internally, let's pass it
         />

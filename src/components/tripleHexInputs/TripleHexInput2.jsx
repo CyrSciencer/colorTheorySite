@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import HexInput from "../hexInput/HexInput"; // Adjust path as needed
 import RatioSection from "../compositionHarmony/RatioSection";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
+import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import SquareComposition from "../squareComposition/SquareComposition";
 import BigSquareComposition from "../squareComposition/BigSquareComposition";
 import "./tripleHexInput.css";
 const { rgbToHex, hexToRgb } = InformationTranslationFuncs;
-const TripleHexInput2 = ({ title = "Triple Input Set 2" }) => {
+const TripleHexInput2 = ({
+  title = "harmony of primary, secondary and tertiary colors",
+}) => {
   const [hexA, setHexA] = useState("#CD3232"); // Different defaults
   const [hexB, setHexB] = useState("#3232CD");
   const [hexC, setHexC] = useState("#CDCD32");

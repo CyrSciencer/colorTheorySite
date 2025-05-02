@@ -1,0 +1,110 @@
+.color-suggester {
+  position: fixed; /* Keep the container fixed relative to the viewport */
+  top: 10px; /* Stick to 10px from the top */
+  right: 10px; /* Position it on the right side */
+  background-color: white; /* Add background to prevent content overlap */
+  border: 1px solid #ccc;
+  padding: 15px;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it stays on top */
+  max-width: 300px; /* Optional: constrain width */
+  /* Add transition for smoother open/close, if desired */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: sans-serif;
+  margin-bottom: 1rem; /* Add some space below */
+}
+
+.toggle-button {
+  position: sticky; /* Make the button sticky relative to the container */
+  top: 15px; /* Adjust based on container padding */
+  /* Position it nicely, e.g., top right */
+  /* float: right; /* Or use flexbox/grid on the container */
+  margin-bottom: 10px; /* Space below button when open */
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.color-suggester label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.color-suggester input[type="text"] {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none; /* Avoid double border with input */
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute; /* Position below the input */
+  top: 100%; /* Start right below the input container */
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 10; /* Ensure it appears above other content */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  gap: 0.75rem;
+  border-bottom: 1px solid #eee; /* Separator line */
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.suggestion-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent text overflow */
+}
+
+.suggestion-name {
+  font-weight: 500;
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-hex {
+  font-size: 0.85em;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Add styles for the content wrapper if needed when closed/open */

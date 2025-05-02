@@ -1,5 +1,5 @@
-import colorManagementFuncs from "../../../utilities/complementaries";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
+import colorManagementFuncs from "../../utilities/complementaries";
+import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import "./compositionHarmony.css"; // Reuse the same CSS for now
 import RatioSection from "./RatioSection";
 

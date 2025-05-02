@@ -1,6 +1,6 @@
 import React from "react";
-import InformationTranslationFuncs from "../../../utilities/InformationTranslation";
-import colorManagementFuncs from "../../../utilities/complementaries"; // Added import
+import InformationTranslationFuncs from "../../utilities/InformationTranslation";
+import colorManagementFuncs from "../../utilities/complementaries"; // Added import
 import "./gradient.css"; // Reusing the existing CSS for simplicity
 
 const { opposite } = colorManagementFuncs; // Destructure function
