@@ -24,6 +24,9 @@
   align-items: center;
   justify-content: center;
 }
+.tip:hover {
+  cursor: pointer;
+}
 .composition-of-two-page header {
   background: linear-gradient(
     to right,

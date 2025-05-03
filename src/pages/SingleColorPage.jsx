@@ -13,6 +13,8 @@ import ColorGradients from "../components/gradients/ColorGradients"; // Adjust p
 import SquareHarmonyComposition from "../components/compositionHarmony/SquareHarmonyComposition"; // Adjust path
 import TriangleHarmonyComposition from "../components/compositionHarmony/TriangleHarmonyComposition"; // Adjust path
 import { Link } from "react-router-dom";
+import { writeToClipboard } from "../utilities/clipboardUtils"; // Import clipboard utility
+import { useFeedback } from "../contexts/FeedbackContext.jsx"; // Import feedback context
 
 function SingleColorPage() {
   // Renamed from App
@@ -26,6 +28,7 @@ function SingleColorPage() {
   const [contrastColorRgb, setContrastColorRgb] = useState([255, 255, 255]);
   const { rgbToHex } = InformationTranslationFuncs;
   const { complementary, opposite } = colorManagementFuncs;
+  const { showFeedback } = useFeedback(); // Use the feedback context hook
   console.log({ hsl, hsv });
   //useEffect pour mettre à jour la couleur opposée
   // console.log({ complementaryColor });
@@ -43,6 +46,20 @@ function SingleColorPage() {
       ? setContrastColorRgb([0, 0, 0]) // Set to black
       : setContrastColorRgb([255, 255, 255]); // Set to white
   }, [rgb]);
+
+  // Function to handle copying hex codes to clipboard
+  const handleHexCopy = (hex) => {
+    if (!hex) return;
+    writeToClipboard(hex)
+      .then(() => {
+        showFeedback(`Copied ${hex}!`, "success");
+      })
+      .catch((err) => {
+        showFeedback("Failed to copy!", "error");
+        console.error("Clipboard error: ", err);
+      });
+  };
+
   return (
     <>
       <header
@@ -76,17 +93,30 @@ function SingleColorPage() {
         <div className="square-composition-container">
           <h2>Carrés de contraste simultané</h2>
           <h3>
-            Couleur complémentaire:
+            Couleur complémentaire:{" "}
             <span
+              className="complementary-color-display"
               style={{
+                /* Style to make it look like a chip */
+                padding: "2px 6px",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginLeft: "8px",
+                /* Original styles */
                 color: rgbToHex(contrastColorRgb),
                 textShadow: `0 1px 2px ${rgbToHex(
                   contrastColorRgb
                 )} , 0 -1px 2px ${rgbToHex(opposite(contrastColorRgb))} `,
                 backgroundColor: rgbToHex(complementary(rgb)),
               }}
+              onClick={() => handleHexCopy(rgbToHex(complementary(rgb)))}
             >
-              {rgbToHex(complementary(rgb)).toUpperCase()}
+              <span
+                className="clickable-hex-inline"
+                /* Add specific styles if needed, otherwise rely on parent */
+              >
+                {rgbToHex(complementary(rgb)).toUpperCase()}
+              </span>
             </span>
           </h3>
           <div>

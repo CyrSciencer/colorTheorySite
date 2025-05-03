@@ -85,7 +85,9 @@ const ColorSuggester = ({ onSuggestionClick }) => {
                   ></span>
                   <div className="suggestion-details">
                     <span className="suggestion-name">{name}</span>
-                    <span className="suggestion-hex">{hex}</span>
+                    <span className="suggestion-hex clickable-hex">
+                      {hex.toUpperCase()}
+                    </span>
                   </div>
                 </li>
               ))}

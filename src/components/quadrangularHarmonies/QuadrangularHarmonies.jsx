@@ -4,6 +4,9 @@ import colorManagementFuncs from "../../utilities/complementaries";
 import { useState, useEffect } from "react";
 import tetradHarmony from "../../assets/svg/harmonie-tetradiques.svg";
 import pureSquareHarmony from "../../assets/svg/harmonie-carré.svg";
+import { writeToClipboard } from "../../utilities/clipboardUtils";
+import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+
 const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const [hex2, setHex2] = useState("");
   const [hex3, setHex3] = useState("");
@@ -15,6 +18,20 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const { rgbToHex } = InformationTranslationFuncs;
   const { squareHarmony, rectangleHarmony1, rectangleHarmony2, opposite } =
     colorManagementFuncs;
+  const { showFeedback } = useFeedback();
+
+  const handleHexCopy = (hex) => {
+    if (!hex) return;
+    writeToClipboard(hex)
+      .then(() => {
+        showFeedback(`Copied ${hex}!`, "success");
+      })
+      .catch((err) => {
+        showFeedback("Failed to copy!", "error");
+        console.error("Clipboard error: ", err);
+      });
+  };
+
   useEffect(() => {
     console.log("squareHarmony =====>", squareHarmony(rgb));
     console.log("rectangleHarmony1 =====>", rectangleHarmony1(rgb));
@@ -27,92 +44,54 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
     setHex7(rgbToHex(rectangleHarmony1(rgb).rgb4));
     setHex8(rgbToHex(rectangleHarmony2(rgb).rgb4));
   }, [rgb]);
+
+  const createTipElement = (hexValue) => {
+    if (!hexValue) return null;
+    return (
+      <div
+        className="tip"
+        style={{
+          backgroundColor: hexValue,
+          color: rgbToHex(contrastColorRgb),
+          textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
+        }}
+      >
+        <span className="clickable-hex" onClick={() => handleHexCopy(hexValue)}>
+          {hexValue.toUpperCase()}
+        </span>
+      </div>
+    );
+  };
+
+  const baseColorTip = (
+    <div
+      className="tip"
+      style={{
+        backgroundColor: rgbToHex(rgb),
+        color: rgbToHex(contrastColorRgb),
+        textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
+      }}
+    ></div>
+  );
+
   return (
     <div className="quadrangular-harmonies">
       <div className="tetrad-harmony">
         <img src={tetradHarmony} alt="tetradHarmony" />
         <div className="tips">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: rgbToHex(rgb),
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          ></div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex2,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex2.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex5,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex5.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex7,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex7.toUpperCase()}
-          </div>
+          {baseColorTip}
+          {createTipElement(hex2)}
+          {createTipElement(hex5)}
+          {createTipElement(hex7)}
         </div>
       </div>
       <div className="pure-square-harmony">
         <img src={pureSquareHarmony} alt="pureSquareHarmony" />
         <div className="tips">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: rgbToHex(rgb),
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          ></div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex2,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex2.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex3,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex3.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex4,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex4.toUpperCase()}
-          </div>
+          {baseColorTip}
+          {createTipElement(hex2)}
+          {createTipElement(hex3)}
+          {createTipElement(hex4)}
         </div>
       </div>
       <div className="tetrad-harmony">
@@ -122,44 +101,10 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
           className="quadrangularShifted"
         />
         <div className="tips">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: rgbToHex(rgb),
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          ></div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex2,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex2.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex6,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex6.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex8,
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex8.toUpperCase()}
-          </div>
+          {baseColorTip}
+          {createTipElement(hex2)}
+          {createTipElement(hex6)}
+          {createTipElement(hex8)}
         </div>
       </div>
     </div>

@@ -2,7 +2,8 @@ import React from "react";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import colorManagementFuncs from "../../utilities/complementaries"; // Added import
 import "./gradient.css"; // Reusing the existing CSS for simplicity
-
+import { writeToClipboard } from "../../utilities/clipboardUtils";
+import { useFeedback } from "../../contexts/FeedbackContext.jsx";
 const { opposite } = colorManagementFuncs; // Destructure function
 
 // Function to determine contrast color (black or white) based on RGB array
@@ -13,7 +14,26 @@ const getContrastColor = (rgbArray) => {
   return brightness > 128 ? [0, 0, 0] : [255, 255, 255]; // Return black or white RGB array
 };
 
-const ColorGradients = ({ rgb, gradientTypeIndex }) => {
+const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
+  const { showFeedback } = useFeedback();
+  const handleSuggestionClick = (hex) => {
+    // Use clipboard utility
+    writeToClipboard(hex)
+      .then(() => {
+        showFeedback(`Copied ${hex}!`, "success"); // Trigger success popup via context
+        if (onSuggestionClick) {
+          onSuggestionClick(hex);
+        }
+      })
+      .catch((err) => {
+        showFeedback("Failed to copy!", "error"); // Trigger error popup via context
+        // Keep console log for debugging
+        console.error("Clipboard error: ", err);
+      });
+
+    // Optionally clear the input/suggestions after selection
+    // setDescription('');
+  };
   // Convert input RGB color directly to HSV
   const hsv1 = InformationTranslationFuncs.rgbToHsv
     ? InformationTranslationFuncs.rgbToHsv(rgb) // rgb is already an array
@@ -66,6 +86,7 @@ const ColorGradients = ({ rgb, gradientTypeIndex }) => {
             color: contrastHex,
             textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
           }}
+          onClick={() => handleSuggestionClick(currentHex)}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -100,6 +121,7 @@ const ColorGradients = ({ rgb, gradientTypeIndex }) => {
             color: contrastHex,
             textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
           }}
+          onClick={() => handleSuggestionClick(currentHex)}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -134,6 +156,7 @@ const ColorGradients = ({ rgb, gradientTypeIndex }) => {
             color: contrastHex,
             textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
           }}
+          onClick={() => handleSuggestionClick(currentHex)}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -166,6 +189,7 @@ const ColorGradients = ({ rgb, gradientTypeIndex }) => {
             color: contrastHex, // Use hex directly
             textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
           }}
+          onClick={() => handleSuggestionClick(currentHex)}
         >
           {currentHex.toUpperCase()}
         </div>
@@ -198,6 +222,7 @@ const ColorGradients = ({ rgb, gradientTypeIndex }) => {
             color: contrastHex, // Use hex directly
             textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
           }}
+          onClick={() => handleSuggestionClick(currentHex)}
         >
           {currentHex.toUpperCase()}
         </div>

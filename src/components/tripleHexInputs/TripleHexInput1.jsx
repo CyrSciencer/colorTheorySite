@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import HexInput from "../hexInput/HexInput"; // Adjust path as needed
 import colorManagementFuncs from "../../utilities/complementaries.js";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation.js";
 import "./tripleHexInput.css";
 import SquareComposition from "../squareComposition/SquareComposition";
+import { writeToClipboard } from "../../utilities/clipboardUtils.js";
+import FeedbackPopup from "../feedbackPopup/FeedbackPopup"; // Import FeedbackPopup
 const { generateIntermediateColors, opposite } = colorManagementFuncs;
 const { hexToRgb, rgbToHex } = InformationTranslationFuncs;
 
@@ -35,6 +37,56 @@ const TripleHexInput1 = () => {
     contrastC: "#000000",
     // Shadows for A, B, C handled by HexInput component
   });
+
+  // Local state for feedback popup
+  const [feedback, setFeedback] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
+  const feedbackTimeoutRef = useRef(null); // Ref to manage timeout
+
+  // Function to handle copying hex codes to clipboard using local state
+  const handleHexCopy = (hex) => {
+    if (!hex) return;
+
+    // Clear previous timeout if it exists
+    if (feedbackTimeoutRef.current) {
+      clearTimeout(feedbackTimeoutRef.current);
+    }
+
+    writeToClipboard(hex)
+      .then(() => {
+        setFeedback({
+          isVisible: true,
+          message: `Copied ${hex}!`,
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        setFeedback({
+          isVisible: true,
+          message: "Failed to copy!",
+          type: "error",
+        });
+        console.error("Clipboard error: ", err);
+      })
+      .finally(() => {
+        // Set a new timeout to hide the feedback
+        feedbackTimeoutRef.current = setTimeout(() => {
+          setFeedback((prev) => ({ ...prev, isVisible: false }));
+        }, 2500); // Hide after 2.5 seconds
+      });
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (feedbackTimeoutRef.current) {
+        clearTimeout(feedbackTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     try {
@@ -94,6 +146,13 @@ const TripleHexInput1 = () => {
 
   return (
     <div className="triple-hex-input-one-container">
+      {/* Render the local FeedbackPopup */}
+      <FeedbackPopup
+        isVisible={feedback.isVisible}
+        message={feedback.message}
+        type={feedback.type}
+      />
+
       <h2>Outil d'analyse d'intermédiaires</h2>
       <div className="logic-container">
         <div className="square-container">
@@ -178,7 +237,14 @@ const TripleHexInput1 = () => {
                     textShadow: `0 0 3px ${intermediateColors.shadow3}`, // Apply shadow 3
                   }}
                 >
-                  <p>{intermediateColors.hex3.toUpperCase()}</p>
+                  <p>
+                    <span
+                      className="clickable-hex"
+                      onClick={() => handleHexCopy(intermediateColors.hex3)}
+                    >
+                      {intermediateColors.hex3.toUpperCase()}
+                    </span>
+                  </p>
                 </div>
               )}
               {intermediateColors.hex4 && (
@@ -190,7 +256,14 @@ const TripleHexInput1 = () => {
                     textShadow: `0 0 3px ${intermediateColors.shadow4}`, // Apply shadow 4
                   }}
                 >
-                  <p>{intermediateColors.hex4.toUpperCase()}</p>
+                  <p>
+                    <span
+                      className="clickable-hex"
+                      onClick={() => handleHexCopy(intermediateColors.hex4)}
+                    >
+                      {intermediateColors.hex4.toUpperCase()}
+                    </span>
+                  </p>
                 </div>
               )}
             </div>

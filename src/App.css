@@ -1,5 +1,28 @@
+/* Add other global styles or reset here */
+
+/* Make clickable hex codes show a pointer cursor on hover */
+.clickable-hex:hover {
+  cursor: pointer;
+  /* Optional: Add other hover effects like slight opacity change */
+  /* opacity: 0.8; */
+}
+
+/* Override font for form elements */
+input,
+textarea,
+select {
+  font-family: sans-serif; /* Or specify another font stack like system default */
+}
+button {
+  font-family: "oldLangua", sans-serif;
+}
 body {
   font-family: "oldLangua", sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f4f4; /* Light grey background */
+  color: #333; /* Default text color */
 }
 header {
   display: flex;
@@ -47,7 +70,6 @@ button {
   border: 2px solid #000000;
   background-color: #ffffff;
   border-radius: 20px;
-  font-family: "oldLangua", sans-serif;
   font-size: 24px;
 }
 button:hover {
