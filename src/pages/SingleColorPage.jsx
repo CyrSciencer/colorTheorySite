@@ -170,19 +170,25 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="opposite-temperature">
-          <h2>Of opposite temperature</h2>
+          <h2>Set de couleurs de température opposée</h2>
           <div className="opposite-temperature-container">
             <Temperatures rgb={rgb} contrastColorRgb={contrastColorRgb} />
           </div>
         </div>
         <div className="gradient">
           <h2>Gradients</h2>
+          <span>gradient 1 vers le complémentaire</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={1} />
+          <span>gradient 2 vers le complémentaire</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={2} />
+          <span>gradient de luminosité</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={3} />
-          <ColorGradients rgb={rgb} gradientTypeIndex={4} />
-          <ColorGradients rgb={rgb} gradientTypeIndex={5} />
+          <span>gradient de saturation</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={6} />
+          <span>gradient 1 vers le moins saturé</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={4} />
+          <span>gradient 2 vers le moins saturé</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={5} />
         </div>
       </main>
     </>

@@ -62,6 +62,8 @@
 .gradient-display {
   margin-top: 10px;
 }
-.color-swatch-container span {
-  margin-top: 16px;
+.clickable-hex {
+  cursor: pointer;
+  font-size: 24px;
+  padding-top: 18px;
 }

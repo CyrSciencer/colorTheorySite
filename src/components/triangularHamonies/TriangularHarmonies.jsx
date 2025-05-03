@@ -49,10 +49,9 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
           color: rgbToHex(contrastColorRgb),
           textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
         }}
+        onClick={() => handleHexCopy(hexValue)}
       >
-        <span className="clickable-hex" onClick={() => handleHexCopy(hexValue)}>
-          {hexValue.toUpperCase()}
-        </span>
+        {hexValue.toUpperCase()}
       </div>
     );
   };

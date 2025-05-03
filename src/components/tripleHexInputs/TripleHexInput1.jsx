@@ -200,13 +200,13 @@ const TripleHexInput1 = () => {
           <HexInput
             hex={hexA}
             setHex={setHexA}
-            title="Color A"
+            title="Couleur A"
             contrastColor={intermediateColors.contrastA}
           />
           <HexInput
             hex={hexB}
             setHex={setHexB}
-            title="Color B"
+            title="Couleur B"
             contrastColor={intermediateColors.contrastB}
           />
         </div>
@@ -272,7 +272,7 @@ const TripleHexInput1 = () => {
         <HexInput
           hex={hexC}
           setHex={setHexC}
-          title="Target Color C"
+          title="Couleur cible"
           contrastColor={intermediateColors.contrastC}
         />
         <div className="square-container">
@@ -280,26 +280,27 @@ const TripleHexInput1 = () => {
             <SquareComposition outerColor={hexC} innerColor={hexA} />
             <SquareComposition outerColor={hexC} innerColor={hexB} />
 
-            <SquareComposition outerColor={hexA} innerColor={hexC} />
-            <SquareComposition outerColor={hexB} innerColor={hexC} />
-          </div>
-          <div className="square-wrapper">
-            <SquareComposition
-              outerColor={hexC}
-              innerColor={intermediateColors.hex3}
-            />
-            <SquareComposition
-              outerColor={hexC}
-              innerColor={intermediateColors.hex4}
-            />
-
             <SquareComposition
               outerColor={intermediateColors.hex3}
               innerColor={hexA}
             />
+
+            <SquareComposition
+              outerColor={hexC}
+              innerColor={intermediateColors.hex3}
+            />
+          </div>
+          <div className="square-wrapper">
+            <SquareComposition outerColor={hexA} innerColor={hexC} />
+            <SquareComposition outerColor={hexB} innerColor={hexC} />
+
             <SquareComposition
               outerColor={intermediateColors.hex4}
               innerColor={hexB}
+            />
+            <SquareComposition
+              outerColor={hexC}
+              innerColor={intermediateColors.hex4}
             />
           </div>
         </div>

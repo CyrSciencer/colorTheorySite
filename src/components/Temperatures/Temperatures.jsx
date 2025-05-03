@@ -43,13 +43,9 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
             "--color": rgbToHex(rgb),
             "--color-opposite": rgbToHex(contrastColorRgb),
           }}
+          onClick={() => handleHexCopy(rgbToHex(rgb))}
         >
-          <span
-            className="clickable-hex"
-            onClick={() => handleHexCopy(rgbToHex(rgb))}
-          >
-            {rgbToHex(rgb).toUpperCase()}
-          </span>
+          {rgbToHex(rgb).toUpperCase()}
         </div>
         <div
           className="circle-items-container"
@@ -72,13 +68,9 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
                   "--color-opposite": rgbToHex(contrastColorRgb),
                   "--shadow-color": rgbToHex(opposite(contrastColorRgb)),
                 }}
+                onClick={() => handleHexCopy(currentHex)}
               >
-                <span
-                  className="clickable-hex"
-                  onClick={() => handleHexCopy(currentHex)}
-                >
-                  {currentHex.toUpperCase()}
-                </span>
+                {currentHex.toUpperCase()}
               </div>
             );
           })}
