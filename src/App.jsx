@@ -6,10 +6,10 @@ import CompositionOfTwo from "./pages/CompositionOfTwo";
 import CompositionTool from "./pages/CompositionTool";
 import ColorSuggester from "./components/colorSuggester/ColorSuggester";
 import "./App.css"; // Keep general styles if needed
-
+import { FeedbackProvider } from "./contexts/FeedbackContext";
 function App() {
   return (
-    <>
+    <FeedbackProvider>
       <div className="color-suggester-container">
         <ColorSuggester />
       </div>
@@ -20,7 +20,7 @@ function App() {
         <Route path="/composition-tool" element={<CompositionTool />} />
       </Routes>
       <footer></footer>
-    </>
+    </FeedbackProvider>
   );
 }
 

@@ -134,17 +134,17 @@ const ColorExploration = () => {
 
   return (
     <div className="color-exploration-container">
-      <h2>Color Exploration</h2>
-      <button onClick={handleGenerate}>Generate Random Colors</button>
+      <h2>Outil d'exploration de couleurs</h2>
+      <button onClick={handleGenerate}>Génération aléatoire:</button>
 
       {/* Only render results section if initial generation has happened */}
       {colors.random && (
         <div className="results-section">
-          <h3>Generated Colors:</h3>
+          <h3>Couleurs générées:</h3>
           <div className="color-swatches">
             {/* Random color swatch with input */}
             <div style={{ backgroundColor: hexColors.random }}>
-              Random: {hexColors.random}
+              Couleur aléatoire: {hexColors.random}
               <input
                 type="color"
                 value={hexColors.random} // Bind value to state hex
@@ -154,15 +154,15 @@ const ColorExploration = () => {
             </div>
             {/* Opposite color swatch */}
             <div style={{ backgroundColor: hexColors.opposite }}>
-              Opposite: {hexColors.opposite}
+              Couleur opposée: {hexColors.opposite}
             </div>
             {/* Derived color swatch */}
             <div style={{ backgroundColor: hexColors.hsvDerived }}>
-              Derived: {hexColors.hsvDerived}
+              Couleur dérivée: {hexColors.hsvDerived}
             </div>
           </div>
 
-          <h3>Compositions (All Permutations):</h3>
+          <h3>Compositions (Toutes les permutations):</h3>
           <div className="compositions-grid">
             {hexPermutations.map((perm, index) => (
               <BigSquareComposition

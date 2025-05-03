@@ -226,11 +226,7 @@ const ColorGradients = ({ rgb, gradientTypeIndex }) => {
     }
   };
 
-  return (
-    <div className="gradient-container">
-      <div className="gradient-sub-container">{renderSelectedGradient()}</div>
-    </div>
-  );
+  return <div className="gradient-line">{renderSelectedGradient()}</div>;
 };
 
 export default ColorGradients;

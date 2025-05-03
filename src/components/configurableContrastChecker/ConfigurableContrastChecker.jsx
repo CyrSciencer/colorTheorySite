@@ -4,18 +4,16 @@ import RatioSection from "../compositionHarmony/RatioSection"; // Import RatioSe
 // Import utility functions from the correct path
 import InformationTranslationFuncs from "../../utilities/InformationTranslation.js"; // Corrected path to root utilities
 const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
-import "../tripleHexInputs/tripleHexInput.css";
+import "./configurableContrast.css";
 
 // Destructuring assignment is no longer needed here
 // const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
 
-const ConfigurableContrastChecker = ({
-  title = "Configurable Contrast Checker",
-}) => {
+const ConfigurableContrastChecker = () => {
   // State to hold the full colorDataArray
   const [colorDataArray, setColorDataArray] = useState(() => {
     // Initial setup for 3 colors
-    const initialColors = ["#AAAAAA", "#BBBBBB", "#CCCCCC"];
+    const initialColors = ["#CD3232", "#3232CD", "#CDCD32"];
     return initialColors.map((hex, index) => {
       const rgb = hexToRgb(hex);
       // const hsl = rgbToHsl(rgb);
@@ -99,7 +97,7 @@ const ConfigurableContrastChecker = ({
 
   return (
     <div className="configurable-contrast-checker-container">
-      <h4>{title}</h4>
+      <h2>Outil de contraste configurable</h2>
       <div className="inputs-wrapper">
         {/* Map over colorDataArray to render inputs */}
         {colorDataArray.map((colorData, index) => (
@@ -131,17 +129,17 @@ const ConfigurableContrastChecker = ({
       </div>
       <div className="controls-wrapper">
         <button onClick={addInput} disabled={colorDataArray.length >= 6}>
-          Add Color
+          Ajouter
         </button>
         <button onClick={removeInput} disabled={colorDataArray.length <= 3}>
-          Remove Last Color
+          Retirer
         </button>
       </div>
       {/* Add RatioSection components */}
       <div className="contrast-results">
         {/* Pass the array and necessary functions to RatioSection */}
         <RatioSection
-          title="Ratio Balance"
+          title="Bande de contraste"
           colorDataArray={colorDataArray}
           // rgbToHex is needed by RatioSection internally, let's pass it
         />

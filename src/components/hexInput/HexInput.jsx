@@ -14,7 +14,7 @@ const HexInput = ({ hex, setHex, contrastColor = "#000000", title }) => {
 
   return (
     <div
-      className="hex-input"
+      className="hex-input-component"
       style={{
         backgroundColor: hex,
         "--shadow-color": shadowColorHex,

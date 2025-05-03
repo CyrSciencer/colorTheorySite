@@ -43,14 +43,11 @@ const TriangleHarmonyComposition = ({ hsl }) => {
     },
   ];
 
-  const siblingOfComplementaryHarmony = siblingOfComplementary(rgb);
-  const analogueHarmony = analogue(rgb);
-
   return (
     <div className="composition-harmony-wrapper">
       {/* Use the inner component for the Light Ratio section */}
       <RatioSection
-        title="Light Ratio Harmony (Triangle)"
+        title="Ratio lumineux (Triangle)"
         ratioKey="lightRatioHarmony" // Pass the key for the light ratio
         colorDataArray={colorDataArrayofThree}
         rgbToHex={rgbToHex} // Pass the conversion function
@@ -58,7 +55,7 @@ const TriangleHarmonyComposition = ({ hsl }) => {
 
       {/* Use the inner component for the Dark Ratio section */}
       <RatioSection
-        title="Dark Ratio Harmony (Triangle)"
+        title="Ratio sombre (Triangle)"
         ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
         colorDataArray={colorDataArrayofThree}
         rgbToHex={rgbToHex} // Pass the conversion function

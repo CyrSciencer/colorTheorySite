@@ -62,9 +62,10 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
           className="mixed-color-display"
           style={{ textShadow: `0 0 3px ${shadowColorHex}` }}
         >
-          mixed: {mixedColor.toUpperCase()}
+          couleur mélangée: {mixedColor.toUpperCase()}
         </div>
         <div className="mixer-controls">
+          <SquareComposition innerColor={mixedColor} outerColor={hex1} />
           <input
             type="range"
             min="0"
@@ -73,9 +74,7 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
             onChange={handleSliderChange}
             className="mix-slider"
           />
-          <span style={{ textShadow: `0 0 3px ${shadowColorHex}` }}>
-            {mixPercent}%
-          </span>
+          <SquareComposition innerColor={mixedColor} outerColor={hex2} />
         </div>
       </div>
       <div className="squares-container">

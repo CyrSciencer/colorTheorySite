@@ -36,7 +36,7 @@ const CompositionHarmony = ({ hsl }) => {
     <div className="composition-harmony-wrapper">
       {/* Use the inner component for the Light Ratio section */}
       <RatioSection
-        title="Light Ratio Harmony"
+        title="Ratio lumineux (Complémentaire)"
         ratioKey="lightRatioHarmony" // Pass the key for the light ratio
         colorDataArray={colorDataArrayofTwo}
         rgbVersHex={rgbVersHex} // Pass the conversion function
@@ -44,7 +44,7 @@ const CompositionHarmony = ({ hsl }) => {
 
       {/* Use the inner component for the Dark Ratio section */}
       <RatioSection
-        title="Dark Ratio Harmony"
+        title="Ratio sombre (Complémentaire)"
         ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
         colorDataArray={colorDataArrayofTwo}
         rgbVersHex={rgbVersHex} // Pass the conversion function

@@ -227,7 +227,10 @@ const ColorInputs = ({
           }
         />
       </div>
-      <div className="hex-input" style={{ borderColor: oppositeColor }}>
+      <div
+        className="hex-input-container"
+        style={{ borderColor: oppositeColor }}
+      >
         <label htmlFor="hex" style={{ color: oppositeColor }}>
           Hex
         </label>
@@ -239,6 +242,7 @@ const ColorInputs = ({
             handleHexChange(e.target.value, setRgb, setHsl, setHex, setHsv)
           }
           maxLength="7"
+          className="hex-input"
         />
       </div>
     </>

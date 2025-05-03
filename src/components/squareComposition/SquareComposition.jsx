@@ -6,11 +6,12 @@ const SquareComposition = ({ innerColor, outerColor }) => {
       <div
         className="outer-square"
         style={{ backgroundColor: outerColor, borderColor: innerColor }}
-      ></div>
-      <div
-        className="inner-square"
-        style={{ backgroundColor: innerColor }}
-      ></div>
+      >
+        <div
+          className="inner-square"
+          style={{ backgroundColor: innerColor }}
+        ></div>
+      </div>
     </div>
   );
 };

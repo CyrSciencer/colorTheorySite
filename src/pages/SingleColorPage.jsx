@@ -49,10 +49,10 @@ function SingleColorPage() {
         style={{ backgroundColor: hex, borderBottomColor: oppositeColor }}
       >
         <h1 style={{ backgroundColor: oppositeColor, color: hex }}>
-          Single Color Analysis
+          Analyse chromatique
         </h1>
         <Link to="/">
-          <button>HomePage</button>
+          <button>Accueil</button>
         </Link>
         <div className="color-inputs">
           <ColorInputs
@@ -68,15 +68,15 @@ function SingleColorPage() {
           />
         </div>
       </header>
-      <main>
+      <main className="single-color-page-main">
         <div className="color-triangles-container">
-          <h2>Color triangles</h2>
+          <h2>Triangles comparatifs</h2>
           <ColorTriangles hex={hex} />
         </div>
         <div className="square-composition-container">
-          <h2>Composition squares</h2>
+          <h2>Carrés de contraste simultané</h2>
           <h3>
-            Complementary color:
+            Couleur complémentaire:
             <span
               style={{
                 color: rgbToHex(contrastColorRgb),
@@ -114,7 +114,7 @@ function SingleColorPage() {
         </div>
 
         <div className="three-hue-harmonies">
-          <h2>Three hue harmonies</h2>
+          <h2>Harmonies triadique</h2>
           <div className="three-hue-harmonies-container">
             <TriangularHarmonies
               rgb={rgb}
@@ -123,7 +123,7 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="four-hue-harmonies">
-          <h2>Four hue harmonies</h2>
+          <h2>Harmonies tétradique</h2>
           <div className="four-hue-harmonies-container">
             <QuadrangularHarmonies
               rgb={rgb}
@@ -132,7 +132,7 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="composition-harmony">
-          <h2>Composition harmony</h2>
+          <h2>Tension et équilibre entre les pôles de luminosité</h2>
           <div className="composition-harmony-container">
             <CompositionHarmony hsl={hsl} />
             <SquareHarmonyComposition hsl={hsl} />

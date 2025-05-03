@@ -54,7 +54,7 @@ const SquareHarmonyComposition = ({ hsl }) => {
     <div className="composition-harmony-wrapper">
       {/* Use the inner component for the Light Ratio section */}
       <RatioSection
-        title="Light Ratio Harmony (Square)"
+        title="Ratio lumineux (Carré)"
         ratioKey="lightRatioHarmony" // Pass the key for the light ratio
         colorDataArray={colorDataArrayofFour}
         rgbToHex={rgbToHex} // Pass the conversion function
@@ -62,7 +62,7 @@ const SquareHarmonyComposition = ({ hsl }) => {
 
       {/* Use the inner component for the Dark Ratio section */}
       <RatioSection
-        title="Dark Ratio Harmony (Square)"
+        title="Ratio sombre (Carré)"
         ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
         colorDataArray={colorDataArrayofFour}
         rgbToHex={rgbToHex} // Pass the conversion function

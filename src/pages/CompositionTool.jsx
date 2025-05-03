@@ -8,9 +8,9 @@ const CompositionTool = () => {
   return (
     <section className="composition-tool-page">
       <header>
-        <h1>Composition Tools</h1>
+        <h1>Outils de composition</h1>
         <Link to="/">
-          <button>HomePage</button>
+          <button>Accueil</button>
         </Link>
       </header>
       <main>

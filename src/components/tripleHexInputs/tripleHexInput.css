@@ -7,7 +7,7 @@
 }
 
 /* Apply base font and consistent text styling */
-h4,
+
 h5,
 .factor-slider-container label,
 .result-item span {
@@ -16,10 +16,7 @@ h5,
   margin-bottom: 0.5rem; /* Consistent spacing */
   text-align: center; /* Center align text elements */
 }
-h4 {
-  font-size: 1.5rem; /* Make component title larger */
-  margin-bottom: 1rem;
-}
+
 h5 {
   font-size: 1.3rem; /* Make results title slightly larger */
 }
@@ -38,6 +35,12 @@ h5 {
 }
 
 /* Add styles based on inline styles from TripleHexInput1.jsx */
+.triple-hex-input-one-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 .factor-slider {
   /* width: 100%; */ /* Removed, use mix-slider width or adjust */
@@ -152,55 +155,4 @@ h4 {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-}
-/*configurableContrastChecker.jsx*/
-.configurable-contrast-checker-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 50%;
-}
-.configurable-contrast-checker-container .inputs-wrapper {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  max-height: 550px;
-
-  width: 100%;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.contrast-info-input {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.color-input-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.color-input-group .hex-input {
-  width: 75%;
-}
-.Square-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-.ratio-input {
-  width: 50px;
-  height: 20px;
-  margin-left: 10px;
-  border: 1px solid #000;
-}
-.controls-wrapper {
-  display: flex;
-  gap: 20px;
 }

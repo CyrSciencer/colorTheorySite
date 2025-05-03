@@ -5,7 +5,10 @@
   width: 400px;
   background-color: aliceblue;
 }
-
+.ratio-section {
+  display: flex;
+  flex-direction: column;
+}
 .color-container {
   flex: var(--ratio);
   background-color: var(--color);
