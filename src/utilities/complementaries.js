@@ -306,41 +306,70 @@ const inputOfTwoColorForAThird = (rgb1, rgb2, percent) => {
     const additionInfo = info1.type === "addition" ? info1 : info2;
     const primaryHsl = info1.type === "primary" ? hsl1 : hsl2;
     const additionHsl = info1.type === "addition" ? hsl1 : hsl2;
-    const calculatedHue = interpolateHueShortestPath(hsl1.h, hsl2.h, percent);
+    // Calculate resulting hue based on standard interpolation or leaning for Case 2a
+    let calculatedHue;
     let calculatedS, calculatedL;
 
     // Case 2a: Addition CONTAINS Primary
     if (additionInfo.primaries.includes(primaryInfo.name)) {
+      const baseHue = interpolateHueShortestPath(hsl1.h, hsl2.h, percent);
       const targetHue = primaryHsl.h;
-      let deltaH = targetHue - calculatedHue;
+      let deltaH = targetHue - baseHue;
       if (deltaH > 180) deltaH -= 360;
       if (deltaH <= -180) deltaH += 360;
-      const finalHue = (((calculatedHue + deltaH * 0.3) % 360) + 360) % 360;
+      calculatedHue = (((baseHue + deltaH * 0.3) % 360) + 360) % 360;
 
       calculatedS = hsl1.s + (hsl2.s - hsl1.s) * percent;
       calculatedL = hsl1.l + (hsl2.l - hsl1.l) * percent;
+      calculatedL *= 0.95; // Apply slight darkening
 
-      // Apply slight darkening for this specific case
-      calculatedL *= 0.95;
-
-      resultHsl = { h: finalHue, s: calculatedS, l: calculatedL };
+      resultHsl = { h: calculatedHue, s: calculatedS, l: calculatedL };
     }
-    // Case 2b: Addition does NOT contain Primary
+    // Case 2b: Addition does NOT contain Primary (Complementary mixing effect)
     else {
-      const additionInputHsl = info1.type === "addition" ? hsl1 : hsl2;
-      const primaryInputHsl = info1.type === "primary" ? hsl1 : hsl2;
+      // Hue interpolates normally along the shortest path
+      calculatedHue = interpolateHueShortestPath(hsl1.h, hsl2.h, percent);
+
+      // Calculate complementarity
+      let deltaH = hsl1.h - hsl2.h;
+      if (deltaH > 180) deltaH -= 360;
+      if (deltaH <= -180) deltaH += 360;
+      const complementarityFactor = Math.abs(deltaH) / 180.0;
+
+      // Calculate the normal interpolated S/L at midpoint 0.5
+      const s_mid_normal = hsl1.s + (hsl2.s - hsl1.s) * 0.5;
+      const l_mid_normal = hsl1.l + (hsl2.l - hsl1.l) * 0.5;
+
+      // Determine target S/L at the midpoint based on complementarity
+      // Target L approaches 0 as factor -> 1, capped at 0.2
+      const targetMidpointL = Math.min(
+        0.2,
+        l_mid_normal * (1 - complementarityFactor)
+      );
+      // Target S approaches 0 as factor -> 1 (maybe less aggressively than L)
+      const targetMidpointS = s_mid_normal * (1 - complementarityFactor * 0.8); // Slightly less reduction than L
+
+      // Interpolate S and L piecewise through the target midpoint
       if (percent === 0.5) {
-        calculatedS = 0;
-        calculatedL = 0;
+        calculatedS = targetMidpointS;
+        calculatedL = targetMidpointL;
       } else if (percent < 0.5) {
         const scaledPercent = percent / 0.5;
-        calculatedS = additionInputHsl.s * (1 - scaledPercent);
-        calculatedL = additionInputHsl.l * (1 - scaledPercent);
+        // Interpolate from additionHsl to target midpoint
+        calculatedS =
+          additionHsl.s + (targetMidpointS - additionHsl.s) * scaledPercent;
+        calculatedL =
+          additionHsl.l + (targetMidpointL - additionHsl.l) * scaledPercent;
       } else {
+        // percent > 0.5
         const scaledPercent = (percent - 0.5) / 0.5;
-        calculatedS = primaryInputHsl.s * scaledPercent;
-        calculatedL = primaryInputHsl.l * scaledPercent;
+        // Interpolate from target midpoint to primaryHsl
+        calculatedS =
+          targetMidpointS + (primaryHsl.s - targetMidpointS) * scaledPercent;
+        calculatedL =
+          targetMidpointL + (primaryHsl.l - targetMidpointL) * scaledPercent;
       }
+
       resultHsl = { h: calculatedHue, s: calculatedS, l: calculatedL };
     }
     ruleApplied = true;
