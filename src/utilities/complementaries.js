@@ -1,6 +1,6 @@
 import InformationTranslationFuncs from "./InformationTranslation.js";
 const { rgbToHsl, hslToRgb } = InformationTranslationFuncs;
-
+import colorDataBase from "./colorDataBase.js";
 //complementaire §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const complementary = (rgb) => {
   const hsl = rgbToHsl(rgb);
@@ -87,6 +87,76 @@ const rectangleHarmony2 = (rgb) => {
   return { rgb, rgb2, rgb3, rgb4 };
 };
 // Autres §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+// Helper to get only the color name from colorDataBase based on HSL Hue
+const getColorNameFromHue = (hue) => {
+  for (const name in colorDataBase.colorName) {
+    const range = colorDataBase.colorName[name];
+    // Standard range check
+    if (hue >= range.minHue && hue < range.maxHue) {
+      return name;
+    }
+    // Check for second range (for Red)
+    if (
+      range.minHue2 !== undefined &&
+      hue >= range.minHue2 &&
+      hue < range.maxHue2
+    ) {
+      return name;
+    }
+  }
+  return null; // No matching category found
+};
+
+// Helper to get color info from colorDataBase based on HSL
+const getColorInfo = (hsl) => {
+  const hue = hsl.h;
+  let colorName = null;
+
+  for (const name in colorDataBase.colorName) {
+    const range = colorDataBase.colorName[name];
+    // Standard range check
+    if (hue >= range.minHue && hue < range.maxHue) {
+      colorName = name;
+      break;
+    }
+    // Check for second range (for Red)
+    if (
+      range.minHue2 !== undefined &&
+      hue >= range.minHue2 &&
+      hue < range.maxHue2
+    ) {
+      colorName = name;
+      break;
+    }
+  }
+
+  if (!colorName) {
+    return null; // Or handle edge cases/default
+  }
+
+  const comp = colorDataBase.colorComp[colorName];
+  if (comp === "primary") {
+    return { name: colorName, type: "primary" };
+  } else {
+    // Parse primaries from string like "blue + yellow"
+    const primaries = comp.split(" + ");
+    return { name: colorName, type: "addition", primaries: primaries };
+  }
+};
+
+// Helper function for shortest-path hue interpolation
+const interpolateHueShortestPath = (h1, h2, percent) => {
+  let deltaH = h2 - h1;
+  if (deltaH > 180) {
+    deltaH -= 360;
+  } else if (deltaH <= -180) {
+    deltaH += 360;
+  }
+  let h = h1 + deltaH * percent;
+  // Normalize hue to be within [0, 360)
+  return ((h % 360) + 360) % 360;
+};
+
 // Mixe deux couleurs HSL pour une troisième couleur
 const hslMixer = (hsl1, hsl2, percent) => {
   // Interpolation de la teinte (chemin le plus court) - Attend h entre 0 et 360
@@ -113,20 +183,234 @@ const hslMixer = (hsl1, hsl2, percent) => {
   return { h: h, s: clampedS, l: clampedL };
 };
 
-// Generates a third color by mixing two input RGB colors in HSL space
-const inputOfTwoColorForAThird = (rgb, rgb2, percent) => {
-  // Convertit les couleurs RGB en HSL
-  const hsl1 = rgbToHsl(rgb);
+// Helper to calculate the midpoint hue of a color category
+const getMidpointHue = (colorName) => {
+  const range = colorDataBase.colorName[colorName];
+  if (!range) return 0; // Default
+  // Handle Red's wrap-around case - find center of the combined range
+  if (range.minHue2 !== undefined) {
+    // Effective range is [minHue2, 360] and [0, maxHue]. Total size:
+    const size1 = 360 - range.minHue2;
+    const size2 = range.maxHue - 0;
+    // Midpoint calculation needs care due to wrap-around
+    // Simple average of midpoints of the two segments, weighted by size?
+    const mid1 = (range.minHue2 + 360) / 2;
+    const mid2 = (0 + range.maxHue) / 2;
+    // Weighted average might be complex, let's approximate for now
+    // Or just take the midpoint of the largest segment? minHue2=330, maxHue=10 -> Largest is [330, 360]
+    // Let's simplify and target hue 0/360 for Red for now.
+    return 0;
+  }
+  return (range.minHue + range.maxHue) / 2;
+};
+
+// Generates a third color by mixing two input RGB colors using rule-based logic
+const inputOfTwoColorForAThird = (rgb1, rgb2, percent) => {
+  const hsl1 = rgbToHsl(rgb1);
   const hsl2 = rgbToHsl(rgb2);
 
-  // Mixe dans l'espace HSL
-  const hsl3 = hslMixer(hsl1, hsl2, percent);
+  // --- Rule 0: Check if colors are in the same category --- // NEW RULE
+  const name1 = getColorNameFromHue(hsl1.h);
+  const name2 = getColorNameFromHue(hsl2.h);
 
-  // Convertit le résultat en RGB
-  const rgb3 = hslToRgb(hsl3);
+  if (name1 && name2 && name1 === name2) {
+    // Same category: Simple HSL interpolation + darkening
+    const h = interpolateHueShortestPath(hsl1.h, hsl2.h, percent);
+    const s = hsl1.s + (hsl2.s - hsl1.s) * percent;
+    let l = hsl1.l + (hsl2.l - hsl1.l) * percent;
 
-  // Retourne les couleurs RGB d'origine et la nouvelle couleur mélangée
-  return { rgb, rgb2, rgb3 };
+    l *= 0.95; // Apply slight darkening
+
+    const resultHsl = {
+      h: h,
+      s: Math.max(0, Math.min(1, s)),
+      l: Math.max(0, Math.min(1, l)),
+    };
+    const rgb3 = hslToRgb(resultHsl);
+    return { rgb: rgb1, rgb2, rgb3 };
+  }
+
+  // --- Proceed to complex rules if Rule 0 didn't apply ---
+  const info1 = getColorInfo(hsl1);
+  const info2 = getColorInfo(hsl2);
+
+  if (!info1 || !info2) {
+    // Fallback to simple HSL mix (using hslMixer for consistency)
+    console.warn(
+      "Color category not found for complex rules, using simple mix"
+    );
+    const fallbackHsl = hslMixer(hsl1, hsl2, percent);
+    // Optionally apply a slight darkening to fallback too?
+    // fallbackHsl.l *= 0.95;
+    fallbackHsl.s = Math.max(0, Math.min(1, fallbackHsl.s));
+    fallbackHsl.l = Math.max(0, Math.min(1, fallbackHsl.l));
+    return { rgb: rgb1, rgb2, rgb3: hslToRgb(fallbackHsl) };
+  }
+
+  let resultHsl = { h: 0, s: 0, l: 0 };
+  let ruleApplied = false;
+
+  // --- Apply Rules 1, 2, 3 --- // (Existing logic for Primary+Primary, Primary+Addition, Addition+Addition)
+
+  // Rule 1: Primary + Primary
+  if (info1.type === "primary" && info2.type === "primary") {
+    // ... (Rule 1 logic - unchanged) ...
+    let secondaryName = null;
+    for (const name in colorDataBase.colorComp) {
+      const comp = colorDataBase.colorComp[name];
+      if (
+        comp !== "primary" &&
+        comp.includes(info1.name) &&
+        comp.includes(info2.name)
+      ) {
+        secondaryName = name;
+        break;
+      }
+    }
+    let calculatedHue;
+    if (secondaryName) {
+      const targetMidpointHue = getMidpointHue(secondaryName);
+      const h1 = hsl1.h;
+      const h2 = hsl2.h;
+      if (percent === 0.5) {
+        calculatedHue = targetMidpointHue;
+      } else if (percent < 0.5) {
+        const scaledPercent = percent / 0.5;
+        calculatedHue = interpolateHueShortestPath(
+          h1,
+          targetMidpointHue,
+          scaledPercent
+        );
+      } else {
+        const scaledPercent = (percent - 0.5) / 0.5;
+        calculatedHue = interpolateHueShortestPath(
+          targetMidpointHue,
+          h2,
+          scaledPercent
+        );
+      }
+    } else {
+      calculatedHue = interpolateHueShortestPath(hsl1.h, hsl2.h, percent);
+    }
+    const interpolatedS = hsl1.s + (hsl2.s - hsl1.s) * percent;
+    const interpolatedL = hsl1.l + (hsl2.l - hsl1.l) * percent;
+    resultHsl = { h: calculatedHue, s: interpolatedS, l: interpolatedL * 0.85 };
+    ruleApplied = true;
+  }
+  // Rule 2: Primary + Addition
+  else if (
+    (info1.type === "primary" && info2.type === "addition") ||
+    (info1.type === "addition" && info2.type === "primary")
+  ) {
+    const primaryInfo = info1.type === "primary" ? info1 : info2;
+    const additionInfo = info1.type === "addition" ? info1 : info2;
+    const primaryHsl = info1.type === "primary" ? hsl1 : hsl2;
+    const additionHsl = info1.type === "addition" ? hsl1 : hsl2;
+    const calculatedHue = interpolateHueShortestPath(hsl1.h, hsl2.h, percent);
+    let calculatedS, calculatedL;
+
+    // Case 2a: Addition CONTAINS Primary
+    if (additionInfo.primaries.includes(primaryInfo.name)) {
+      const targetHue = primaryHsl.h;
+      let deltaH = targetHue - calculatedHue;
+      if (deltaH > 180) deltaH -= 360;
+      if (deltaH <= -180) deltaH += 360;
+      const finalHue = (((calculatedHue + deltaH * 0.3) % 360) + 360) % 360;
+
+      calculatedS = hsl1.s + (hsl2.s - hsl1.s) * percent;
+      calculatedL = hsl1.l + (hsl2.l - hsl1.l) * percent;
+
+      // Apply slight darkening for this specific case
+      calculatedL *= 0.95;
+
+      resultHsl = { h: finalHue, s: calculatedS, l: calculatedL };
+    }
+    // Case 2b: Addition does NOT contain Primary
+    else {
+      const additionInputHsl = info1.type === "addition" ? hsl1 : hsl2;
+      const primaryInputHsl = info1.type === "primary" ? hsl1 : hsl2;
+      if (percent === 0.5) {
+        calculatedS = 0;
+        calculatedL = 0;
+      } else if (percent < 0.5) {
+        const scaledPercent = percent / 0.5;
+        calculatedS = additionInputHsl.s * (1 - scaledPercent);
+        calculatedL = additionInputHsl.l * (1 - scaledPercent);
+      } else {
+        const scaledPercent = (percent - 0.5) / 0.5;
+        calculatedS = primaryInputHsl.s * scaledPercent;
+        calculatedL = primaryInputHsl.l * scaledPercent;
+      }
+      resultHsl = { h: calculatedHue, s: calculatedS, l: calculatedL };
+    }
+    ruleApplied = true;
+  }
+  // Rule 3: Addition + Addition
+  else if (info1.type === "addition" && info2.type === "addition") {
+    // ... (Rule 3 logic - unchanged) ...
+    let currentHue = interpolateHueShortestPath(hsl1.h, hsl2.h, percent);
+    const commonPrimaries = info1.primaries.filter((p) =>
+      info2.primaries.includes(p)
+    );
+    let targetHue = currentHue;
+    if (commonPrimaries.length === 1) {
+      const dominantPrimaryName = commonPrimaries[0];
+      targetHue = getMidpointHue(dominantPrimaryName);
+    } else if (commonPrimaries.length === 0) {
+      const allPrimaries = [...info1.primaries, ...info2.primaries];
+      const counts = allPrimaries.reduce((acc, p) => {
+        acc[p] = (acc[p] || 0) + 1;
+        return acc;
+      }, {});
+      const dominantPrimary = Object.keys(counts).find((p) => counts[p] > 1);
+      if (dominantPrimary) {
+        targetHue = getMidpointHue(dominantPrimary);
+      }
+    }
+    let calculatedHue = currentHue;
+    if (targetHue !== currentHue) {
+      let deltaH = targetHue - currentHue;
+      if (deltaH > 180) deltaH -= 360;
+      if (deltaH <= -180) deltaH += 360;
+      calculatedHue = (((currentHue + deltaH * 0.3) % 360) + 360) % 360;
+    }
+    const midpointS = Math.min(hsl1.s, hsl2.s) * 0.5;
+    const midpointL = Math.min(hsl1.l, hsl2.l) * 0.5;
+    let calculatedS, calculatedL;
+    if (percent === 0.5) {
+      calculatedS = midpointS;
+      calculatedL = midpointL;
+    } else if (percent < 0.5) {
+      const scaledPercent = percent / 0.5;
+      calculatedS = hsl1.s + (midpointS - hsl1.s) * scaledPercent;
+      calculatedL = hsl1.l + (midpointL - hsl1.l) * scaledPercent;
+    } else {
+      const scaledPercent = (percent - 0.5) / 0.5;
+      calculatedS = midpointS + (hsl2.s - midpointS) * scaledPercent;
+      calculatedL = midpointL + (hsl2.l - midpointL) * scaledPercent;
+    }
+    calculatedL *= 0.9;
+    resultHsl = { h: calculatedHue, s: calculatedS, l: calculatedL };
+    ruleApplied = true;
+  }
+
+  // --- Fallback if no rule applied --- //
+  if (!ruleApplied) {
+    // This fallback should now only trigger if info1/info2 were valid but didn't match any rule (unlikely)
+    console.warn(
+      "No mixing rule applied despite valid color info, using simple mix"
+    );
+    resultHsl = hslMixer(hsl1, hsl2, percent);
+    // Apply slight darkening to this fallback too?
+    // resultHsl.l *= 0.95;
+  }
+
+  // Final Clamping
+  resultHsl.s = Math.max(0, Math.min(1, resultHsl.s));
+  resultHsl.l = Math.max(0, Math.min(1, resultHsl.l));
+
+  const rgb3 = hslToRgb(resultHsl);
+  return { rgb: rgb1, rgb2, rgb3 };
 };
 // crée une variation d'une couleur
 const createRGBVariations = (rgb) => {
@@ -184,5 +468,7 @@ const colorManagementFuncs = {
   inputOfTwoColorForAThird,
   createRGBVariations,
   generateIntermediateColors,
+  getColorInfo,
+  getColorNameFromHue,
 };
 export default colorManagementFuncs;

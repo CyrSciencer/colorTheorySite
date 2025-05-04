@@ -4,7 +4,7 @@ import colorManagementFuncs from "../../utilities/complementaries"; // Contains 
 import SquareComposition from "../squareComposition/SquareComposition";
 import { writeToClipboard } from "../../utilities/clipboardUtils"; // Import clipboard utility
 import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // Import feedback context
-import RatioSection from "../compositionHarmony/RatioSection";
+
 import "./ColorMixer.css";
 const { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } = InformationTranslationFuncs;
 const { inputOfTwoColorForAThird, opposite } = colorManagementFuncs; // Import opposite
@@ -42,7 +42,9 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
 
       // Convert back to RGB and then Hex
       const mixedRgb = RgbSet.rgb3;
+
       const currentMixedHex = rgbToHex(mixedRgb);
+      // console.log({ currentMixedHex });
       setMixedColor(currentMixedHex);
 
       // Calculate contrast color for the mixed hex
