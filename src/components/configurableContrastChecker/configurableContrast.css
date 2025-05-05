@@ -7,7 +7,7 @@
 
   width: 50%;
 }
-.configurable-contrast-checker-container .inputs-wrapper {
+.inputs-wrapper {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -47,5 +47,6 @@
 }
 .controls-wrapper {
   display: flex;
+  justify-content: center;
   gap: 20px;
 }

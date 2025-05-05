@@ -64,10 +64,10 @@ const HomePage = () => {
             haut à droite de la page.
           </p>
           <p className="home-page-subText">
-            --les titres de sections sont clickable pour plus d'informations.
+            --Les titres de sections sont clickable pour plus d'informations.
           </p>
           <p className="home-page-subText">
-            --les valeurs hexadecimales sont copiables.
+            --Les valeurs hexadecimales sont copiables.
           </p>
         </div>
       </main>

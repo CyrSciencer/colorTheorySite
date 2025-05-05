@@ -111,14 +111,16 @@ const TensionEtEquilibre = (
 const températureOpposée = (
   <>
     <p>
-      Selon une découpe arbitraire de la roue chromatique, la couleur
-      sélectionnée est mise en perspective face aux couleurs de températures
-      opposées. La notion de température est une notion subjective, elle est
-      liée à la perception de la couleur par l'oeil humain.
+      Met en perspective la couleur sélectionnée avec des couleurs appartenant à
+      la motié opposée de la roue chromatique.
     </p>
     <p>
       les couleurs tirant vers le rouge sont dites chaudes, les couleurs tirant
       vers le bleu sont dites froides.
+    </p>
+    <p>
+      la transition chaud-froid étant arbitraire les vert et les violets donne
+      les couleurs de transitions opposées.
     </p>
   </>
 );
@@ -307,7 +309,7 @@ function SingleColorPage() {
             title="Set de couleurs de température opposée"
             content={températureOpposée}
           >
-            <h2>Set de couleurs de température opposée</h2>
+            <h2>Set de couleurs de températures opposée</h2>
           </PopupWrapper>
           <div className="opposite-temperature-container">
             <Temperatures rgb={rgb} contrastColorRgb={contrastColorRgb} />

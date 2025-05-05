@@ -41,7 +41,12 @@ h5 {
   align-items: center;
   justify-content: center;
 }
-
+.triple-hex-input-one-container .inputs-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .factor-slider {
   /* width: 100%; */ /* Removed, use mix-slider width or adjust */
   /* margin-top: 5px; */ /* Removed, using margin on container/label */
