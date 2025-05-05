@@ -5,6 +5,8 @@ import informationTranslationFuncs from "../../utilities/InformationTranslation"
 import { writeToClipboard } from "../../utilities/clipboardUtils"; // Import clipboard utility
 import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // Import feedback context
 import "./ColorExploration.css"; // We'll create this for styling the layout and gradient
+import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+
 const { opposite } = colorManagementFuncs;
 const { rgbToHsv, hsvToRgb, hexToRgb, rgbToHex } = informationTranslationFuncs;
 // Helper function to generate a random RGB color array
@@ -150,9 +152,12 @@ const ColorExploration = () => {
 
   return (
     <div className="color-exploration-container">
-      <h2>Outil d'exploration de couleurs</h2>
-      <button onClick={handleGenerate}>Génération aléatoire:</button>
-
+      <PopupWrapper title="Outil d'exploration de couleurs">
+        <h2>Outil d'exploration de couleurs</h2>
+      </PopupWrapper>
+      <div className="controls-section">
+        <button onClick={handleGenerate}>Génération aléatoire:</button>
+      </div>
       {/* Only render results section if initial generation has happened */}
       {colors.random && (
         <div className="results-section">

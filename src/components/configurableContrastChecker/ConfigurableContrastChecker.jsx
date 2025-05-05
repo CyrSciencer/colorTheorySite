@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import HexInput from "../hexInput/HexInput";
 import RatioSection from "../compositionHarmony/RatioSection"; // Import RatioSection
 // Import utility functions from the correct path
 import InformationTranslationFuncs from "../../utilities/InformationTranslation.js"; // Corrected path to root utilities
 const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
 import "./configurableContrast.css";
+// import PopupTextBlock from "../popUp/PopupTextBlock"; // No longer needed directly
+import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
 
 // Destructuring assignment is no longer needed here
 // const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
@@ -96,44 +98,48 @@ const ConfigurableContrastChecker = () => {
   };
 
   return (
-    <div className="configurable-contrast-checker-container">
-      <h2>Outil de contraste configurable</h2>
-      <div className="inputs-wrapper">
-        {/* Map over colorDataArray to render inputs */}
-        {colorDataArray.map((colorData, index) => (
-          <div key={colorData.name} className="color-input-group">
-            <HexInput
-              // key={colorData.name} // Key moved to parent div
-              hex={colorData.hexValue} // Use the stored hex value
-              setHex={(newHex) => handleHexChange(index, newHex)}
-              title={colorData.name}
-            />
-            {/* Add input for contrastInfo */}
-            <div className="contrast-info-input">
-              <label htmlFor={`contrast-info-${index}`}>Ratio:</label>
-              <input
-                id={`contrast-info-${index}`}
-                type="number"
-                step="1" // Allow decimal input
-                min="1" // Set minimum value for the input
-                value={colorData.contrastInfo}
-                onChange={(e) =>
-                  handleContrastInfoChange(index, e.target.value)
-                }
-                placeholder="1"
-                className="ratio-input"
+    <div className="configurable-contrast-checker">
+      <PopupWrapper title="Outil de contraste configurable">
+        <h2>Outil de contraste configurable</h2>
+      </PopupWrapper>
+      <div className="inputs-section">
+        <div className="inputs-wrapper">
+          {/* Map over colorDataArray to render inputs */}
+          {colorDataArray.map((colorData, index) => (
+            <div key={colorData.name} className="color-input-group">
+              <HexInput
+                // key={colorData.name} // Key moved to parent div
+                hex={colorData.hexValue} // Use the stored hex value
+                setHex={(newHex) => handleHexChange(index, newHex)}
+                title={colorData.name}
               />
+              {/* Add input for contrastInfo */}
+              <div className="contrast-info-input">
+                <label htmlFor={`contrast-info-${index}`}>Ratio:</label>
+                <input
+                  id={`contrast-info-${index}`}
+                  type="number"
+                  step="1" // Allow decimal input
+                  min="1" // Set minimum value for the input
+                  value={colorData.contrastInfo}
+                  onChange={(e) =>
+                    handleContrastInfoChange(index, e.target.value)
+                  }
+                  placeholder="1"
+                  className="ratio-input"
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="controls-wrapper">
-        <button onClick={addInput} disabled={colorDataArray.length >= 6}>
-          Ajouter
-        </button>
-        <button onClick={removeInput} disabled={colorDataArray.length <= 3}>
-          Retirer
-        </button>
+          ))}
+        </div>
+        <div className="controls-wrapper">
+          <button onClick={addInput} disabled={colorDataArray.length >= 6}>
+            Ajouter
+          </button>
+          <button onClick={removeInput} disabled={colorDataArray.length <= 3}>
+            Retirer
+          </button>
+        </div>
       </div>
       {/* Add RatioSection components */}
       <div className="contrast-results">

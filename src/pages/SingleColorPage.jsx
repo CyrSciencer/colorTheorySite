@@ -15,6 +15,113 @@ import TriangleHarmonyComposition from "../components/compositionHarmony/Triangl
 import { Link } from "react-router-dom";
 import { writeToClipboard } from "../utilities/clipboardUtils"; // Import clipboard utility
 import { useFeedback } from "../contexts/FeedbackContext.jsx"; // Import feedback context
+import React from "react";
+import PopupWrapper from "../utilities/PopupWrapper"; // Import shared component
+const TrianglesComparatifs = (
+  <p>
+    Cette section présente des triangles ayant chaqu'un 3 couleurs, chaqune des
+    triade représente un systeme de couleurs différent. la mise en contexte de
+    la couleur sélectionnée dans chacun des triangles permet de mieux comprendre
+    comment cette couleur peut intéragir visuellement avec les autres couleurs
+    du triangle.
+  </p>
+);
+const CarrésDeContrasteSimultané = (
+  <p>
+    Cette section présente 4 paires de carrés. chaque paires, de part la Loi du
+    contraste simultané des couleurs, permet de mettre en context la couleur
+    sélectionnée avec:
+    <ul>
+      <li>du noir</li>
+      <li>du blanc</li>
+      <li>un gris</li>
+      <li>sa couleur complémentaire</li>
+    </ul>
+  </p>
+);
+const HarmoniesTriadique = (
+  <p>
+    Cette section présente les harmonies triadiques de la couleur sélectionnée:
+    <ul>
+      <li>
+        gauche : Vrais triade, les couleurs forment un triangle equilateral sur
+        la roue des couleurs.
+      </li>
+      <li>
+        milieu : Complémentaire adjacent, les couleurs forment un triangle
+        isocèle sur la roue des couleurs, les deux couleurs de la base sont
+        analogues à la couleur complémentaire.
+      </li>
+      <li>
+        droite : Analogues, les couleurs générées sont proches, à équidistance
+        et de part et d'autre de la couleur sélectionnée.
+      </li>
+    </ul>
+  </p>
+);
+const HarmoniesTétradique = (
+  <p>
+    Cette section présente les harmonies tétradiques de la couleur sélectionnée:
+    <ul>
+      <li>
+        ( chaque tétrade est composée de 2 axes de couleurs complémentaires.)
+      </li>
+      <li>
+        centre : Vrais tétrade, les couleurs forment un carré sur la roue des
+        couleurs.
+      </li>
+      <li>
+        gauche et droite : tétrade rectangulaire, les couleurs forment un
+        rectangle sur la roue des couleurs, les deux réctangles sont positionné
+        en mirroir selon l'axe de la couleur selectionnée et sa complémentaire.
+      </li>
+    </ul>
+  </p>
+);
+const TensionEtEquilibre = (
+  <>
+    <p>
+      Cette section s'inspire d'un concept imaginé par Goethe, il s'agit des
+      valeurs de lumière des couleurs les une par rapport aux autres. C'est une
+      approche sensible de la couleur, ces ratio ne sont pas universels. les
+      couleurs, à meme saturation et luminosité, peuvent crées des impressions
+      sensible de luminositées différentes, par exemple le violet sera perçu
+      plus foncé que le jaune.
+    </p>
+    <p>
+      partant de ce principe, les ratio suivant sont calculé selon leur
+      luminosité réelle et leur luminosité percu selon le principe expliqué:
+    </p>
+    <ul>
+      <li>
+        (étant calculé selon des valeurs arbitraires, ces ratios sont a titre
+        indicatif)
+      </li>
+      <li>
+        Ratio lumineux : les couleurs sont plus ou moins spacialement dominante
+        selon à quel point elles sont lumineuses.
+      </li>
+      <li>
+        Ratio sombres : les couleurs sont plus ou moins spacialement dominante
+        selon à quel point elles sont sombres.
+      </li>
+    </ul>
+  </>
+);
+const températureOpposée = (
+  <>
+    <p>
+      Selon une découpe arbitraire de la roue chromatique, la couleur
+      sélectionnée est mise en perspective face aux couleurs de températures
+      opposées. La notion de température est une notion subjective, elle est
+      liée à la perception de la couleur par l'oeil humain.
+    </p>
+    <p>
+      les couleurs tirant vers le rouge sont dites chaudes, les couleurs tirant
+      vers le bleu sont dites froides.
+    </p>
+  </>
+);
 
 function SingleColorPage() {
   // Renamed from App
@@ -29,6 +136,7 @@ function SingleColorPage() {
   const { rgbToHex } = InformationTranslationFuncs;
   const { complementary, opposite } = colorManagementFuncs;
   const { showFeedback } = useFeedback(); // Use the feedback context hook
+
   console.log({ hsl, hsv });
   //useEffect pour mettre à jour la couleur opposée
   // console.log({ complementaryColor });
@@ -61,7 +169,7 @@ function SingleColorPage() {
   };
 
   return (
-    <>
+    <div className="single-color-page-layout">
       <header
         style={{ backgroundColor: hex, borderBottomColor: oppositeColor }}
       >
@@ -86,14 +194,24 @@ function SingleColorPage() {
         </div>
       </header>
       <main className="single-color-page-main">
-        <div className="color-triangles-container">
-          <h2>Triangles comparatifs</h2>
+        <div className="content-section triangles-section">
+          <PopupWrapper
+            title="Triangles comparatifs"
+            content={TrianglesComparatifs}
+          >
+            <h2>Triangles comparatifs</h2>
+          </PopupWrapper>
           <ColorTriangles hex={hex} />
         </div>
         <div className="square-composition-container">
-          <h2>Carrés de contraste simultané</h2>
+          <PopupWrapper
+            title="Carrés de contraste simultané"
+            content={CarrésDeContrasteSimultané}
+          >
+            <h2>Carrés de contraste simultané</h2>
+          </PopupWrapper>
           <h3>
-            Couleur complémentaire:{" "}
+            Couleur complémentaire:
             <span
               className="complementary-color-display"
               style={{
@@ -144,7 +262,12 @@ function SingleColorPage() {
         </div>
 
         <div className="three-hue-harmonies">
-          <h2>Harmonies triadique</h2>
+          <PopupWrapper
+            title="Harmonies triadique"
+            content={HarmoniesTriadique}
+          >
+            <h2>Harmonies triadique</h2>
+          </PopupWrapper>
           <div className="three-hue-harmonies-container">
             <TriangularHarmonies
               rgb={rgb}
@@ -153,7 +276,12 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="four-hue-harmonies">
-          <h2>Harmonies tétradique</h2>
+          <PopupWrapper
+            title="Harmonies tétradique"
+            content={HarmoniesTétradique}
+          >
+            <h2>Harmonies tétradique</h2>
+          </PopupWrapper>
           <div className="four-hue-harmonies-container">
             <QuadrangularHarmonies
               rgb={rgb}
@@ -162,7 +290,12 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="composition-harmony">
-          <h2>Tension et équilibre entre les pôles de luminosité</h2>
+          <PopupWrapper
+            title="Tension et équilibre entre les pôles de luminosité"
+            content={TensionEtEquilibre}
+          >
+            <h2>Tension et équilibre entre les pôles de luminosité</h2>
+          </PopupWrapper>
           <div className="composition-harmony-container">
             <CompositionHarmony hsl={hsl} />
             <SquareHarmonyComposition hsl={hsl} />
@@ -170,13 +303,20 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="opposite-temperature">
-          <h2>Set de couleurs de température opposée</h2>
+          <PopupWrapper
+            title="Set de couleurs de température opposée"
+            content={températureOpposée}
+          >
+            <h2>Set de couleurs de température opposée</h2>
+          </PopupWrapper>
           <div className="opposite-temperature-container">
             <Temperatures rgb={rgb} contrastColorRgb={contrastColorRgb} />
           </div>
         </div>
         <div className="gradient">
-          <h2>Gradients</h2>
+          <PopupWrapper title="Gradients">
+            <h2>Gradients</h2>
+          </PopupWrapper>
           <span>gradient 1 vers le complémentaire</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={1} />
           <span>gradient 2 vers le complémentaire</span>
@@ -191,7 +331,7 @@ function SingleColorPage() {
           <ColorGradients rgb={rgb} gradientTypeIndex={5} />
         </div>
       </main>
-    </>
+    </div>
   );
 }
 

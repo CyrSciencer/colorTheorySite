@@ -3,8 +3,35 @@ import ColorMixer from "./ColorMixer";
 import HexInput from "../hexInput/HexInput";
 import colorManagementFuncs from "../../utilities/complementaries";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
+import "./colorMixer.css";
+import PopupTextBlock from "../popUp/PopupTextBlock";
 const { opposite } = colorManagementFuncs;
 const { rgbToHex, hexToRgb } = InformationTranslationFuncs;
+
+// Re-use the PopupWrapper helper component
+const PopupWrapper = ({ title, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
+
+  const triggerElement = React.cloneElement(children, {
+    onClick: open,
+    style: { ...children.props.style, cursor: "pointer" },
+  });
+
+  return (
+    <>
+      {triggerElement}
+      <PopupTextBlock
+        isOpen={isOpen}
+        onClose={close}
+        title={title}
+        content={<p>Information sur "{title}"</p>}
+      />
+    </>
+  );
+};
+
 const MultipleColorMixing = () => {
   const [hex1, setHex1] = useState("#CD3232");
   const [hex2, setHex2] = useState("#3232CD");
@@ -20,8 +47,10 @@ const MultipleColorMixing = () => {
   const rgb3 = hexToRgb(hex3);
   return (
     <div className="multiple-color-mixing-container">
-      <h2>Mélange de 3 couleurs</h2>
-      <div>
+      <PopupWrapper title="Mélange de 3 couleurs">
+        <h2>Mélange de 3 couleurs</h2>
+      </PopupWrapper>
+      <div className="inputs-container">
         <HexInput
           hex={hex1}
           setHex={setHex1}

@@ -6,7 +6,7 @@ import React, {
   useRef,
   useEffect,
 } from "react";
-import FeedbackPopup from "../components/feedbackPopup/FeedbackPopup";
+import FeedbackPopup from "../components/popUp/FeedbackPopup";
 
 const FeedbackContext = createContext();
 

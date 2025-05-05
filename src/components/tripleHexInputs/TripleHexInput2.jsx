@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import HexInput from "../hexInput/HexInput"; // Adjust path as needed
 import RatioSection from "../compositionHarmony/RatioSection";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import SquareComposition from "../squareComposition/SquareComposition";
 import BigSquareComposition from "../squareComposition/BigSquareComposition";
 import "./tripleHexInput.css";
+import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
 const { rgbToHex, hexToRgb } = InformationTranslationFuncs;
+
 const TripleHexInput2 = () => {
   const [hexA, setHexA] = useState("#CD3232"); // Different defaults
   const [hexB, setHexB] = useState("#3232CD");
@@ -32,7 +34,9 @@ const TripleHexInput2 = () => {
   }, [hexA, hexB, hexC]);
   return (
     <div className="triple-hex-input-two-container">
-      <h2>Outil de composition ratio 6-3-1</h2>
+      <PopupWrapper title="Outil de composition ratio 6-3-1">
+        <h2>Outil de composition ratio 6-3-1</h2>
+      </PopupWrapper>
       <div className="inputs-wrapper">
         <HexInput hex={hexA} setHex={setHexA} title="Color A" />
         <HexInput hex={hexB} setHex={setHexB} title="Color B" />

@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
+import React from "react"; // Added React for cloneElement
 import HexInput from "../hexInput/HexInput"; // Adjust path as needed
 import colorManagementFuncs from "../../utilities/complementaries.js";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation.js";
 import "./tripleHexInput.css";
 import SquareComposition from "../squareComposition/SquareComposition";
 import { writeToClipboard } from "../../utilities/clipboardUtils.js";
-import FeedbackPopup from "../feedbackPopup/FeedbackPopup"; // Import FeedbackPopup
+import FeedbackPopup from "../popUp/FeedbackPopup"; // Import FeedbackPopup
+import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
 const { generateIntermediateColors, opposite } = colorManagementFuncs;
 const { hexToRgb, rgbToHex } = InformationTranslationFuncs;
 
@@ -153,7 +155,9 @@ const TripleHexInput1 = () => {
         type={feedback.type}
       />
 
-      <h2>Outil d'analyse d'intermédiaires</h2>
+      <PopupWrapper title="Outil d'analyse d'intermédiaires">
+        <h2>Outil d'analyse d'intermédiaires</h2>
+      </PopupWrapper>
       <div className="logic-container">
         <div className="square-container">
           <div className="square-wrapper">

@@ -1,0 +1,52 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Assurez-vous qu'il est au-dessus des autres éléments */
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.516);
+  max-width: 80%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative; /* Pour positionner le bouton de fermeture */
+}
+
+.popup-content ul {
+  list-style-type: square;
+}
+.popup-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.popup-title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #1c1c1c;
+  text-align: center;
+  border-bottom: 2px solid #c4c4c4;
+  font-size: 2rem;
+}
+
+.popup-body {
+  color: #363636;
+  line-height: 1.6;
+  font-size: 1.3rem;
+}
