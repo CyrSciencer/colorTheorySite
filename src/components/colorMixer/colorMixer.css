@@ -59,3 +59,20 @@
   align-items: center;
   justify-content: center;
 }
+.multiple-color-mixing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.multiple-color-mixing-container > div {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.multiple-color-mixing-container > div:nth-child(3),
+.multiple-color-mixing-container > div:nth-child(4) {
+  flex-direction: row;
+  transform: scale(0.8);
+
+  margin-bottom: -50px;
+}

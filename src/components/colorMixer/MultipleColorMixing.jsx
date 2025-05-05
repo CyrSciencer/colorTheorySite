@@ -19,61 +19,68 @@ const MultipleColorMixing = () => {
   const rgb2 = hexToRgb(hex2);
   const rgb3 = hexToRgb(hex3);
   return (
-    <div>
-      <HexInput
-        hex={hex1}
-        setHex={setHex1}
-        contrastColor={rgbToHex(opposite(rgb1))}
-        title="Couleur A"
-      />
-      <HexInput
-        hex={hex2}
-        setHex={setHex2}
-        contrastColor={rgbToHex(opposite(rgb2))}
-        title="Couleur B"
-      />
-      <HexInput
-        hex={hex3}
-        setHex={setHex3}
-        contrastColor={rgbToHex(opposite(rgb3))}
-        title="Couleur C"
-      />
-      <ColorMixer
-        hex1={hex1}
-        hex2={hex2}
-        mixedColor={mixedColor1}
-        setMixedColor={setMixedColor1}
-      />
-      <ColorMixer
-        hex1={hex2}
-        hex2={hex3}
-        mixedColor={mixedColor2}
-        setMixedColor={setMixedColor2}
-      />
-      <ColorMixer
-        hex1={hex3}
-        hex2={hex1}
-        mixedColor={mixedColor3}
-        setMixedColor={setMixedColor3}
-      />
-      <ColorMixer
-        hex1={mixedColor1}
-        hex2={hex3}
-        mixedColor={mixedColor4}
-        setMixedColor={setMixedColor4}
-      />
-      <ColorMixer
-        hex1={mixedColor2}
-        hex2={hex1}
-        mixedColor={mixedColor5}
-        setMixedColor={setMixedColor5}
-      />
-      <ColorMixer
-        hex1={mixedColor3}
-        hex2={hex2}
-        mixedColor={mixedColor6}
-        setMixedColor={setMixedColor6}
-      />
+    <div className="multiple-color-mixing-container">
+      <h2>Mélange de 3 couleurs</h2>
+      <div>
+        <HexInput
+          hex={hex1}
+          setHex={setHex1}
+          contrastColor={rgbToHex(opposite(rgb1))}
+          title="Couleur A"
+        />
+        <HexInput
+          hex={hex2}
+          setHex={setHex2}
+          contrastColor={rgbToHex(opposite(rgb2))}
+          title="Couleur B"
+        />
+        <HexInput
+          hex={hex3}
+          setHex={setHex3}
+          contrastColor={rgbToHex(opposite(rgb3))}
+          title="Couleur C"
+        />
+      </div>
+      <div>
+        <ColorMixer
+          hex1={hex1}
+          hex2={hex2}
+          mixedColor={mixedColor1}
+          setMixedColor={setMixedColor1}
+        />
+        <ColorMixer
+          hex1={hex2}
+          hex2={hex3}
+          mixedColor={mixedColor2}
+          setMixedColor={setMixedColor2}
+        />
+        <ColorMixer
+          hex1={hex3}
+          hex2={hex1}
+          mixedColor={mixedColor3}
+          setMixedColor={setMixedColor3}
+        />
+      </div>
+      <div>
+        <ColorMixer
+          hex1={mixedColor1}
+          hex2={hex3}
+          mixedColor={mixedColor4}
+          setMixedColor={setMixedColor4}
+        />
+        <ColorMixer
+          hex1={mixedColor2}
+          hex2={hex1}
+          mixedColor={mixedColor5}
+          setMixedColor={setMixedColor5}
+        />
+        <ColorMixer
+          hex1={mixedColor3}
+          hex2={hex2}
+          mixedColor={mixedColor6}
+          setMixedColor={setMixedColor6}
+        />
+      </div>
     </div>
   );
 };
