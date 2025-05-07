@@ -7,11 +7,15 @@ import SquareComposition from "../components/squareComposition/SquareComposition
 import RatioSection from "../components/compositionHarmony/RatioSection";
 import ColorGradients from "../components/gradients/ColorGradients";
 import "./CompositionOfTwo.css";
-import colorManagementFuncs from "../utilities/complementaries";
+
 import PopupWrapper from "../utilities/PopupWrapper";
+import {
+  MélangeDeCouleurs,
+  HarmoniesDeRatio,
+  GradientsVersLesCouleursComplémentaires,
+} from "../utilities/ContentPopUpText";
 
 const { rgbToHex, hexToRgb, rgbToHsl, contrast } = InformationTranslationFuncs;
-const { opposite, complementary } = colorManagementFuncs;
 
 const CompositionOfTwo = () => {
   const [hex1, setHex1] = useState("#FF0000");
@@ -75,11 +79,6 @@ const CompositionOfTwo = () => {
     setMixedColorDataArray(mixedColorDataArray);
   }, [hex1, hex2, mixedColor]);
 
-  const oppositeColor1 = rgbToHex(opposite(rgb1));
-  const complementaryColor1 = rgbToHex(complementary(rgb1));
-  const oppositeColor2 = rgbToHex(opposite(rgb2));
-  const complementaryColor2 = rgbToHex(complementary(rgb2));
-
   return (
     <div className="composition-of-two-page">
       <header
@@ -112,7 +111,7 @@ const CompositionOfTwo = () => {
       </header>
       <main>
         <div className="content-section">
-          <PopupWrapper title="Mélange de couleurs">
+          <PopupWrapper title="Mélange de couleurs" content={MélangeDeCouleurs}>
             <h2>Mélange de couleurs</h2>
           </PopupWrapper>
           <div className="container-mix">
@@ -125,7 +124,7 @@ const CompositionOfTwo = () => {
           </div>
         </div>
         <div className="content-section">
-          <PopupWrapper title="Harmonies de ratio">
+          <PopupWrapper title="Harmonies de ratio" content={HarmoniesDeRatio}>
             <h2>Harmonies de ratio</h2>
           </PopupWrapper>
           <div className="container-ratios">
@@ -146,7 +145,10 @@ const CompositionOfTwo = () => {
           </div>
         </div>
         <div className="content-section">
-          <PopupWrapper title="Gradients vers les couleurs complémentaires">
+          <PopupWrapper
+            title="Gradients vers les couleurs complémentaires"
+            content={GradientsVersLesCouleursComplémentaires}
+          >
             <h2>Gradients vers les couleurs complémentaires</h2>
           </PopupWrapper>
           <div className="container-gradients">

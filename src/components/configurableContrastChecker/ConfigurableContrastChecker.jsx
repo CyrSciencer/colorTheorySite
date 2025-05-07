@@ -7,6 +7,7 @@ const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
 import "./configurableContrast.css";
 // import PopupTextBlock from "../popUp/PopupTextBlock"; // No longer needed directly
 import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+import { configurableContrast } from "../../utilities/ContentPopUpText";
 
 // Destructuring assignment is no longer needed here
 // const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
@@ -99,7 +100,10 @@ const ConfigurableContrastChecker = () => {
 
   return (
     <div className="configurable-contrast-checker">
-      <PopupWrapper title="Outil de contraste configurable">
+      <PopupWrapper
+        title="Outil de contraste configurable"
+        content={configurableContrast}
+      >
         <h2>Outil de contraste configurable</h2>
       </PopupWrapper>
       <div className="inputs-section">

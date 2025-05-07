@@ -6,9 +6,11 @@ import { writeToClipboard } from "../../utilities/clipboardUtils"; // Import cli
 import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // Import feedback context
 import "./ColorExploration.css"; // We'll create this for styling the layout and gradient
 import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+import { colorExploration } from "../../utilities/ContentPopUpText";
 
 const { opposite } = colorManagementFuncs;
 const { rgbToHsv, hsvToRgb, hexToRgb, rgbToHex } = informationTranslationFuncs;
+
 // Helper function to generate a random RGB color array
 const getRandomRgbArray = () => {
   const r = Math.floor(Math.random() * 256);
@@ -152,7 +154,10 @@ const ColorExploration = () => {
 
   return (
     <div className="color-exploration-container">
-      <PopupWrapper title="Outil d'exploration de couleurs">
+      <PopupWrapper
+        title="Outil d'exploration de couleurs"
+        content={colorExploration}
+      >
         <h2>Outil d'exploration de couleurs</h2>
       </PopupWrapper>
       <div className="controls-section">

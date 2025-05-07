@@ -17,121 +17,23 @@ import { writeToClipboard } from "../utilities/clipboardUtils"; // Import clipbo
 import { useFeedback } from "../contexts/FeedbackContext.jsx"; // Import feedback context
 import React from "react";
 import PopupWrapper from "../utilities/PopupWrapper"; // Import shared component
-const TrianglesComparatifs = (
-  <p>
-    Cette section présente des triangles ayant chaqu'un 3 couleurs, chaqune des
-    triade représente un systeme de couleurs différent. la mise en contexte de
-    la couleur sélectionnée dans chacun des triangles permet de mieux comprendre
-    comment cette couleur peut intéragir visuellement avec les autres couleurs
-    du triangle.
-  </p>
-);
-const CarrésDeContrasteSimultané = (
-  <p>
-    Cette section présente 4 paires de carrés. chaque paires, de part la Loi du
-    contraste simultané des couleurs, permet de mettre en context la couleur
-    sélectionnée avec:
-    <ul>
-      <li>du noir</li>
-      <li>du blanc</li>
-      <li>un gris</li>
-      <li>sa couleur complémentaire</li>
-    </ul>
-  </p>
-);
-const HarmoniesTriadique = (
-  <p>
-    Cette section présente les harmonies triadiques de la couleur sélectionnée:
-    <ul>
-      <li>
-        gauche : Vrais triade, les couleurs forment un triangle equilateral sur
-        la roue des couleurs.
-      </li>
-      <li>
-        milieu : Complémentaire adjacent, les couleurs forment un triangle
-        isocèle sur la roue des couleurs, les deux couleurs de la base sont
-        analogues à la couleur complémentaire.
-      </li>
-      <li>
-        droite : Analogues, les couleurs générées sont proches, à équidistance
-        et de part et d'autre de la couleur sélectionnée.
-      </li>
-    </ul>
-  </p>
-);
-const HarmoniesTétradique = (
-  <p>
-    Cette section présente les harmonies tétradiques de la couleur sélectionnée:
-    <ul>
-      <li>
-        ( chaque tétrade est composée de 2 axes de couleurs complémentaires.)
-      </li>
-      <li>
-        centre : Vrais tétrade, les couleurs forment un carré sur la roue des
-        couleurs.
-      </li>
-      <li>
-        gauche et droite : tétrade rectangulaire, les couleurs forment un
-        rectangle sur la roue des couleurs, les deux réctangles sont positionné
-        en mirroir selon l'axe de la couleur selectionnée et sa complémentaire.
-      </li>
-    </ul>
-  </p>
-);
-const TensionEtEquilibre = (
-  <>
-    <p>
-      Cette section s'inspire d'un concept imaginé par Goethe, il s'agit des
-      valeurs de lumière des couleurs les une par rapport aux autres. C'est une
-      approche sensible de la couleur, ces ratio ne sont pas universels. les
-      couleurs, à meme saturation et luminosité, peuvent crées des impressions
-      sensible de luminositées différentes, par exemple le violet sera perçu
-      plus foncé que le jaune.
-    </p>
-    <p>
-      partant de ce principe, les ratio suivant sont calculé selon leur
-      luminosité réelle et leur luminosité percu selon le principe expliqué:
-    </p>
-    <ul>
-      <li>
-        (étant calculé selon des valeurs arbitraires, ces ratios sont a titre
-        indicatif)
-      </li>
-      <li>
-        Ratio lumineux : les couleurs sont plus ou moins spacialement dominante
-        selon à quel point elles sont lumineuses.
-      </li>
-      <li>
-        Ratio sombres : les couleurs sont plus ou moins spacialement dominante
-        selon à quel point elles sont sombres.
-      </li>
-    </ul>
-  </>
-);
-const températureOpposée = (
-  <>
-    <p>
-      Met en perspective la couleur sélectionnée avec des couleurs appartenant à
-      la motié opposée de la roue chromatique.
-    </p>
-    <p>
-      les couleurs tirant vers le rouge sont dites chaudes, les couleurs tirant
-      vers le bleu sont dites froides.
-    </p>
-    <p>
-      la transition chaud-froid étant arbitraire les vert et les violets donne
-      les couleurs de transitions opposées.
-    </p>
-  </>
-);
+import {
+  TrianglesComparatifs,
+  CarrésDeContrasteSimultané,
+  HarmoniesTriadique,
+  HarmoniesTétradique,
+  TensionEtEquilibre,
+  températureOpposée,
+  Gradients,
+} from "../utilities/ContentPopUpText"; // Import content constants
 
 function SingleColorPage() {
   // Renamed from App
   //states définisant les couleurs
-  const [rgb, setRgb] = useState([0, 0, 0]);
-  const [hsl, setHsl] = useState({ h: 0, s: 0, l: 0 });
-  const [hex, setHex] = useState("#000000");
-  const [hsv, setHsv] = useState({ h: 0, s: 0, v: 0 });
+  const [rgb, setRgb] = useState([15, 51, 128]);
+  const [hsl, setHsl] = useState({ h: 221, s: 0.79, l: 0.28 });
+  const [hex, setHex] = useState("#0F3380");
+  const [hsv, setHsv] = useState({ h: 221, s: 0.88, v: 0.5 });
   const [oppositeColor, setoppositeColor] = useState([255, 255, 255]);
   const [complementaryColor, setComplementaryColor] = useState([255, 255, 255]);
   const [contrastColorRgb, setContrastColorRgb] = useState([255, 255, 255]);
@@ -316,13 +218,19 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="gradient">
-          <PopupWrapper title="Gradients">
+          <PopupWrapper title="Gradients" content={Gradients}>
             <h2>Gradients</h2>
           </PopupWrapper>
           <span>gradient 1 vers le complémentaire</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={1} />
           <span>gradient 2 vers le complémentaire</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={2} />
+          <span>gradient 1 vers l'opposée</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={8} />
+          <span>gradient 2 vers l'opposée</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={9} />
+          <span>gradient vers l'opposée passant par le gris</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={7} />
           <span>gradient de luminosité</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={3} />
           <span>gradient de saturation</span>

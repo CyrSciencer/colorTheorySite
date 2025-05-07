@@ -7,30 +7,8 @@ import "./colorMixer.css";
 import PopupTextBlock from "../popUp/PopupTextBlock";
 const { opposite } = colorManagementFuncs;
 const { rgbToHex, hexToRgb } = InformationTranslationFuncs;
-
-// Re-use the PopupWrapper helper component
-const PopupWrapper = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
-
-  const triggerElement = React.cloneElement(children, {
-    onClick: open,
-    style: { ...children.props.style, cursor: "pointer" },
-  });
-
-  return (
-    <>
-      {triggerElement}
-      <PopupTextBlock
-        isOpen={isOpen}
-        onClose={close}
-        title={title}
-        content={<p>Information sur "{title}"</p>}
-      />
-    </>
-  );
-};
+import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+import { multipleColorMixing } from "../../utilities/ContentPopUpText";
 
 const MultipleColorMixing = () => {
   const [hex1, setHex1] = useState("#CD3232");
@@ -47,7 +25,7 @@ const MultipleColorMixing = () => {
   const rgb3 = hexToRgb(hex3);
   return (
     <div className="multiple-color-mixing-container">
-      <PopupWrapper title="Mélange de 3 couleurs">
+      <PopupWrapper title="Mélange de 3 couleurs" content={multipleColorMixing}>
         <h2>Mélange de 3 couleurs</h2>
       </PopupWrapper>
       <div className="inputs-container">

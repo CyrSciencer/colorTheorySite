@@ -6,6 +6,7 @@ import SquareComposition from "../squareComposition/SquareComposition";
 import BigSquareComposition from "../squareComposition/BigSquareComposition";
 import "./tripleHexInput.css";
 import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+import { compositionRatio631 } from "../../utilities/ContentPopUpText";
 const { rgbToHex, hexToRgb } = InformationTranslationFuncs;
 
 const TripleHexInput2 = () => {
@@ -34,7 +35,10 @@ const TripleHexInput2 = () => {
   }, [hexA, hexB, hexC]);
   return (
     <div className="triple-hex-input-two-container">
-      <PopupWrapper title="Outil de composition ratio 6-3-1">
+      <PopupWrapper
+        title="Outil de composition ratio 6-3-1"
+        content={compositionRatio631}
+      >
         <h2>Outil de composition ratio 6-3-1</h2>
       </PopupWrapper>
       <div className="inputs-wrapper">

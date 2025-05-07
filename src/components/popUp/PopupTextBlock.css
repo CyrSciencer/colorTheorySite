@@ -23,8 +23,15 @@
 }
 
 .popup-content ul {
-  list-style-type: square;
+  padding-left: 0;
 }
+.popup-content ul li {
+  list-style: square;
+  list-style-position: outside;
+  position: relative;
+  left: 1em;
+}
+
 .popup-close-button {
   position: absolute;
   top: 10px;

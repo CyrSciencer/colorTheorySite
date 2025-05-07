@@ -230,6 +230,132 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
     });
   };
 
+  // --- Opposite Color Gradient --- //
+  const renderOppositeGradient = (pathType) => {
+    const chosenRgb = rgb; // Original input color prop
+    const oppositeToChosenRgb = opposite(chosenRgb);
+
+    // The gradient should visually start with chosenRgb and end with oppositeToChosenRgb.
+    // If the display order of generated items is reversed (e.g., CSS flex-direction: row-reverse),
+    // then our data array must be generated from oppositeToChosenRgb to chosenRgb.
+    const startRgb = oppositeToChosenRgb; // Start of the data array for interpolation
+    const endRgb = chosenRgb; // End of the data array for interpolation
+
+    // Prepare HSL conversions if needed, with fallbacks
+    let startHsl = { h: 0, s: 0, l: 0 };
+    let endHsl = { h: 0, s: 0, l: 0 };
+    let canUseHslPath = false;
+
+    if (pathType === "hsl_short" || pathType === "hsl_long") {
+      if (
+        InformationTranslationFuncs.rgbToHsv &&
+        InformationTranslationFuncs.hsvToHsl
+      ) {
+        const startHsvCheck = InformationTranslationFuncs.rgbToHsv(startRgb);
+        if (startHsvCheck) {
+          const startHslCheck =
+            InformationTranslationFuncs.hsvToHsl(startHsvCheck);
+          if (startHslCheck) startHsl = startHslCheck;
+        }
+
+        const endHsvCheck = InformationTranslationFuncs.rgbToHsv(endRgb);
+        if (endHsvCheck) {
+          const endHslCheck = InformationTranslationFuncs.hsvToHsl(endHsvCheck);
+          if (endHslCheck) endHsl = endHslCheck;
+        }
+        // Check if primary conversion HSL->RGB is available
+        if (InformationTranslationFuncs.hslToRgb) {
+          canUseHslPath = true;
+        }
+      }
+    }
+
+    return Array.from({ length: 10 }, (_, i) => {
+      const t = i / 9; // Interpolation factor from 0 to 1
+      let currentRgbArray;
+
+      if (
+        pathType === "rgb" ||
+        (!canUseHslPath &&
+          (pathType === "hsl_short" || pathType === "hsl_long"))
+      ) {
+        // RGB interpolation or fallback for HSL if conversions are missing
+        currentRgbArray = [
+          Math.round(startRgb[0] * (1 - t) + endRgb[0] * t),
+          Math.round(startRgb[1] * (1 - t) + endRgb[1] * t),
+          Math.round(startRgb[2] * (1 - t) + endRgb[2] * t),
+        ];
+      } else {
+        // HSL interpolation (hsl_short or hsl_long)
+        const h_start = startHsl.h;
+        const s_start = startHsl.s;
+        const l_start = startHsl.l;
+
+        const h_end = endHsl.h;
+        const s_end = endHsl.s;
+        const l_end = endHsl.l;
+
+        // Interpolate S and L linearly
+        const currentS = s_start * (1 - t) + s_end * t;
+        const currentL = l_start * (1 - t) + l_end * t;
+
+        // Interpolate H with short or long path
+        let delta_h = h_end - h_start;
+        let final_delta_h;
+
+        // Calculate shortest path delta for hue
+        let final_delta_h_short = delta_h;
+        if (final_delta_h_short > 180) final_delta_h_short -= 360;
+        else if (final_delta_h_short < -180) final_delta_h_short += 360;
+
+        if (pathType === "hsl_short") {
+          final_delta_h = final_delta_h_short;
+        } else {
+          // hsl_long
+          if (final_delta_h_short === 0) {
+            // Handles cases where hues are identical
+            final_delta_h = 0; // Or 360 or -360 if a spin is desired, 0 means no hue change
+          } else {
+            final_delta_h =
+              final_delta_h_short > 0
+                ? final_delta_h_short - 360
+                : final_delta_h_short + 360;
+          }
+        }
+
+        const currentH = (h_start + final_delta_h * t + 360) % 360;
+        const currentHsl = { h: currentH, s: currentS, l: currentL };
+
+        currentRgbArray = InformationTranslationFuncs.hslToRgb
+          ? InformationTranslationFuncs.hslToRgb(currentHsl)
+          : [0, 0, 0]; // Fallback if hslToRgb is missing
+      }
+
+      const currentHex = InformationTranslationFuncs.rgbToHex
+        ? InformationTranslationFuncs.rgbToHex(currentRgbArray)
+        : "#000000";
+      const contrastRgb = getContrastColor(currentRgbArray);
+      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb);
+      const shadowRgb = opposite(contrastRgb);
+      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb);
+
+      return (
+        <div
+          key={`opposite-${pathType}-${i}`}
+          className="tip"
+          style={{
+            backgroundColor: currentHex,
+            color: contrastHex,
+            textShadow: `0 0 3px ${shadowHex}`,
+          }}
+          onClick={() => handleSuggestionClick(currentHex)}
+        >
+          {currentHex.toUpperCase()}
+        </div>
+      );
+    });
+  };
+
   const renderSelectedGradient = () => {
     switch (gradientTypeIndex) {
       case 1: // Hue Shortest Path
@@ -244,10 +370,14 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
         return renderHSVSaturationGradient();
       case 6: // HSV Value Gradient
         return renderHSVValueGradient();
-      default: // Default to Hue Shortest Path or return null/error
+      case 7: // Opposite Color Gradient - RGB path
+        return renderOppositeGradient("rgb");
+      case 8: // Opposite Color Gradient - HSL Shortest Hue path
+        return renderOppositeGradient("hsl_short");
+      case 9: // Opposite Color Gradient - HSL Longest Hue path
+        return renderOppositeGradient("hsl_long");
+      default: // Default to Hue Shortest Path
         return renderHueGradient(hueStep_short, h_comp);
-      // Or: return null;
-      // Or: return <div>Invalid gradient type</div>;
     }
   };
 

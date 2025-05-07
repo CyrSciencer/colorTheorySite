@@ -8,6 +8,7 @@ import SquareComposition from "../squareComposition/SquareComposition";
 import { writeToClipboard } from "../../utilities/clipboardUtils.js";
 import FeedbackPopup from "../popUp/FeedbackPopup"; // Import FeedbackPopup
 import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+import { OutilDanalyseDintermédiaires } from "../../utilities/ContentPopUpText";
 const { generateIntermediateColors, opposite } = colorManagementFuncs;
 const { hexToRgb, rgbToHex } = InformationTranslationFuncs;
 
@@ -155,7 +156,10 @@ const TripleHexInput1 = () => {
         type={feedback.type}
       />
 
-      <PopupWrapper title="Outil d'analyse d'intermédiaires">
+      <PopupWrapper
+        title="Outil d'analyse d'intermédiaires"
+        content={OutilDanalyseDintermédiaires}
+      >
         <h2>Outil d'analyse d'intermédiaires</h2>
       </PopupWrapper>
       <div className="logic-container">
