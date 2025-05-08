@@ -26,7 +26,8 @@
   padding-left: 0;
 }
 .popup-content ul li {
-  list-style: square;
+  list-style: circle;
+
   list-style-position: outside;
   position: relative;
   left: 1em;
