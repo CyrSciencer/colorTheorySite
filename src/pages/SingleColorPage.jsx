@@ -13,8 +13,7 @@ import ColorGradients from "../components/gradients/ColorGradients"; // Adjust p
 import SquareHarmonyComposition from "../components/compositionHarmony/SquareHarmonyComposition"; // Adjust path
 import TriangleHarmonyComposition from "../components/compositionHarmony/TriangleHarmonyComposition"; // Adjust path
 import { Link } from "react-router-dom";
-import { writeToClipboard } from "../utilities/clipboardUtils"; // Import clipboard utility
-import { useFeedback } from "../contexts/FeedbackContext.jsx"; // Import feedback context
+import useClipboardWithFeedback from "../utilities/useClipboardWithFeedback.jsx"; // Import the hook
 import React from "react";
 import PopupWrapper from "../utilities/PopupWrapper"; // Import shared component
 import {
@@ -34,50 +33,28 @@ function SingleColorPage() {
   const [hsl, setHsl] = useState({ h: 221, s: 0.79, l: 0.28 });
   const [hex, setHex] = useState("#0F3380");
   const [hsv, setHsv] = useState({ h: 221, s: 0.88, v: 0.5 });
-  const [oppositeColor, setoppositeColor] = useState([255, 255, 255]);
-  const [complementaryColor, setComplementaryColor] = useState([255, 255, 255]);
+  const [oppositeColorHex, setOppositeColorHex] = useState("#FFFFFF");
+  const [complementaryColorHex, setComplementaryColorHex] = useState("#FFFFFF");
   const [contrastColorRgb, setContrastColorRgb] = useState([255, 255, 255]);
-  const { rgbToHex } = InformationTranslationFuncs;
+  const { rgbToHex, getContrastingTextColorRgb } = InformationTranslationFuncs;
   const { complementary, opposite } = colorManagementFuncs;
-  const { showFeedback } = useFeedback(); // Use the feedback context hook
+  const copyWithFeedback = useClipboardWithFeedback(); // Use the hook
 
-  console.log({ hsl, hsv });
-  //useEffect pour mettre à jour la couleur opposée
-  // console.log({ complementaryColor });
   useEffect(() => {
     // console.log(funcs.opposite(rgb));
-    setoppositeColor(rgbToHex(opposite(rgb)));
-    setComplementaryColor(rgbToHex(complementary(rgb)));
+    setOppositeColorHex(rgbToHex(opposite(rgb)));
+    setComplementaryColorHex(rgbToHex(complementary(rgb)));
 
-    // Calculate contrast color (black or white) based on rgb brightness
-    let checklightness = 0;
-    rgb.map((val) => {
-      checklightness += val;
-    });
-    checklightness > 382
-      ? setContrastColorRgb([0, 0, 0]) // Set to black
-      : setContrastColorRgb([255, 255, 255]); // Set to white
-  }, [rgb]);
-
-  // Function to handle copying hex codes to clipboard
-  const handleHexCopy = (hex) => {
-    if (!hex) return;
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success");
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err);
-      });
-  };
+    // Use the utility function to calculate contrast color
+    setContrastColorRgb(getContrastingTextColorRgb(rgb));
+  }, [rgb, rgbToHex, opposite, complementary, getContrastingTextColorRgb]);
 
   return (
     <div className="single-color-page-layout">
       <header
-        style={{ backgroundColor: hex, borderBottomColor: oppositeColor }}
+        style={{ backgroundColor: hex, borderBottomColor: oppositeColorHex }}
       >
-        <h1 style={{ backgroundColor: oppositeColor, color: hex }}>
+        <h1 style={{ backgroundColor: oppositeColorHex, color: hex }}>
           Analyse chromatique
         </h1>
         <Link to="/">
@@ -93,7 +70,7 @@ function SingleColorPage() {
             setHex={setHex}
             hsv={hsv}
             setHsv={setHsv}
-            oppositeColor={oppositeColor}
+            oppositeColor={oppositeColorHex}
           />
         </div>
       </header>
@@ -129,15 +106,15 @@ function SingleColorPage() {
                 textShadow: `0 1px 2px ${rgbToHex(
                   contrastColorRgb
                 )} , 0 -1px 2px ${rgbToHex(opposite(contrastColorRgb))} `,
-                backgroundColor: rgbToHex(complementary(rgb)),
+                backgroundColor: complementaryColorHex,
               }}
-              onClick={() => handleHexCopy(rgbToHex(complementary(rgb)))}
+              onClick={() => copyWithFeedback(complementaryColorHex)}
             >
               <span
                 className="clickable-hex-inline"
                 /* Add specific styles if needed, otherwise rely on parent */
               >
-                {rgbToHex(complementary(rgb)).toUpperCase()}
+                {complementaryColorHex.toUpperCase()}
               </span>
             </span>
           </h3>
@@ -153,10 +130,10 @@ function SingleColorPage() {
             <div className="square-composition-row">
               <SquareComposition
                 innerColor={hex}
-                outerColor={complementaryColor}
+                outerColor={complementaryColorHex}
               />
               <SquareComposition
-                innerColor={complementaryColor}
+                innerColor={complementaryColorHex}
                 outerColor={hex}
               />
               <SquareComposition innerColor={hex} outerColor="#ffffff" />
@@ -222,23 +199,23 @@ function SingleColorPage() {
             <h2>Gradients</h2>
           </PopupWrapper>
           <span>gradient 1 vers le complémentaire</span>
-          <ColorGradients rgb={rgb} gradientTypeIndex={1} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={0} />
           <span>gradient 2 vers le complémentaire</span>
-          <ColorGradients rgb={rgb} gradientTypeIndex={2} />
+          <ColorGradients rgb={rgb} gradientTypeIndex={1} />
           <span>gradient 1 vers l'opposée</span>
-          <ColorGradients rgb={rgb} gradientTypeIndex={8} />
-          <span>gradient 2 vers l'opposée</span>
-          <ColorGradients rgb={rgb} gradientTypeIndex={9} />
-          <span>gradient vers l'opposée passant par le gris</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={7} />
-          <span>gradient de luminosité</span>
-          <ColorGradients rgb={rgb} gradientTypeIndex={3} />
-          <span>gradient de saturation</span>
+          <span>gradient 2 vers l'opposée</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={8} />
+          <span>gradient vers l'opposée passant par le gris</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={6} />
-          <span>gradient 1 vers le moins saturé</span>
-          <ColorGradients rgb={rgb} gradientTypeIndex={4} />
-          <span>gradient 2 vers le moins saturé</span>
+          <span>gradient de luminosité</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={2} />
+          <span>gradient de saturation</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={5} />
+          <span>gradient 1 vers le moins saturé</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={3} />
+          <span>gradient 2 vers le moins saturé</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={4} />
         </div>
       </main>
     </div>

@@ -3,8 +3,9 @@ import "../colorInputs/colorInputs.css"; // Reuse existing CSS for now
 import "./hexInput.css";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import colorManagementFuncs from "../../utilities/complementaries";
-import { writeToClipboard } from "../../utilities/clipboardUtils";
-import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+// import { writeToClipboard } from "../../utilities/clipboardUtils"; // No longer needed directly
+// import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // No longer needed directly
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
 
 const { hexToRgb, rgbToHex } = InformationTranslationFuncs;
 const { opposite } = colorManagementFuncs;
@@ -14,30 +15,23 @@ const HexInput = ({
   setHex,
   contrastColor = "#000000",
   title,
-  onSuggestionClick,
+  onSuggestionClick, // This prop might need to be re-evaluated or used differently
 }) => {
   const contrastRgb = hexToRgb(contrastColor);
   const shadowRgb = opposite(contrastRgb);
   const shadowColorHex = rgbToHex(shadowRgb);
-  const { showFeedback } = useFeedback();
-  const handleSuggestionClick = (hex) => {
-    // Use clipboard utility
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success"); // Trigger success popup via context
-        if (onSuggestionClick) {
-          onSuggestionClick(hex);
-        }
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error"); // Trigger error popup via context
-        // Keep console log for debugging
-        console.error("Clipboard error: ", err);
-      });
+  const copyWithFeedback = useClipboardWithFeedback();
 
-    // Optionally clear the input/suggestions after selection
-    // setDescription('');
+  const handleHexClick = () => {
+    copyWithFeedback(hex, `Copied ${title || ""}`);
+    if (onSuggestionClick) {
+      // If onSuggestionClick was purely for the copy-feedback mechanism,
+      // it might not be needed anymore or its purpose might change.
+      // For now, we call it if it exists, passing the hex.
+      onSuggestionClick(hex);
+    }
   };
+
   return (
     <div
       className="hex-input-component"
@@ -51,7 +45,7 @@ const HexInput = ({
           color: contrastColor,
           textShadow: "0 0 3px var(--shadow-color)",
         }}
-        onClick={() => handleSuggestionClick(hex)}
+        onClick={handleHexClick} // Updated handler
       >
         {title}
       </p>
@@ -60,11 +54,10 @@ const HexInput = ({
         id={title + "-hex-only"}
         style={{
           color: contrastColor, // Use contrast color for text
-
           textShadow: "0 0 3px var(--shadow-color)", // Same shadow as label
         }}
         aria-label={`${title} hex value`}
-        onClick={() => handleSuggestionClick(hex)}
+        onClick={handleHexClick} // Updated handler
       >
         {hex.toUpperCase()}
       </span>

@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from "react";
 import htmlColorNames from "../../utilities/htmlColorNames";
-import { writeToClipboard } from "../../utilities/clipboardUtils";
-import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+// import { writeToClipboard } from "../../utilities/clipboardUtils"; // No longer needed directly
+// import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // No longer needed directly
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
 import "./ColorSuggester.css";
 
 const ColorSuggester = ({ onSuggestionClick }) => {
   const [description, setDescription] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const { showFeedback } = useFeedback();
+  const copyWithFeedback = useClipboardWithFeedback();
 
   const handleInputChange = (event) => {
     setDescription(event.target.value);
@@ -27,21 +28,11 @@ const ColorSuggester = ({ onSuggestionClick }) => {
   }, [description]);
 
   // Handle clicking on a suggestion
-  const handleSuggestionClick = (hex) => {
-    // Use clipboard utility
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success"); // Trigger success popup via context
-        if (onSuggestionClick) {
-          onSuggestionClick(hex);
-        }
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error"); // Trigger error popup via context
-        // Keep console log for debugging
-        console.error("Clipboard error: ", err);
-      });
-
+  const handleSuggestionItemClick = (hex, name) => {
+    copyWithFeedback(hex, `Copied ${name}`);
+    if (onSuggestionClick) {
+      onSuggestionClick(hex);
+    }
     // Optionally clear the input/suggestions after selection
     // setDescription('');
   };
@@ -76,8 +67,8 @@ const ColorSuggester = ({ onSuggestionClick }) => {
                 <li
                   key={name}
                   className="suggestion-item"
-                  onClick={() => handleSuggestionClick(hex)}
-                  title={`Click to select ${name} (${hex})`}
+                  onClick={() => handleSuggestionItemClick(hex, name)}
+                  title={`Click to copy ${name} (${hex})`}
                 >
                   <span
                     className="color-swatch"

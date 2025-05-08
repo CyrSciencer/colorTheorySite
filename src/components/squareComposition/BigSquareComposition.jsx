@@ -1,6 +1,6 @@
 import "./squareComposition.css";
 const BigSquareComposition = ({ main, secondary, tertiary }) => {
-  //   console.log({ innerColor, outerColor });
+  // console.log({ main, secondary, tertiary }); // Corrected and then removed, or just remove if not needed
   return (
     <div className="square-composition">
       <div className="outer" style={{ backgroundColor: main }}></div>

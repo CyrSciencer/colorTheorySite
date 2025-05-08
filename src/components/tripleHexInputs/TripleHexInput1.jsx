@@ -5,23 +5,12 @@ import colorManagementFuncs from "../../utilities/complementaries.js";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation.js";
 import "./tripleHexInput.css";
 import SquareComposition from "../squareComposition/SquareComposition";
-import { writeToClipboard } from "../../utilities/clipboardUtils.js";
-import FeedbackPopup from "../popUp/FeedbackPopup"; // Import FeedbackPopup
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx"; // Import the hook
 import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
 import { OutilDanalyseDintermédiaires } from "../../utilities/ContentPopUpText";
 const { generateIntermediateColors, opposite } = colorManagementFuncs;
-const { hexToRgb, rgbToHex } = InformationTranslationFuncs;
-
-// Helper function to determine contrast color based on RGB sum
-const getContrastColorFromRgb = (rgb) => {
-  let brightnessSum = 0;
-  rgb.forEach((val) => {
-    brightnessSum += val;
-  });
-  // If sum > 382 (threshold from SingleColorPage), use black text, else white
-  const contrastRgb = brightnessSum > 382 ? [0, 0, 0] : [255, 255, 255];
-  return rgbToHex(contrastRgb); // Return as hex string
-};
+const { hexToRgb, rgbToHex, getContrastingTextColorRgb } =
+  InformationTranslationFuncs;
 
 const TripleHexInput1 = () => {
   const [hexA, setHexA] = useState("#CD3232"); // Example initial red
@@ -41,55 +30,7 @@ const TripleHexInput1 = () => {
     // Shadows for A, B, C handled by HexInput component
   });
 
-  // Local state for feedback popup
-  const [feedback, setFeedback] = useState({
-    isVisible: false,
-    message: "",
-    type: "success",
-  });
-  const feedbackTimeoutRef = useRef(null); // Ref to manage timeout
-
-  // Function to handle copying hex codes to clipboard using local state
-  const handleHexCopy = (hex) => {
-    if (!hex) return;
-
-    // Clear previous timeout if it exists
-    if (feedbackTimeoutRef.current) {
-      clearTimeout(feedbackTimeoutRef.current);
-    }
-
-    writeToClipboard(hex)
-      .then(() => {
-        setFeedback({
-          isVisible: true,
-          message: `Copied ${hex}!`,
-          type: "success",
-        });
-      })
-      .catch((err) => {
-        setFeedback({
-          isVisible: true,
-          message: "Failed to copy!",
-          type: "error",
-        });
-        console.error("Clipboard error: ", err);
-      })
-      .finally(() => {
-        // Set a new timeout to hide the feedback
-        feedbackTimeoutRef.current = setTimeout(() => {
-          setFeedback((prev) => ({ ...prev, isVisible: false }));
-        }, 2500); // Hide after 2.5 seconds
-      });
-  };
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (feedbackTimeoutRef.current) {
-        clearTimeout(feedbackTimeoutRef.current);
-      }
-    };
-  }, []);
+  const copyWithFeedback = useClipboardWithFeedback(); // Use the hook
 
   useEffect(() => {
     try {
@@ -106,25 +47,25 @@ const TripleHexInput1 = () => {
 
       const finalHex3 = rgbToHex(rgb3);
       const finalHex4 = rgbToHex(rgb4);
-      const finalContrast3 = getContrastColorFromRgb(rgb3);
-      const finalContrast4 = getContrastColorFromRgb(rgb4);
+      const contrastRgb3 = getContrastingTextColorRgb(rgb3);
+      const contrastRgb4 = getContrastingTextColorRgb(rgb4);
+      const finalContrast3 = rgbToHex(contrastRgb3);
+      const finalContrast4 = rgbToHex(contrastRgb4);
 
-      // Calculate shadow colors for intermediate results
-      const finalShadow3 = rgbToHex(opposite(hexToRgb(finalContrast3)));
-      const finalShadow4 = rgbToHex(opposite(hexToRgb(finalContrast4)));
+      const finalShadow3 = rgbToHex(opposite(contrastRgb3));
+      const finalShadow4 = rgbToHex(opposite(contrastRgb4));
 
-      // Calculate contrast for inputs (shadows handled within HexInput)
-      const finalContrastA = getContrastColorFromRgb(rgb1);
-      const finalContrastB = getContrastColorFromRgb(rgb2);
-      const finalContrastC = getContrastColorFromRgb(targetRGB);
+      const finalContrastA = rgbToHex(getContrastingTextColorRgb(rgb1));
+      const finalContrastB = rgbToHex(getContrastingTextColorRgb(rgb2));
+      const finalContrastC = rgbToHex(getContrastingTextColorRgb(targetRGB));
 
       setIntermediateColors({
         hex3: finalHex3,
         hex4: finalHex4,
         contrast3: finalContrast3,
         contrast4: finalContrast4,
-        shadow3: finalShadow3, // Set shadow state
-        shadow4: finalShadow4, // Set shadow state
+        shadow3: finalShadow3,
+        shadow4: finalShadow4,
         contrastA: finalContrastA,
         contrastB: finalContrastB,
         contrastC: finalContrastC,
@@ -145,17 +86,20 @@ const TripleHexInput1 = () => {
         contrastC: "#000000",
       }));
     }
-  }, [hexA, hexB, hexC, factor]); // Recalculate when inputs or factor change
+  }, [
+    hexA,
+    hexB,
+    hexC,
+    factor,
+    rgbToHex,
+    hexToRgb,
+    generateIntermediateColors,
+    getContrastingTextColorRgb,
+    opposite,
+  ]);
 
   return (
     <div className="triple-hex-input-one-container">
-      {/* Render the local FeedbackPopup */}
-      <FeedbackPopup
-        isVisible={feedback.isVisible}
-        message={feedback.message}
-        type={feedback.type}
-      />
-
       <PopupWrapper
         title="Outil d'analyse d'intermédiaires"
         content={OutilDanalyseDintermédiaires}
@@ -248,9 +192,14 @@ const TripleHexInput1 = () => {
                   <p>
                     <span
                       className="clickable-hex"
-                      onClick={() => handleHexCopy(intermediateColors.hex3)}
+                      onClick={() =>
+                        copyWithFeedback(
+                          intermediateColors.hex3,
+                          "Copied Intermediate 1"
+                        )
+                      }
                     >
-                      {intermediateColors.hex3.toUpperCase()}
+                      {intermediateColors.hex3}
                     </span>
                   </p>
                 </div>
@@ -267,9 +216,14 @@ const TripleHexInput1 = () => {
                   <p>
                     <span
                       className="clickable-hex"
-                      onClick={() => handleHexCopy(intermediateColors.hex4)}
+                      onClick={() =>
+                        copyWithFeedback(
+                          intermediateColors.hex4,
+                          "Copied Intermediate 2"
+                        )
+                      }
                     >
-                      {intermediateColors.hex4.toUpperCase()}
+                      {intermediateColors.hex4}
                     </span>
                   </p>
                 </div>
@@ -277,12 +231,14 @@ const TripleHexInput1 = () => {
             </div>
           </div>
         </div>
-        <HexInput
-          hex={hexC}
-          setHex={setHexC}
-          title="Couleur cible"
-          contrastColor={intermediateColors.contrastC}
-        />
+        <div className="target-input-wrapper">
+          <HexInput
+            hex={hexC}
+            setHex={setHexC}
+            title="Couleur C (Cible)"
+            contrastColor={intermediateColors.contrastC}
+          />
+        </div>
         <div className="square-container">
           <div className="square-wrapper">
             <SquareComposition outerColor={hexC} innerColor={hexA} />
