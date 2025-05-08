@@ -1,18 +1,19 @@
 .mixer-controls {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 .color-mixer-container {
   display: flex;
-  gap: 1rem;
+  gap: 5px;
   flex-direction: column;
   justify-content: space-around;
-  height: 150px;
+  height: 160px;
   width: 500px;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 5px;
   /* border: 1px solid #000; */
 }
 .mixed-color-display {
@@ -57,4 +58,21 @@
   gap: 1rem;
   align-items: center;
   justify-content: center;
+}
+.multiple-color-mixing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.multiple-color-mixing-container > div {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.multiple-color-mixing-container > div:nth-child(3),
+.multiple-color-mixing-container > div:nth-child(4) {
+  flex-direction: row;
+  transform: scale(0.8);
+
+  margin-bottom: -50px;
 }

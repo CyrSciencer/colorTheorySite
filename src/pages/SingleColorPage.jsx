@@ -13,19 +13,34 @@ import ColorGradients from "../components/gradients/ColorGradients"; // Adjust p
 import SquareHarmonyComposition from "../components/compositionHarmony/SquareHarmonyComposition"; // Adjust path
 import TriangleHarmonyComposition from "../components/compositionHarmony/TriangleHarmonyComposition"; // Adjust path
 import { Link } from "react-router-dom";
+import { writeToClipboard } from "../utilities/clipboardUtils"; // Import clipboard utility
+import { useFeedback } from "../contexts/FeedbackContext.jsx"; // Import feedback context
+import React from "react";
+import PopupWrapper from "../utilities/PopupWrapper"; // Import shared component
+import {
+  TrianglesComparatifs,
+  CarrésDeContrasteSimultané,
+  HarmoniesTriadique,
+  HarmoniesTétradique,
+  TensionEtEquilibre,
+  températureOpposée,
+  Gradients,
+} from "../utilities/ContentPopUpText"; // Import content constants
 
 function SingleColorPage() {
   // Renamed from App
   //states définisant les couleurs
-  const [rgb, setRgb] = useState([0, 0, 0]);
-  const [hsl, setHsl] = useState({ h: 0, s: 0, l: 0 });
-  const [hex, setHex] = useState("#000000");
-  const [hsv, setHsv] = useState({ h: 0, s: 0, v: 0 });
+  const [rgb, setRgb] = useState([15, 51, 128]);
+  const [hsl, setHsl] = useState({ h: 221, s: 0.79, l: 0.28 });
+  const [hex, setHex] = useState("#0F3380");
+  const [hsv, setHsv] = useState({ h: 221, s: 0.88, v: 0.5 });
   const [oppositeColor, setoppositeColor] = useState([255, 255, 255]);
   const [complementaryColor, setComplementaryColor] = useState([255, 255, 255]);
   const [contrastColorRgb, setContrastColorRgb] = useState([255, 255, 255]);
   const { rgbToHex } = InformationTranslationFuncs;
   const { complementary, opposite } = colorManagementFuncs;
+  const { showFeedback } = useFeedback(); // Use the feedback context hook
+
   console.log({ hsl, hsv });
   //useEffect pour mettre à jour la couleur opposée
   // console.log({ complementaryColor });
@@ -43,16 +58,30 @@ function SingleColorPage() {
       ? setContrastColorRgb([0, 0, 0]) // Set to black
       : setContrastColorRgb([255, 255, 255]); // Set to white
   }, [rgb]);
+
+  // Function to handle copying hex codes to clipboard
+  const handleHexCopy = (hex) => {
+    if (!hex) return;
+    writeToClipboard(hex)
+      .then(() => {
+        showFeedback(`Copied ${hex}!`, "success");
+      })
+      .catch((err) => {
+        showFeedback("Failed to copy!", "error");
+        console.error("Clipboard error: ", err);
+      });
+  };
+
   return (
-    <>
+    <div className="single-color-page-layout">
       <header
         style={{ backgroundColor: hex, borderBottomColor: oppositeColor }}
       >
         <h1 style={{ backgroundColor: oppositeColor, color: hex }}>
-          Single Color Analysis
+          Analyse chromatique
         </h1>
         <Link to="/">
-          <button>HomePage</button>
+          <button>Accueil</button>
         </Link>
         <div className="color-inputs">
           <ColorInputs
@@ -68,25 +97,48 @@ function SingleColorPage() {
           />
         </div>
       </header>
-      <main>
-        <div className="color-triangles-container">
-          <h2>Color triangles</h2>
+      <main className="single-color-page-main">
+        <div className="content-section triangles-section">
+          <PopupWrapper
+            title="Triangles comparatifs"
+            content={TrianglesComparatifs}
+          >
+            <h2>Triangles comparatifs</h2>
+          </PopupWrapper>
           <ColorTriangles hex={hex} />
         </div>
         <div className="square-composition-container">
-          <h2>Composition squares</h2>
+          <PopupWrapper
+            title="Carrés de contraste simultané"
+            content={CarrésDeContrasteSimultané}
+          >
+            <h2>Carrés de contraste simultané</h2>
+          </PopupWrapper>
           <h3>
-            Complementary color:
+            Couleur complémentaire:
             <span
+              className="complementary-color-display"
               style={{
+                /* Style to make it look like a chip */
+                padding: "2px 6px",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginLeft: "8px",
+                /* Original styles */
                 color: rgbToHex(contrastColorRgb),
                 textShadow: `0 1px 2px ${rgbToHex(
                   contrastColorRgb
                 )} , 0 -1px 2px ${rgbToHex(opposite(contrastColorRgb))} `,
                 backgroundColor: rgbToHex(complementary(rgb)),
               }}
+              onClick={() => handleHexCopy(rgbToHex(complementary(rgb)))}
             >
-              {rgbToHex(complementary(rgb)).toUpperCase()}
+              <span
+                className="clickable-hex-inline"
+                /* Add specific styles if needed, otherwise rely on parent */
+              >
+                {rgbToHex(complementary(rgb)).toUpperCase()}
+              </span>
             </span>
           </h3>
           <div>
@@ -114,7 +166,12 @@ function SingleColorPage() {
         </div>
 
         <div className="three-hue-harmonies">
-          <h2>Three hue harmonies</h2>
+          <PopupWrapper
+            title="Harmonies triadique"
+            content={HarmoniesTriadique}
+          >
+            <h2>Harmonies triadique</h2>
+          </PopupWrapper>
           <div className="three-hue-harmonies-container">
             <TriangularHarmonies
               rgb={rgb}
@@ -123,7 +180,12 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="four-hue-harmonies">
-          <h2>Four hue harmonies</h2>
+          <PopupWrapper
+            title="Harmonies tétradique"
+            content={HarmoniesTétradique}
+          >
+            <h2>Harmonies tétradique</h2>
+          </PopupWrapper>
           <div className="four-hue-harmonies-container">
             <QuadrangularHarmonies
               rgb={rgb}
@@ -132,7 +194,12 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="composition-harmony">
-          <h2>Composition harmony</h2>
+          <PopupWrapper
+            title="Tension et équilibre entre les pôles de luminosité"
+            content={TensionEtEquilibre}
+          >
+            <h2>Tension et équilibre entre les pôles de luminosité</h2>
+          </PopupWrapper>
           <div className="composition-harmony-container">
             <CompositionHarmony hsl={hsl} />
             <SquareHarmonyComposition hsl={hsl} />
@@ -140,22 +207,41 @@ function SingleColorPage() {
           </div>
         </div>
         <div className="opposite-temperature">
-          <h2>Of opposite temperature</h2>
+          <PopupWrapper
+            title="Set de couleurs de température opposée"
+            content={températureOpposée}
+          >
+            <h2>Set de couleurs de températures opposée</h2>
+          </PopupWrapper>
           <div className="opposite-temperature-container">
             <Temperatures rgb={rgb} contrastColorRgb={contrastColorRgb} />
           </div>
         </div>
         <div className="gradient">
-          <h2>Gradients</h2>
+          <PopupWrapper title="Gradients" content={Gradients}>
+            <h2>Gradients</h2>
+          </PopupWrapper>
+          <span>gradient 1 vers le complémentaire</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={1} />
+          <span>gradient 2 vers le complémentaire</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={2} />
+          <span>gradient 1 vers l'opposée</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={8} />
+          <span>gradient 2 vers l'opposée</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={9} />
+          <span>gradient vers l'opposée passant par le gris</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={7} />
+          <span>gradient de luminosité</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={3} />
-          <ColorGradients rgb={rgb} gradientTypeIndex={4} />
-          <ColorGradients rgb={rgb} gradientTypeIndex={5} />
+          <span>gradient de saturation</span>
           <ColorGradients rgb={rgb} gradientTypeIndex={6} />
+          <span>gradient 1 vers le moins saturé</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={4} />
+          <span>gradient 2 vers le moins saturé</span>
+          <ColorGradients rgb={rgb} gradientTypeIndex={5} />
         </div>
       </main>
-    </>
+    </div>
   );
 }
 

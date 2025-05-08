@@ -291,17 +291,28 @@ const contrast = (hsl) => {
   return { darkRatioHarmony, lightRatioHarmony, closestColor };
 };
 // determinatif chaud-froid §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
-const ofOppositeTemperature = (rgb) => {
+const ofOppositeTemperature = (rgb, numSteps = 18) => {
   const hsl = rgbToHsl(rgb);
-  const warms = [
-    0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 290, 300, 310, 320, 330, 340,
-    350,
-  ];
-  const cools = [
-    110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250,
-    260, 270, 280,
-  ];
-  return hsl.h < 100 || hsl.h > 280 ? cools : warms;
+  const oppositeCenterHue = (hsl.h + 180) % 360; // Centre de l'arc opposé
+
+  if (numSteps <= 0) {
+    return [];
+  }
+  if (numSteps === 1) {
+    return [oppositeCenterHue];
+  }
+
+  const gradientHues = [];
+  const arcExtent = 180; // Étendue de l'arc en degrés
+  const startHue = (oppositeCenterHue - arcExtent / 2 + 360) % 360; // Début de l'arc
+  const stepAngle = arcExtent / (numSteps - 1); // Angle entre chaque étape
+
+  for (let i = 0; i < numSteps; i++) {
+    const currentHue = (startHue + i * stepAngle) % 360;
+    gradientHues.push(currentHue);
+  }
+
+  return gradientHues;
 };
 // de nom à hex §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
 const InformationTranslationFuncs = {

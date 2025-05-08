@@ -88,7 +88,7 @@ const ColorInputs = ({
       <div className="hsl-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="h-hsl" style={{ color: oppositeColor }}>
           <p>H</p>
-          <p>{hsl.h}</p>
+          <p>{Math.round(hsl.h)}</p>
         </label>
         <input
           id="h-hsl"
@@ -159,7 +159,7 @@ const ColorInputs = ({
       <div className="hsv-input" style={{ borderColor: oppositeColor }}>
         <label htmlFor="h-hsv" style={{ color: oppositeColor }}>
           <p>H</p>
-          <p>{hsv.h}</p>
+          <p>{Math.round(hsv.h)}</p>
         </label>
         <input
           id="h-hsv"
@@ -227,7 +227,10 @@ const ColorInputs = ({
           }
         />
       </div>
-      <div className="hex-input" style={{ borderColor: oppositeColor }}>
+      <div
+        className="hex-input-container"
+        style={{ borderColor: oppositeColor }}
+      >
         <label htmlFor="hex" style={{ color: oppositeColor }}>
           Hex
         </label>
@@ -239,6 +242,7 @@ const ColorInputs = ({
             handleHexChange(e.target.value, setRgb, setHsl, setHex, setHsv)
           }
           maxLength="7"
+          className="hex-input"
         />
       </div>
     </>

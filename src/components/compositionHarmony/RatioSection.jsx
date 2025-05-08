@@ -7,7 +7,7 @@ const RatioSection = ({ title, ratioKey, colorDataArray }) => {
   );
 
   return (
-    <div className="ratio-section-container">
+    <div className="ratio-section">
       <h3>{title}</h3>
       <div className="composition-light-dark-container">
         {/* Map over the sorted array */}

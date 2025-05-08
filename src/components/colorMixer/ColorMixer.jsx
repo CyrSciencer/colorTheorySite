@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import colorManagementFuncs from "../../utilities/complementaries"; // Contains hslMixer
 import SquareComposition from "../squareComposition/SquareComposition";
-import RatioSection from "../compositionHarmony/RatioSection";
+import { writeToClipboard } from "../../utilities/clipboardUtils"; // Import clipboard utility
+import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // Import feedback context
+
 import "./ColorMixer.css";
 const { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } = InformationTranslationFuncs;
 const { inputOfTwoColorForAThird, opposite } = colorManagementFuncs; // Import opposite
@@ -11,6 +13,20 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
   const [mixPercent, setMixPercent] = useState(50); // Default mix percentage
   const [contrastColor, setContrastColor] = useState("#FFFFFF"); // Default contrast
   const [shadowColorHex, setShadowColorHex] = useState("#000000"); // Added state for shadow
+  const { showFeedback } = useFeedback(); // Use the feedback context hook
+
+  // Function to handle copying hex codes to clipboard
+  const handleHexCopy = (hex) => {
+    if (!hex) return;
+    writeToClipboard(hex)
+      .then(() => {
+        showFeedback(`Copied ${hex}!`, "success");
+      })
+      .catch((err) => {
+        showFeedback("Failed to copy!", "error");
+        console.error("Clipboard error: ", err);
+      });
+  };
 
   useEffect(() => {
     try {
@@ -26,7 +42,9 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
 
       // Convert back to RGB and then Hex
       const mixedRgb = RgbSet.rgb3;
+
       const currentMixedHex = rgbToHex(mixedRgb);
+      // console.log({ currentMixedHex });
       setMixedColor(currentMixedHex);
 
       // Calculate contrast color for the mixed hex
@@ -62,9 +80,16 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
           className="mixed-color-display"
           style={{ textShadow: `0 0 3px ${shadowColorHex}` }}
         >
-          mixed: {mixedColor.toUpperCase()}
+          couleur mélangée:{" "}
+          <span
+            className="clickable-hex"
+            onClick={() => handleHexCopy(mixedColor)}
+          >
+            {mixedColor.toUpperCase()}
+          </span>
         </div>
         <div className="mixer-controls">
+          <SquareComposition innerColor={mixedColor} outerColor={hex1} />
           <input
             type="range"
             min="0"
@@ -73,9 +98,7 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
             onChange={handleSliderChange}
             className="mix-slider"
           />
-          <span style={{ textShadow: `0 0 3px ${shadowColorHex}` }}>
-            {mixPercent}%
-          </span>
+          <SquareComposition innerColor={mixedColor} outerColor={hex2} />
         </div>
       </div>
       <div className="squares-container">

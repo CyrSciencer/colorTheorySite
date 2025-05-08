@@ -66,3 +66,6 @@
 .pure-square-harmony .tip:nth-child(4) {
   left: -25px;
 }
+.clickable-hex {
+  font-size: 15px;
+}

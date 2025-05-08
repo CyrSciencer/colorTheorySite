@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import adjComplementaryHarmony from "../../assets/svg/harmonie-adj-complémentaire.svg";
 import analoguousHarmony from "../../assets/svg/harmonie-analogues.svg";
 import triadHarmony from "../../assets/svg/harmonie-triadiques.svg";
+import { writeToClipboard } from "../../utilities/clipboardUtils";
+import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+
 const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   console.log(rgb);
 
@@ -17,10 +20,51 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const { rgbToHex } = InformationTranslationFuncs;
   const { triangleHarmony, siblingOfComplementary, opposite, analogue } =
     colorManagementFuncs;
+  const { showFeedback } = useFeedback();
+
   const equilateralHarmony = triangleHarmony(rgb);
   const siblingOfComplementaryHarmony = siblingOfComplementary(rgb);
   const analogueHarmony = analogue(rgb);
   console.log({ equilateralHarmony, siblingOfComplementaryHarmony });
+
+  const handleHexCopy = (hex) => {
+    if (!hex) return;
+    writeToClipboard(hex)
+      .then(() => {
+        showFeedback(`Copied ${hex}!`, "success");
+      })
+      .catch((err) => {
+        showFeedback("Failed to copy!", "error");
+        console.error("Clipboard error: ", err);
+      });
+  };
+
+  const createTipElement = (hexValue) => {
+    if (!hexValue) return null;
+    return (
+      <div
+        className="tip"
+        style={{
+          backgroundColor: hexValue,
+          color: rgbToHex(contrastColorRgb),
+          textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
+        }}
+        onClick={() => handleHexCopy(hexValue)}
+      >
+        {hexValue.toUpperCase()}
+      </div>
+    );
+  };
+
+  const topTip = (
+    <div
+      className="tip"
+      style={{
+        backgroundColor: rgbToHex(rgb),
+      }}
+    ></div>
+  );
+
   useEffect(() => {
     setHex2(rgbToHex(equilateralHarmony.rgb2));
     setHex3(rgbToHex(equilateralHarmony.rgb3));
@@ -31,112 +75,32 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
 
     console.log({ hex2, hex3, hex4, hex5, hex6, hex7 });
   }, [rgb]);
+
   return (
     <div className="triangular-harmonies">
       <div className="equilateral-triangle">
         <img src={triadHarmony} alt="triad" />
-        <div className="top-tip">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: rgbToHex(rgb),
-            }}
-          ></div>
-        </div>
+        <div className="top-tip">{topTip}</div>
         <div className="bottom-tips">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex2,
-
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex2.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex3,
-
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex3.toUpperCase()}
-          </div>
+          {createTipElement(hex2)}
+          {createTipElement(hex3)}
         </div>
       </div>
 
       <div className="isosceles-triangle">
         <img src={adjComplementaryHarmony} alt="adjComplementary" />
-        <div className="top-tip">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: rgbToHex(rgb),
-            }}
-          ></div>
-        </div>
+        <div className="top-tip">{topTip}</div>
         <div className="bottom-tips">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex4,
-
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex4.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex5,
-
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex5.toUpperCase()}
-          </div>
+          {createTipElement(hex4)}
+          {createTipElement(hex5)}
         </div>
       </div>
       <div className="analogue-triangle">
         <img src={analoguousHarmony} alt="analogue" />
-        <div className="top-tip">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: rgbToHex(rgb),
-            }}
-          ></div>
-        </div>
+        <div className="top-tip">{topTip}</div>
         <div className="bottom-tips">
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex7,
-
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex7.toUpperCase()}
-          </div>
-          <div
-            className="tip"
-            style={{
-              backgroundColor: hex6,
-
-              color: rgbToHex(contrastColorRgb),
-              textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
-            }}
-          >
-            {hex6.toUpperCase()}
-          </div>
+          {createTipElement(hex7)}
+          {createTipElement(hex6)}
         </div>
       </div>
     </div>

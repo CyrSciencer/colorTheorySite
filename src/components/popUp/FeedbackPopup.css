@@ -1,0 +1,35 @@
+.feedback-popup {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  transition: opacity 0.5s ease-out, bottom 0.5s ease-out;
+  min-width: 150px;
+  text-align: center;
+}
+
+.feedback-popup.hidden {
+  opacity: 0;
+  bottom: -60px; /* Animate out downwards further */
+  pointer-events: none;
+}
+
+.feedback-popup.success {
+  background-color: var(--color-success);
+  color: #fff;
+
+  font-size: 2rem;
+  -webkit-text-stroke: 0.5px #000;
+}
+
+.feedback-popup.error {
+  background-color: #000000; /* Red */
+}

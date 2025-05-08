@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import BigSquareComposition from "../squareComposition/BigSquareComposition";
 import colorManagementFuncs from "../../utilities/complementaries"; // Assuming complementaries.js exports 'opposite' directly
 import informationTranslationFuncs from "../../utilities/InformationTranslation"; // Import HSV functions
+import { writeToClipboard } from "../../utilities/clipboardUtils"; // Import clipboard utility
+import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // Import feedback context
 import "./ColorExploration.css"; // We'll create this for styling the layout and gradient
+import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+import { colorExploration } from "../../utilities/ContentPopUpText";
+
 const { opposite } = colorManagementFuncs;
 const { rgbToHsv, hsvToRgb, hexToRgb, rgbToHex } = informationTranslationFuncs;
+
 // Helper function to generate a random RGB color array
 const getRandomRgbArray = () => {
   const r = Math.floor(Math.random() * 256);
@@ -42,6 +48,7 @@ const ColorExploration = () => {
     hsvDerived: null,
   });
   const [inputHex, setInputHex] = useState("#ffffff"); // State for color input
+  const { showFeedback } = useFeedback(); // Use the feedback context hook
 
   // Function to calculate derived colors based on a starting RGB array
   const calculateDerivedColors = (startRgbArr) => {
@@ -99,8 +106,21 @@ const ColorExploration = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputHex]);
 
-  const handleColorInputChange = (event) => {
+  // Renamed from handleColorInputChange if using native input again
+  const handleNativeColorInputChange = (event) => {
     setInputHex(event.target.value);
+  };
+
+  // Function to handle copying hex codes to clipboard
+  const handleHexCopy = (hex) => {
+    writeToClipboard(hex)
+      .then(() => {
+        showFeedback(`Copied ${hex}!`, "success");
+      })
+      .catch((err) => {
+        showFeedback("Failed to copy!", "error");
+        console.error("Clipboard error: ", err);
+      });
   };
 
   // Prepare data for rendering
@@ -134,35 +154,69 @@ const ColorExploration = () => {
 
   return (
     <div className="color-exploration-container">
-      <h2>Color Exploration</h2>
-      <button onClick={handleGenerate}>Generate Random Colors</button>
-
+      <PopupWrapper
+        title="Outil d'exploration de couleurs"
+        content={colorExploration}
+      >
+        <h2>Outil d'exploration de couleurs</h2>
+      </PopupWrapper>
+      <div className="controls-section">
+        <button onClick={handleGenerate}>Génération aléatoire:</button>
+      </div>
       {/* Only render results section if initial generation has happened */}
       {colors.random && (
         <div className="results-section">
-          <h3>Generated Colors:</h3>
+          <h3>Couleurs générées:</h3>
           <div className="color-swatches">
-            {/* Random color swatch with input */}
-            <div style={{ backgroundColor: hexColors.random }}>
-              Random: {hexColors.random}
+            {/* Random color swatch */}
+            <div
+              className="color-swatch-container"
+              style={{ backgroundColor: hexColors.random }}
+            >
+              Couleur aléatoire:{" "}
+              <span
+                className="clickable-hex"
+                onClick={() => handleHexCopy(hexColors.random)}
+              >
+                {hexColors.random}
+              </span>
+              {/* Assuming native input if reverted */}
               <input
                 type="color"
-                value={hexColors.random} // Bind value to state hex
-                onChange={handleColorInputChange}
-                // Basic styling
+                value={hexColors.random}
+                onChange={handleNativeColorInputChange} // Use updated handler name
+                style={{ marginLeft: "10px" }} // Basic styling for spacing
               />
             </div>
             {/* Opposite color swatch */}
-            <div style={{ backgroundColor: hexColors.opposite }}>
-              Opposite: {hexColors.opposite}
+            <div
+              className="color-swatch-container"
+              style={{ backgroundColor: hexColors.opposite }}
+            >
+              Couleur opposée:
+              <span
+                className="clickable-hex"
+                onClick={() => handleHexCopy(hexColors.opposite)}
+              >
+                {hexColors.opposite}
+              </span>
             </div>
             {/* Derived color swatch */}
-            <div style={{ backgroundColor: hexColors.hsvDerived }}>
-              Derived: {hexColors.hsvDerived}
+            <div
+              className="color-swatch-container"
+              style={{ backgroundColor: hexColors.hsvDerived }}
+            >
+              Couleur dérivée:
+              <span
+                className="clickable-hex"
+                onClick={() => handleHexCopy(hexColors.hsvDerived)}
+              >
+                {hexColors.hsvDerived}
+              </span>
             </div>
           </div>
 
-          <h3>Compositions (All Permutations):</h3>
+          <h3>Compositions (Toutes les permutations):</h3>
           <div className="compositions-grid">
             {hexPermutations.map((perm, index) => (
               <BigSquareComposition

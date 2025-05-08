@@ -1,15 +1,32 @@
-.hex-input {
+.hex-input-component {
   border: 1px solid #000000;
   border-radius: 5px;
   margin: 5px;
-
-  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 110px;
+  width: 110px;
+  box-sizing: border-box;
 }
-.hex-input input {
+.hex-input-component span:hover {
+  cursor: pointer;
+}
+.hex-input-component p:hover {
+  cursor: pointer;
+}
+.hex-input-component > input {
   border-radius: 5px;
   width: 50px;
 
   padding: 5px;
-  margin: 5px;
+
   background: none;
+}
+.hex-input-component > input:focus {
+  background-color: #000000;
+}
+.hex-input-component > input:hover {
+  background-color: #ffffff;
 }

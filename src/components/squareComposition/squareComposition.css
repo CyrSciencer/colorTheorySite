@@ -16,25 +16,30 @@
   width: 35px;
   height: 35px;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
 }
 .outer {
-  width: 328px;
-  height: 328px;
+  width: 166px;
+  height: 166px;
   position: relative;
   z-index: 2;
   margin-top: 20px;
 }
 .middle {
-  width: 164px;
-  height: 164px;
+  width: 66px;
+  height: 66px;
   position: absolute;
+  margin-top: 20px;
   z-index: 3;
 }
 .inner {
-  width: 54px;
-  height: 54px;
+  width: 16px;
+  height: 16px;
   position: absolute;
+  margin-top: 20px;
   z-index: 4;
 }
 .square-container {

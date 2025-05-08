@@ -7,6 +7,7 @@
 }
 
 .color-exploration-container button {
+  font-family: "oldLangua", sans-serif;
   padding: 10px 15px;
   font-size: 1em;
   cursor: pointer;
@@ -60,4 +61,9 @@
 
 .gradient-display {
   margin-top: 10px;
+}
+.clickable-hex {
+  cursor: pointer;
+  font-size: 24px;
+  padding-top: 18px;
 }

@@ -7,6 +7,14 @@ import SquareComposition from "../components/squareComposition/SquareComposition
 import RatioSection from "../components/compositionHarmony/RatioSection";
 import ColorGradients from "../components/gradients/ColorGradients";
 import "./CompositionOfTwo.css";
+
+import PopupWrapper from "../utilities/PopupWrapper";
+import {
+  MélangeDeCouleurs,
+  HarmoniesDeRatio,
+  GradientsVersLesCouleursComplémentaires,
+} from "../utilities/ContentPopUpText";
+
 const { rgbToHex, hexToRgb, rgbToHsl, contrast } = InformationTranslationFuncs;
 
 const CompositionOfTwo = () => {
@@ -22,6 +30,7 @@ const CompositionOfTwo = () => {
   const [oppositeLightness2, setOppositeLightness2] = useState("#FFFFFF");
   const [mixedColor, setMixedColor] = useState("#FF00FF");
   const [mixedColorDataArray, setMixedColorDataArray] = useState([]);
+
   useEffect(() => {
     setRgb1(hexToRgb(hex1));
     setRgb2(hexToRgb(hex2));
@@ -79,9 +88,9 @@ const CompositionOfTwo = () => {
           "--color-3": mixedColor,
         }}
       >
-        <h1>Composition of Two Colors</h1>
+        <h1>Composition base bichrome</h1>
         <Link to="/">
-          <button>HomePage</button>
+          <button>Accueil</button>
         </Link>
         <div className="hex-inputs-container">
           <SquareComposition innerColor={hex2} outerColor={hex1} />
@@ -89,47 +98,85 @@ const CompositionOfTwo = () => {
             hex={hex1}
             setHex={setHex1}
             contrastColor={oppositeLightness1}
-            title="Color 1"
+            title="Couleur A"
           />
           <HexInput
             hex={hex2}
             setHex={setHex2}
             contrastColor={oppositeLightness2}
-            title="Color 2"
+            title="Couleur B"
           />
           <SquareComposition innerColor={hex1} outerColor={hex2} />
         </div>
       </header>
       <main>
-        <div className="container-mix">
-          <ColorMixer
-            hex1={hex1}
-            hex2={hex2}
-            mixedColor={mixedColor}
-            setMixedColor={setMixedColor}
-          />
+        <div className="content-section">
+          <PopupWrapper title="Mélange de couleurs" content={MélangeDeCouleurs}>
+            <h2>Mélange de couleurs</h2>
+          </PopupWrapper>
+          <div className="container-mix">
+            <ColorMixer
+              hex1={hex1}
+              hex2={hex2}
+              mixedColor={mixedColor}
+              setMixedColor={setMixedColor}
+            />
+          </div>
         </div>
-        <div className="container-ratios">
-          <RatioSection
-            title="Light Ratio Harmony"
-            ratioKey="lightRatioHarmony" // Pass the key for the light ratio
-            colorDataArray={mixedColorDataArray}
-            rgbVersHex={rgbToHex} // Pass the conversion function
-          />
-          <RatioSection
-            title="Dark Ratio Harmony"
-            ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
-            colorDataArray={mixedColorDataArray}
-            rgbVersHex={rgbToHex} // Pass the conversion function
-          />
+        <div className="content-section">
+          <PopupWrapper title="Harmonies de ratio" content={HarmoniesDeRatio}>
+            <h2>Harmonies de ratio</h2>
+          </PopupWrapper>
+          <div className="container-ratios">
+            <div className="ratio-section-container">
+              <RatioSection
+                title="Harmonie de ratio lumière"
+                ratioKey="lightRatioHarmony"
+                colorDataArray={mixedColorDataArray}
+                rgbVersHex={rgbToHex}
+              />
+              <RatioSection
+                title="Harmonie de ratio sombre"
+                ratioKey="darkRatioHarmony"
+                colorDataArray={mixedColorDataArray}
+                rgbVersHex={rgbToHex}
+              />
+            </div>
+          </div>
         </div>
-        <div className="container-gradients">
-          <ColorGradients rgb={rgb1} gradientTypeIndex={1} />
-          <ColorGradients rgb={rgb1} gradientTypeIndex={2} />
-          <ColorGradients rgb={rgb3} gradientTypeIndex={1} />
-          <ColorGradients rgb={rgb3} gradientTypeIndex={2} />
-          <ColorGradients rgb={rgb2} gradientTypeIndex={1} />
-          <ColorGradients rgb={rgb2} gradientTypeIndex={2} />
+        <div className="content-section">
+          <PopupWrapper
+            title="Gradients vers les couleurs complémentaires"
+            content={GradientsVersLesCouleursComplémentaires}
+          >
+            <h2>Gradients vers les couleurs complémentaires</h2>
+          </PopupWrapper>
+          <div className="container-gradients">
+            <div
+              className="gradient-sub-container"
+              style={{ "--color-border": hex1 }}
+            >
+              <ColorGradients rgb={rgb1} gradientTypeIndex={1} />
+              <p>Couleur A</p>
+              <ColorGradients rgb={rgb1} gradientTypeIndex={2} />
+            </div>
+            <div
+              className="gradient-sub-container"
+              style={{ "--color-border": mixedColor }}
+            >
+              <ColorGradients rgb={rgb3} gradientTypeIndex={1} />
+              <p>Couleur mélangée</p>
+              <ColorGradients rgb={rgb3} gradientTypeIndex={2} />
+            </div>
+            <div
+              className="gradient-sub-container"
+              style={{ "--color-border": hex2 }}
+            >
+              <ColorGradients rgb={rgb2} gradientTypeIndex={1} />
+              <p>Couleur B</p>
+              <ColorGradients rgb={rgb2} gradientTypeIndex={2} />
+            </div>
+          </div>
         </div>
       </main>
     </div>

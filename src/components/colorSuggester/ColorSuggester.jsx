@@ -1,11 +1,13 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import htmlColorNames from "../../utilities/htmlColorNames";
+import { writeToClipboard } from "../../utilities/clipboardUtils";
+import { useFeedback } from "../../contexts/FeedbackContext.jsx";
 import "./ColorSuggester.css";
 
 const ColorSuggester = ({ onSuggestionClick }) => {
   const [description, setDescription] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [copySuccessMessage, setCopySuccessMessage] = useState(""); // State for copy feedback
+  const { showFeedback } = useFeedback();
 
   const handleInputChange = (event) => {
     setDescription(event.target.value);
@@ -26,25 +28,20 @@ const ColorSuggester = ({ onSuggestionClick }) => {
 
   // Handle clicking on a suggestion
   const handleSuggestionClick = (hex) => {
-    // Copy the hex value to the clipboard
-    navigator.clipboard
-      .writeText(hex)
+    // Use clipboard utility
+    writeToClipboard(hex)
       .then(() => {
-        console.log(`Copied ${hex} to clipboard`); // Optional feedback
-        setCopySuccessMessage(`Copied ${hex}!`); // Set success message
-        // Clear the message after 2 seconds
-        setTimeout(() => setCopySuccessMessage(""), 2000);
+        showFeedback(`Copied ${hex}!`, "success"); // Trigger success popup via context
+        if (onSuggestionClick) {
+          onSuggestionClick(hex);
+        }
       })
       .catch((err) => {
-        console.error("Failed to copy text: ", err);
-        setCopySuccessMessage("Failed to copy!"); // Set error message (optional)
-        // Clear the message after 2 seconds
-        setTimeout(() => setCopySuccessMessage(""), 2000);
+        showFeedback("Failed to copy!", "error"); // Trigger error popup via context
+        // Keep console log for debugging
+        console.error("Clipboard error: ", err);
       });
 
-    if (onSuggestionClick) {
-      onSuggestionClick(hex); // Pass the selected hex value up
-    }
     // Optionally clear the input/suggestions after selection
     // setDescription('');
   };
@@ -57,11 +54,13 @@ const ColorSuggester = ({ onSuggestionClick }) => {
   return (
     <div className="color-suggester">
       <button onClick={toggleOpen} className="toggle-button">
-        {isOpen ? "Close" : "Color search"}
+        {isOpen ? "Fermer" : "Recherche par nom de couleur"}
       </button>
       {isOpen && (
         <>
-          <label htmlFor="color-description">Describe a Color:</label>
+          <label htmlFor="color-description">
+            Recherche par nom de couleur:
+          </label>
           <input
             type="text"
             id="color-description"
@@ -70,10 +69,6 @@ const ColorSuggester = ({ onSuggestionClick }) => {
             placeholder="e.g., sky blue, dark red, lime"
             autoComplete="off" // Prevent browser's default autocomplete
           />
-          {/* Display copy success message */}
-          {copySuccessMessage && (
-            <span className="copy-feedback">{copySuccessMessage}</span>
-          )}
 
           {suggestions.length > 0 && (
             <ul className="suggestions-list">
@@ -90,7 +85,9 @@ const ColorSuggester = ({ onSuggestionClick }) => {
                   ></span>
                   <div className="suggestion-details">
                     <span className="suggestion-name">{name}</span>
-                    <span className="suggestion-hex">{hex}</span>
+                    <span className="suggestion-hex clickable-hex">
+                      {hex.toUpperCase()}
+                    </span>
                   </div>
                 </li>
               ))}
