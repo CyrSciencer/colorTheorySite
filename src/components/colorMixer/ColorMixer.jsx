@@ -2,69 +2,46 @@ import React, { useState, useEffect } from "react";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import colorManagementFuncs from "../../utilities/complementaries"; // Contains hslMixer
 import SquareComposition from "../squareComposition/SquareComposition";
-import { writeToClipboard } from "../../utilities/clipboardUtils"; // Import clipboard utility
-import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // Import feedback context
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
 
 import "./ColorMixer.css";
 const { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } = InformationTranslationFuncs;
-const { inputOfTwoColorForAThird, opposite } = colorManagementFuncs; // Import opposite
+const { advancedColorBlend, opposite } = colorManagementFuncs; // Import opposite
 
 const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
   const [mixPercent, setMixPercent] = useState(50); // Default mix percentage
   const [contrastColor, setContrastColor] = useState("#FFFFFF"); // Default contrast
   const [shadowColorHex, setShadowColorHex] = useState("#000000"); // Added state for shadow
-  const { showFeedback } = useFeedback(); // Use the feedback context hook
-
-  // Function to handle copying hex codes to clipboard
-  const handleHexCopy = (hex) => {
-    if (!hex) return;
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success");
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err);
-      });
-  };
+  const copyWithFeedback = useClipboardWithFeedback(); // Use the custom hook
 
   useEffect(() => {
     try {
-      // Validate hex inputs slightly
       const validHex1 = /^#[0-9A-F]{6}$/i.test(hex1) ? hex1 : "#000000";
       const validHex2 = /^#[0-9A-F]{6}$/i.test(hex2) ? hex2 : "#FFFFFF";
 
       const rgb1 = hexToRgb(validHex1);
       const rgb2 = hexToRgb(validHex2);
 
-      // Perform the mix in HSL space
-      const RgbSet = inputOfTwoColorForAThird(rgb1, rgb2, mixPercent / 100); // Pass percentage as 0-1
-
-      // Convert back to RGB and then Hex
+      const RgbSet = advancedColorBlend(rgb1, rgb2, mixPercent / 100);
       const mixedRgb = RgbSet.rgb3;
-
       const currentMixedHex = rgbToHex(mixedRgb);
-      // console.log({ currentMixedHex });
       setMixedColor(currentMixedHex);
 
-      // Calculate contrast color for the mixed hex
       const brightness =
         (mixedRgb[0] * 299 + mixedRgb[1] * 587 + mixedRgb[2] * 114) / 1000;
       const currentContrastColor = brightness > 128 ? "#000000" : "#FFFFFF";
       setContrastColor(currentContrastColor);
 
-      // Calculate shadow color
       const contrastRgb = hexToRgb(currentContrastColor);
       const shadowRgb = opposite(contrastRgb);
       setShadowColorHex(rgbToHex(shadowRgb));
     } catch (error) {
       console.error("Error mixing colors:", error);
-      // Handle potential errors during conversion or mixing if necessary
-      setMixedColor("#808080"); // Reset to default on error
+      setMixedColor("#808080");
       setContrastColor("#FFFFFF");
-      setShadowColorHex("#000000"); // Reset shadow on error
+      setShadowColorHex("#000000");
     }
-  }, [hex1, hex2, mixPercent, setMixedColor]); // Added setMixedColor dependency
+  }, [hex1, hex2, mixPercent, setMixedColor]);
 
   const handleSliderChange = (event) => {
     setMixPercent(Number(event.target.value));
@@ -83,7 +60,7 @@ const ColorMixer = ({ hex1, hex2, mixedColor, setMixedColor }) => {
           couleur mélangée:{" "}
           <span
             className="clickable-hex"
-            onClick={() => handleHexCopy(mixedColor)}
+            onClick={() => copyWithFeedback(mixedColor, "Copied mixed color")}
           >
             {mixedColor.toUpperCase()}
           </span>

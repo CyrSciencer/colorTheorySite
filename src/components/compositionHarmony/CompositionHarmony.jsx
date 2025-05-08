@@ -6,7 +6,7 @@ import RatioSection from "./RatioSection";
 // Define the inner component to render a ratio section
 
 const CompositionHarmony = ({ hsl }) => {
-  const { contrast, hslToRgb, rgbToHsl, rgbVersHex } =
+  const { contrast, hslToRgb, rgbToHsl, rgbToHex } =
     InformationTranslationFuncs;
   const { complementary } = colorManagementFuncs;
   // 1. Calculate data for the base color
@@ -39,7 +39,6 @@ const CompositionHarmony = ({ hsl }) => {
         title="Ratio lumineux (Complémentaire)"
         ratioKey="lightRatioHarmony" // Pass the key for the light ratio
         colorDataArray={colorDataArrayofTwo}
-        rgbVersHex={rgbVersHex} // Pass the conversion function
       />
 
       {/* Use the inner component for the Dark Ratio section */}
@@ -47,7 +46,6 @@ const CompositionHarmony = ({ hsl }) => {
         title="Ratio sombre (Complémentaire)"
         ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
         colorDataArray={colorDataArrayofTwo}
-        rgbVersHex={rgbVersHex} // Pass the conversion function
       />
     </div>
   );

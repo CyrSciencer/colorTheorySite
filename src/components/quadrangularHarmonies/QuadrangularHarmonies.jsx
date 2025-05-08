@@ -4,8 +4,7 @@ import colorManagementFuncs from "../../utilities/complementaries";
 import { useState, useEffect } from "react";
 import tetradHarmony from "../../assets/svg/harmonie-tetradiques.svg";
 import pureSquareHarmony from "../../assets/svg/harmonie-carré.svg";
-import { writeToClipboard } from "../../utilities/clipboardUtils";
-import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
 
 const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const [hex2, setHex2] = useState("");
@@ -18,32 +17,38 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const { rgbToHex } = InformationTranslationFuncs;
   const { squareHarmony, rectangleHarmony1, rectangleHarmony2, opposite } =
     colorManagementFuncs;
-  const { showFeedback } = useFeedback();
-
-  const handleHexCopy = (hex) => {
-    if (!hex) return;
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success");
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err);
-      });
-  };
+  const copyWithFeedback = useClipboardWithFeedback();
 
   useEffect(() => {
-    console.log("squareHarmony =====>", squareHarmony(rgb));
-    console.log("rectangleHarmony1 =====>", rectangleHarmony1(rgb));
-    console.log("rectangleHarmony2 =====>", rectangleHarmony2(rgb));
-    setHex2(rgbToHex(squareHarmony(rgb).rgb2));
-    setHex3(rgbToHex(squareHarmony(rgb).rgb3));
-    setHex4(rgbToHex(squareHarmony(rgb).rgb4));
-    setHex5(rgbToHex(rectangleHarmony1(rgb).rgb2));
-    setHex6(rgbToHex(rectangleHarmony2(rgb).rgb2));
-    setHex7(rgbToHex(rectangleHarmony1(rgb).rgb4));
-    setHex8(rgbToHex(rectangleHarmony2(rgb).rgb4));
-  }, [rgb]);
+    if (rgb && rgb.length === 3) {
+      try {
+        setHex2(rgbToHex(squareHarmony(rgb).rgb2));
+        setHex3(rgbToHex(squareHarmony(rgb).rgb3));
+        setHex4(rgbToHex(squareHarmony(rgb).rgb4));
+        setHex5(rgbToHex(rectangleHarmony1(rgb).rgb2));
+        setHex6(rgbToHex(rectangleHarmony2(rgb).rgb2));
+        setHex7(rgbToHex(rectangleHarmony1(rgb).rgb4));
+        setHex8(rgbToHex(rectangleHarmony2(rgb).rgb4));
+      } catch (error) {
+        console.error("Error calculating quadrangular harmonies:", error);
+        setHex2("");
+        setHex3("");
+        setHex4("");
+        setHex5("");
+        setHex6("");
+        setHex7("");
+        setHex8("");
+      }
+    } else {
+      setHex2("");
+      setHex3("");
+      setHex4("");
+      setHex5("");
+      setHex6("");
+      setHex7("");
+      setHex8("");
+    }
+  }, [rgb, rgbToHex, squareHarmony, rectangleHarmony1, rectangleHarmony2]);
 
   const createTipElement = (hexValue) => {
     if (!hexValue) return null;
@@ -55,22 +60,26 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
           color: rgbToHex(contrastColorRgb),
           textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
         }}
-        onClick={() => handleHexCopy(hexValue)}
+        onClick={() => copyWithFeedback(hexValue)}
       >
         {hexValue.toUpperCase()}
       </div>
     );
   };
 
+  const baseHex = rgb && rgb.length === 3 ? rgbToHex(rgb) : "#000000";
   const baseColorTip = (
     <div
       className="tip"
       style={{
-        backgroundColor: rgbToHex(rgb),
+        backgroundColor: baseHex,
         color: rgbToHex(contrastColorRgb),
         textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
       }}
-    ></div>
+      onClick={() => copyWithFeedback(baseHex)}
+    >
+      {baseHex.toUpperCase()}
+    </div>
   );
 
   return (

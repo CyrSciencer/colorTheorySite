@@ -1,9 +1,9 @@
-//rgb est en format tableau [255,255,255]
-//hsl est en format objet {h:0,s:0,l:0}
-//hex est en format string #ffffff
-//hsv est en format objet {h:0,s:0,v:0}
+// RGB is an array format, e.g., [255, 255, 255]
+// HSL is an object format, e.g., {h:0, s:0, l:0}
+// HEX is a string format, e.g., "#ffffff"
+// HSV is an object format, e.g., {h:0, s:0, v:0}
 
-//Convertisseurs §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+// --- Color Converters ---
 const rgbToHsl = (rgb) => {
   let r = rgb[0] / 255,
     g = rgb[1] / 255,
@@ -70,6 +70,13 @@ const hslToRgb = (hsl) => {
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 };
 
+/**
+ * Converts an RGB color value array to a hex color string.
+ * Clamps RGB values to the valid 0-255 range.
+ * Returns #000000 for invalid input.
+ * @param {number[]} rgb - An array containing R, G, B values ([0-255]).
+ * @returns {string} The hex color string (e.g., "#RRGGBB").
+ */
 const rgbToHex = (rgb) => {
   //"Convertit un tableau de 3 valeurs RGB en code hexadécimal."
   // console.log({ rgb });
@@ -80,24 +87,35 @@ const rgbToHex = (rgb) => {
     return "#000000"; // Return black or another default for invalid input
   }
 
-  const [rouge, vert, bleu] = rgb;
+  const [inputR, inputG, inputB] = rgb;
 
-  // Assure que les valeurs sont dans la plage [0, 255]
-  const r = Math.max(0, Math.min(255, rouge));
-  const v = Math.max(0, Math.min(255, vert));
-  const b = Math.max(0, Math.min(255, bleu));
+  // Ensure values are clamped to the [0, 255] range
+  const clampedR = Math.max(0, Math.min(255, inputR));
+  const clampedG = Math.max(0, Math.min(255, inputG));
+  const clampedB = Math.max(0, Math.min(255, inputB));
 
-  // Convertit chaque composante en hexadécimal et s'assure qu'elle a deux chiffres
-  const hexRouge = r.toString(16).padStart(2, "0");
-  const hexVert = v.toString(16).padStart(2, "0");
-  const hexBleu = b.toString(16).padStart(2, "0");
+  // Convert each component to a two-digit hexadecimal string
+  const hexRed = clampedR.toString(16).padStart(2, "0");
+  const hexGreen = clampedG.toString(16).padStart(2, "0");
+  const hexBlue = clampedB.toString(16).padStart(2, "0");
 
-  // Concatène les composantes hexadécimales
-  const codeHex = "#" + hexRouge + hexVert + hexBleu;
-  return codeHex;
+  // Concatenate the hex components with a leading '#'
+  const hexCode = "#" + hexRed + hexGreen + hexBlue;
+  return hexCode;
 };
 
+/**
+ * Converts a hex color string to an RGB color value array.
+ * Returns [0, 0, 0] for invalid input format (#RRGGBB expected).
+ * @param {string} hex - The hex color string (e.g., "#RRGGBB").
+ * @returns {number[]} An array containing R, G, B values ([0-255]).
+ */
 const hexToRgb = (hex) => {
+  // Validate input format (#RRGGBB)
+  if (!/^#[0-9A-F]{6}$/i.test(hex)) {
+    console.warn("Invalid input to hexToRgb:", hex);
+    return [0, 0, 0]; // Return black as default for invalid input
+  }
   const rouge = parseInt(hex.slice(1, 3), 16);
   const vert = parseInt(hex.slice(3, 5), 16);
   const bleu = parseInt(hex.slice(5, 7), 16);
@@ -209,12 +227,23 @@ const rgbToHsv = (rgb) => {
   return hslToHsv(hsl);
 };
 
-//contrastes §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+// Helper function to calculate the minimum distance between two hues (0-360)
+const getMinHueDistance = (h1, h2) => {
+  const diff = Math.abs(h1 - h2);
+  return Math.min(diff, 360 - diff);
+};
+
+// --- Contrast Calculation ---
+
+/**
+ * Calculates a contrast score object based on hue and Goethe-inspired ratios.
+ * @param {object} hsl - Color in HSL format {h, s, l}.
+ * @returns {object} An object containing lightRatioHarmony and darkRatioHarmony.
+ */
 const contrast = (hsl) => {
   const colorHues = {
     yellow: { hue: 60, darkRatio: 5, lightRatio: 15 },
-    red: { hue: 0, darkRatio: 12, lightRatio: 8 },
-    red2: { hue: 360, darkRatio: 12, lightRatio: 8 },
+    red: { hue: 0, darkRatio: 12, lightRatio: 8 }, // Also covers hues near 360
     blue: { hue: 240, darkRatio: 15, lightRatio: 5 },
     green: { hue: 120, darkRatio: 9, lightRatio: 11 },
     purple: { hue: 280, darkRatio: 14, lightRatio: 6 },
@@ -223,56 +252,27 @@ const contrast = (hsl) => {
     magenta: { hue: 300, darkRatio: 11, lightRatio: 9 },
   };
 
-  // console.log(hsv.h);
+  // Calculate distances using the helper function
+  // Note: For red, its primary hue is 0. Distances to hues near 360 are naturally handled
+  // by getMinHueDistance (e.g., getMinHueDistance(350, 0) is 10).
+  // The original code had a special handling for red with 'red2' at hue 360.
+  // getMinHueDistance(hsl.h, colorHues.red.hue) will correctly find the shortest path.
   const distances = {
-    yellow: Math.min(
-      Math.abs(hsl.h - colorHues.yellow.hue),
-      Math.abs(hsl.h - colorHues.yellow.hue + 360),
-      Math.abs(hsl.h - colorHues.yellow.hue - 360)
-    ),
-    red: Math.min(
-      Math.abs(hsl.h - colorHues.red.hue),
-      Math.abs(hsl.h - colorHues.red2.hue)
-    ),
-    blue: Math.min(
-      Math.abs(hsl.h - colorHues.blue.hue),
-      Math.abs(hsl.h - colorHues.blue.hue + 360),
-      Math.abs(hsl.h - colorHues.blue.hue - 360)
-    ),
-    green: Math.min(
-      Math.abs(hsl.h - colorHues.green.hue),
-      Math.abs(hsl.h - colorHues.green.hue + 360),
-      Math.abs(hsl.h - colorHues.green.hue - 360)
-    ),
-    purple: Math.min(
-      Math.abs(hsl.h - colorHues.purple.hue),
-      Math.abs(hsl.h - colorHues.purple.hue + 360),
-      Math.abs(hsl.h - colorHues.purple.hue - 360)
-    ),
-    orange: Math.min(
-      Math.abs(hsl.h - colorHues.orange.hue),
-      Math.abs(hsl.h - colorHues.orange.hue + 360),
-      Math.abs(hsl.h - colorHues.orange.hue - 360)
-    ),
-    cyan: Math.min(
-      Math.abs(hsl.h - colorHues.cyan.hue),
-      Math.abs(hsl.h - colorHues.cyan.hue + 360),
-      Math.abs(hsl.h - colorHues.cyan.hue - 360)
-    ),
-    magenta: Math.min(
-      Math.abs(hsl.h - colorHues.magenta.hue),
-      Math.abs(hsl.h - colorHues.magenta.hue + 360),
-      Math.abs(hsl.h - colorHues.magenta.hue - 360)
-    ),
+    yellow: getMinHueDistance(hsl.h, colorHues.yellow.hue),
+    red: getMinHueDistance(hsl.h, colorHues.red.hue), // Handles wrap-around for red correctly
+    blue: getMinHueDistance(hsl.h, colorHues.blue.hue),
+    green: getMinHueDistance(hsl.h, colorHues.green.hue),
+    purple: getMinHueDistance(hsl.h, colorHues.purple.hue),
+    orange: getMinHueDistance(hsl.h, colorHues.orange.hue),
+    cyan: getMinHueDistance(hsl.h, colorHues.cyan.hue),
+    magenta: getMinHueDistance(hsl.h, colorHues.magenta.hue),
   };
-  // console.log(distances);
+
   const minDistance = Math.min(...Object.values(distances));
   const closestColor = Object.keys(distances).find(
     (key) => distances[key] === minDistance
   );
   const hsv = hslToHsv(hsl);
-  // console.log({ closestColor });
-  // console.log(colorHues[closestColor]);
   const { darkRatio, lightRatio } = colorHues[closestColor];
 
   // Intensity (hsl.s) boosts the effect of brightness (hsv.v) and lightness (hsl.l)
@@ -290,10 +290,30 @@ const contrast = (hsl) => {
 
   return { darkRatioHarmony, lightRatioHarmony, closestColor };
 };
-// determinatif chaud-froid §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+
+/**
+ * Determines the best contrasting text color (black or white) for a given background RGB.
+ * Uses a simple brightness threshold (sum of RGB > 382).
+ * @param {number[]} rgb - Background color as an RGB array [r, g, b].
+ * @returns {number[]} [0, 0, 0] for black or [255, 255, 255] for white.
+ */
+const getContrastingTextColorRgb = (rgb) => {
+  if (!Array.isArray(rgb) || rgb.length !== 3) {
+    console.warn("Invalid input to getContrastingTextColorRgb:", rgb);
+    return [255, 255, 255]; // Default to white for invalid input
+  }
+  let checklightness = 0;
+  rgb.forEach((val) => {
+    checklightness += val;
+  });
+  // Use the threshold from SingleColorPage & TripleHexInput1
+  return checklightness > 382 ? [0, 0, 0] : [255, 255, 255];
+};
+
+// --- Opposite Temperature Hue Gradient ---
 const ofOppositeTemperature = (rgb, numSteps = 18) => {
   const hsl = rgbToHsl(rgb);
-  const oppositeCenterHue = (hsl.h + 180) % 360; // Centre de l'arc opposé
+  const oppositeCenterHue = (hsl.h + 180) % 360; // Center of the opposite arc
 
   if (numSteps <= 0) {
     return [];
@@ -303,9 +323,9 @@ const ofOppositeTemperature = (rgb, numSteps = 18) => {
   }
 
   const gradientHues = [];
-  const arcExtent = 180; // Étendue de l'arc en degrés
-  const startHue = (oppositeCenterHue - arcExtent / 2 + 360) % 360; // Début de l'arc
-  const stepAngle = arcExtent / (numSteps - 1); // Angle entre chaque étape
+  const arcExtent = 180; // Extent of the arc in degrees (a semi-circle)
+  const startHue = (oppositeCenterHue - arcExtent / 2 + 360) % 360; // Start of the arc
+  const stepAngle = arcExtent / (numSteps - 1); // Angle between each step
 
   for (let i = 0; i < numSteps; i++) {
     const currentHue = (startHue + i * stepAngle) % 360;
@@ -314,7 +334,7 @@ const ofOppositeTemperature = (rgb, numSteps = 18) => {
 
   return gradientHues;
 };
-// de nom à hex §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+// --- Module Exports ---
 const InformationTranslationFuncs = {
   rgbToHsl,
   hslToRgb,
@@ -325,6 +345,7 @@ const InformationTranslationFuncs = {
   hsvToRgb,
   rgbToHsv,
   contrast,
+  getContrastingTextColorRgb,
   ofOppositeTemperature,
 };
 

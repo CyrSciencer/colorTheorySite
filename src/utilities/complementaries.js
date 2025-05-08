@@ -1,98 +1,126 @@
 import InformationTranslationFuncs from "./InformationTranslation.js";
-const { rgbToHsl, hslToRgb, contrast } = InformationTranslationFuncs;
+const { rgbToHsl, hslToRgb, contrast, rgbToHex } = InformationTranslationFuncs;
 import colorDataBase from "./colorDataBase.js";
-// Helper function: Calculates a saturation factor based on lightness.
-// Returns 1 (max saturation factor) when l=0.5, and 0 when l=0 or l=1.
+
+/**
+ * Helper function: Calculates a saturation factor based on lightness.
+ * Colors are most saturated at L=0.5 and least at L=0 or L=1.
+ * @param {number} l - Lightness value (0-1).
+ * @returns {number} Saturation factor (0-1).
+ */
 const saturationFromLightness = (l) => {
   const clampedL = Math.max(0, Math.min(1, l)); // Ensure l is [0, 1]
   return 1 - Math.abs(clampedL - 0.5) * 2;
 };
-//complementaire §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+
+/**
+ * Calculates the complementary color (180-degree hue shift).
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {number[]} Complementary color as RGB array.
+ */
 const complementary = (rgb) => {
   const hsl = rgbToHsl(rgb);
-  // Ajuste la teinte de 180 degrés
   hsl.h = (hsl.h + 180) % 360;
-  // Convertit l'objet hsl en tableau rgb
   const rgb2 = hslToRgb(hsl);
   return rgb2;
 };
+
+/**
+ * Calculates the opposite color (RGB inversion).
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {number[]} Opposite color as RGB array.
+ */
 const opposite = (rgb) => {
   const rgb2 = [255 - rgb[0], 255 - rgb[1], 255 - rgb[2]];
   return rgb2;
 };
-//thirds §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+
+/**
+ * Creates a "harmony" by swapping RGB components.
+ * Note: This is a non-standard definition of triadic harmony.
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {{rgb: number[], rgb2: number[], rgb3: number[]}} Object with original and swapped RGB arrays.
+ */
 const triangleHarmony = (rgb) => {
   const rgb2 = [rgb[1], rgb[2], rgb[0]];
   const rgb3 = [rgb[2], rgb[0], rgb[1]];
   return { rgb, rgb2, rgb3 };
 };
-const siblingOfComplementary = (rgb) => {
+
+// Helper to create a new RGB color by shifting the hue of a base HSL color
+const _createShiftedColorRgb = (baseHsl, hueShiftDegrees) => {
+  const newHue = (baseHsl.h + hueShiftDegrees + 360) % 360;
+  const newHsl = { h: newHue, s: baseHsl.s, l: baseHsl.l };
+  return hslToRgb(newHsl);
+};
+
+/**
+ * Calculates split complementary colors (+/- 15 degrees from complementary hue).
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {{rgb: number[], rgb2: number[], rgb3: number[]}} Object with original and two split complementary RGB arrays.
+ */
+const splitComplementary = (rgb) => {
   const complementaryColor = complementary(rgb);
   const hsl = rgbToHsl(complementaryColor);
-  // Ajuste la teinte de 15 degrés
-  const h2 = (hsl.h + 15) % 360;
-  // Ajuste la teinte de -15 degrés
-  const h3 = (hsl.h - 15 + 360) % 360; // fait en sorte que la teinte soit entre 0 et 360
-  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
-  const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
-  const rgb2 = hslToRgb(hsl2);
-  const rgb3 = hslToRgb(hsl3);
+  const rgb2 = _createShiftedColorRgb(hsl, 15);
+  const rgb3 = _createShiftedColorRgb(hsl, -15);
   return { rgb, rgb2, rgb3 };
 };
+
+/**
+ * Calculates analogous colors (+/- 30 degrees from base hue).
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {{rgb: number[], rgb2: number[], rgb3: number[]}} Object with original and two analogous RGB arrays.
+ */
 const analogue = (rgb) => {
   const hsl = rgbToHsl(rgb);
-  const h2 = (hsl.h + 30) % 360;
-  const h3 = (hsl.h - 30 + 360) % 360;
-  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
-  const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
-  const rgb2 = hslToRgb(hsl2);
-  const rgb3 = hslToRgb(hsl3);
+  const rgb2 = _createShiftedColorRgb(hsl, 30);
+  const rgb3 = _createShiftedColorRgb(hsl, -30);
   return { rgb, rgb2, rgb3 };
 };
-//fourths §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+
+/**
+ * Calculates square harmony colors (0, 90, 180, 270 degree hue shifts).
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {{rgb: number[], rgb2: number[], rgb3: number[], rgb4: number[]}} Object with base and three harmony RGB arrays.
+ */
 const squareHarmony = (rgb) => {
-  const hsl = rgbToHsl(rgb); // hsl.h is now [0, 360]
-  // Ajuste la teinte de 90 degrés
-  const h3 = (hsl.h + 90) % 360;
-  // Ajuste la teinte de 180 degrés
-  const h2 = (hsl.h + 180) % 360; // Complementary
-  // Ajuste la teinte de 270 degrés
-  const h4 = (hsl.h + 270) % 360;
-  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
-  const hsl3 = { h: h3, s: hsl.s, l: hsl.l };
-  const hsl4 = { h: h4, s: hsl.s, l: hsl.l };
-  const rgb2 = hslToRgb(hsl2);
-  const rgb3 = hslToRgb(hsl3);
-  const rgb4 = hslToRgb(hsl4);
+  const hsl = rgbToHsl(rgb);
+  const rgb2 = _createShiftedColorRgb(hsl, 180); // Complementary
+  const rgb3 = _createShiftedColorRgb(hsl, 90);
+  const rgb4 = _createShiftedColorRgb(hsl, 270);
   return { rgb, rgb2, rgb3, rgb4 };
 };
+
+/**
+ * Calculates rectangular harmony colors (base, +45 deg, complementary, comp +45 deg).
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {{rgb: number[], rgb2: number[], rgb3: number[], rgb4: number[]}} Object with base and three harmony RGB arrays.
+ */
 const rectangleHarmony1 = (rgb) => {
   const hsl = rgbToHsl(rgb);
-  // Ajuste la teinte de 45 degrés
-  const h2 = (hsl.h + 45) % 360;
-  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
-  const rgb2 = hslToRgb(hsl2);
-  const rgb3 = complementary(rgb); //complémentaire
-  const hsl3 = rgbToHsl(rgb3); // H est déjà la teinte complémentaire
-  const h4 = (hsl3.h + 45) % 360; // Ajoute le même angle à la teinte complémentaire
-  const hsl4 = { h: h4, s: hsl3.s, l: hsl3.l }; // Utilise s, l de la teinte complémentaire
-  const rgb4 = hslToRgb(hsl4);
+  const rgb2 = _createShiftedColorRgb(hsl, 45);
+  const rgb3 = complementary(rgb); // This is hsl + 180 deg
+  const hsl3 = rgbToHsl(rgb3);
+  const rgb4 = _createShiftedColorRgb(hsl3, 45);
   return { rgb, rgb2, rgb3, rgb4 };
 };
+
+/**
+ * Calculates rectangular harmony colors (base, -45 deg, complementary, comp -45 deg).
+ * @param {number[]} rgb - Input color as RGB array.
+ * @returns {{rgb: number[], rgb2: number[], rgb3: number[], rgb4: number[]}} Object with base and three harmony RGB arrays.
+ */
 const rectangleHarmony2 = (rgb) => {
   const hsl = rgbToHsl(rgb);
-  // Ajuste la teinte de -45 degrés
-  const h2 = (hsl.h - 45 + 360) % 360;
-  const hsl2 = { h: h2, s: hsl.s, l: hsl.l };
-  const rgb2 = hslToRgb(hsl2);
-  const rgb3 = complementary(rgb); //complémentaire
-  const hsl3 = rgbToHsl(rgb3); // H est déjà la teinte complémentaire
-  const h4 = (hsl3.h - 45 + 360) % 360; // Ajoute le même angle à la teinte complémentaire
-  const hsl4 = { h: h4, s: hsl3.s, l: hsl3.l }; // Utilise s, l de la teinte complémentaire
-  const rgb4 = hslToRgb(hsl4);
+  const rgb2 = _createShiftedColorRgb(hsl, -45);
+  const rgb3 = complementary(rgb); // This is hsl + 180 deg
+  const hsl3 = rgbToHsl(rgb3);
+  const rgb4 = _createShiftedColorRgb(hsl3, -45); // Apply shift to the complementary's HSL
   return { rgb, rgb2, rgb3, rgb4 };
 };
-// Autres §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+
+// --- Color Database Helpers ---
 // Helper to get only the color name from colorDataBase based on HSL Hue
 const getColorNameFromHue = (hue) => {
   for (const name in colorDataBase.colorName) {
@@ -169,29 +197,25 @@ const smoothStepInterpolate = (a, b, t) => {
   return a + (b - a) * smoothedT;
 };
 
-// Mixe deux couleurs HSL pour une troisième couleur
+/**
+ * Simple linear interpolation for HSL colors.
+ * Interpolates Hue using the shortest path.
+ * Clamps S and L between 0 and 1.
+ * @param {object} hsl1 - Start HSL color {h, s, l}.
+ * @param {object} hsl2 - End HSL color {h, s, l}.
+ * @param {number} percent - Interpolation factor (0-1).
+ * @returns {object} Interpolated HSL color {h, s, l}.
+ */
 const hslMixer = (hsl1, hsl2, percent) => {
-  // Interpolation de la teinte (chemin le plus court) - Attend h entre 0 et 360
   let deltaH = hsl2.h - hsl1.h;
-  if (deltaH > 180) {
-    deltaH -= 360;
-  } else if (deltaH <= -180) {
-    deltaH += 360;
-  }
+  if (deltaH > 180) deltaH -= 360;
+  else if (deltaH <= -180) deltaH += 360;
   let h = hsl1.h + deltaH * percent;
-  // Normalise la teinte pour être entre 0 et 360
   h = ((h % 360) + 360) % 360;
-
-  // Interpolation de la saturation - Attend s entre 0 et 1
   const s = hsl1.s + (hsl2.s - hsl1.s) * percent;
-
-  // Interpolation de la luminosité - Attend l entre 0 et 1
   const l = hsl1.l + (hsl2.l - hsl1.l) * percent;
-
-  // Clamp saturation et luminosité entre 0 et 1
   const clampedS = Math.max(0, Math.min(1, s));
   const clampedL = Math.max(0, Math.min(1, l));
-
   return { h: h, s: clampedS, l: clampedL };
 };
 
@@ -216,8 +240,22 @@ const getMidpointHue = (colorName) => {
   return (range.minHue + range.maxHue) / 2;
 };
 
-// Generates a third color by mixing two input RGB colors using rule-based logic
-const inputOfTwoColorForAThird = (rgb1, rgb2, percent) => {
+/**
+ * Generates a third color by mixing two input RGB colors using custom, rule-based logic.
+ * This aims to simulate aspects of pigment mixing rather than simple linear interpolation.
+ * Key features:
+ * - Calculates saturation factor based on lightness.
+ * - Applies a contrast bias based on Goethe-inspired ratios (via contrast function).
+ * - Skips a "forbidden zone" around mid-lightness (L=0.5) when interpolating lightness,
+ *   especially for highly saturated colors, to avoid muddy intermediates.
+ * - Uses smoothstep interpolation for saturation and lightness (after adjustment).
+ * - Hue is interpolated using the shortest path.
+ * @param {number[]} rgb1 - First input color as RGB array.
+ * @param {number[]} rgb2 - Second input color as RGB array.
+ * @param {number} percent - Interpolation factor (0-1).
+ * @returns {{rgb3: number[], hsl1: object, hsl2: object, hsl3: object}} Object containing the resulting mixed RGB (rgb3) and the HSL values of all three colors.
+ */
+const advancedColorBlend = (rgb1, rgb2, percent) => {
   const hsl1 = rgbToHsl(rgb1);
   const hsl2 = rgbToHsl(rgb2);
 
@@ -522,27 +560,16 @@ const inputOfTwoColorForAThird = (rgb1, rgb2, percent) => {
   const rgb3 = hslToRgb(resultHsl);
   return { rgb: rgb1, rgb2, rgb3 };
 };
-// crée une variation d'une couleur
-const createRGBVariations = (rgb) => {
-  // Crée deux tableaux pour stocker les variations de couleur
-  const rgb1 = [];
-  const rgb2 = [];
 
-  // Définit les distances de variation de couleur
-  const distance1 = 20; // Variation plus petite
-  const distance2 = 40; // Variation plus grande
-
-  // Calcule les variations de couleur pour chaque composante RGB
-  rgb.map((val, index) => {
-    // Utilise clamp pour simplifier
-    rgb1[index] = Math.max(0, Math.min(255, val + distance1));
-    rgb2[index] = Math.max(0, Math.min(255, val - distance2));
-  });
-
-  // Retourne l'objet contenant les trois tableaux de couleurs
-  return { rgb, rgb1, rgb2 };
-};
-// avec 2 couleurs et une couleur cible, génère 2 couleurs intermédiaires
+/**
+ * Generates two intermediate colors between rgb1 and rgb2, biased towards a target RGB.
+ * Uses linear interpolation factors adjusted by proximity to the target color.
+ * @param {number[]} rgb1 - Start color RGB.
+ * @param {number[]} rgb2 - End color RGB.
+ * @param {number[]} [targetRGB=[179, 148, 210]] - Default target is a lavender-like purple; chosen as an arbitrary distinct color. Target color RGB for biasing.
+ * @param {number} [factor=0.5] - Bias factor (0-1). Higher values bias more towards the target.
+ * @returns {{rgb3: number[], rgb4: number[]}} Object containing the two intermediate RGB colors.
+ */
 const generateIntermediateColors = (
   rgb1,
   rgb2,
@@ -566,19 +593,45 @@ const generateIntermediateColors = (
   return { rgb1, rgb2, rgb3, rgb4 };
 };
 
+/**
+ * Calculates the "true opposite" HSL color.
+ * The "true opposite" is defined as having the complementary hue of the original color,
+ * the original saturation, and an inverted version of the original lightness.
+ * @param {number[]} rgb - The input color as RGB array.
+ * @returns {object} The HSL representation {h, s, l} of the "true opposite" color.
+ */
+const getTrueOppositeHsl = (rgb) => {
+  const originalHsl = rgbToHsl(rgb);
+  const complementaryHue = (originalHsl.h + 180) % 360;
+  const invertedLightness = 1 - originalHsl.l;
+  return {
+    h: complementaryHue,
+    s: originalHsl.s, // Keep original saturation
+    l: invertedLightness, // Use inverted original lightness
+  };
+};
+
+// Export all functions together
 const colorManagementFuncs = {
+  saturationFromLightness,
   complementary,
   opposite,
   triangleHarmony,
-  siblingOfComplementary,
+  splitComplementary,
   analogue,
   squareHarmony,
   rectangleHarmony1,
   rectangleHarmony2,
-  inputOfTwoColorForAThird,
-  createRGBVariations,
-  generateIntermediateColors,
-  getColorInfo,
   getColorNameFromHue,
+  getColorInfo,
+  interpolateHueShortestPath,
+  smoothStepInterpolate,
+  hslMixer,
+  getMidpointHue,
+  advancedColorBlend,
+
+  generateIntermediateColors,
+  getTrueOppositeHsl,
 };
+
 export default colorManagementFuncs;

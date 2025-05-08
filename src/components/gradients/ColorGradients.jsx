@@ -4,15 +4,12 @@ import colorManagementFuncs from "../../utilities/complementaries"; // Added imp
 import "./gradient.css"; // Reusing the existing CSS for simplicity
 import { writeToClipboard } from "../../utilities/clipboardUtils";
 import { useFeedback } from "../../contexts/FeedbackContext.jsx";
-const { opposite } = colorManagementFuncs; // Destructure function
+import {
+  renderGradientCell,
+  renderGradientCellWithCssHsl,
+} from "./gradientUtils"; // Import new utility functions
 
-// Function to determine contrast color (black or white) based on RGB array
-const getContrastColor = (rgbArray) => {
-  // Simple brightness calculation (YIQ formula)
-  const brightness =
-    (rgbArray[0] * 299 + rgbArray[1] * 587 + rgbArray[2] * 114) / 1000;
-  return brightness > 128 ? [0, 0, 0] : [255, 255, 255]; // Return black or white RGB array
-};
+const { opposite } = colorManagementFuncs; // Destructure function
 
 const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
   const { showFeedback } = useFeedback();
@@ -64,32 +61,11 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
     return Array.from({ length: 10 }, (_, i) => {
       const currentHue = (startHue + i * hueStep + 360) % 360;
       const currentHsl = { h: currentHue, s: s1, l: l1 };
-      const currentRgb = InformationTranslationFuncs.hslToRgb
-        ? InformationTranslationFuncs.hslToRgb(currentHsl)
-        : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbToHex
-        ? InformationTranslationFuncs.rgbToHex(currentRgb)
-        : "#000000"; // Default hex
-      const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
-      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
-      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
-      const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
-        currentHsl.l * 100
-      }%)`;
-      return (
-        <div
-          key={`hue-${hueStep}-${i}`}
-          className="tip"
-          style={{
-            backgroundColor: cssHsl,
-            color: contrastHex,
-            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
-          }}
-          onClick={() => handleSuggestionClick(currentHex)}
-        >
-          {currentHex.toUpperCase()}
-        </div>
+      // Use renderGradientCellWithCssHsl for HSL-based gradients
+      return renderGradientCellWithCssHsl(
+        currentHsl,
+        `hue-${hueStep}-${i}`,
+        handleSuggestionClick
       );
     });
   };
@@ -99,32 +75,11 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
     return Array.from({ length: 10 }, (_, i) => {
       const currentL = i / 9; // Go from L=0 to L=1
       const currentHsl = { h: h1, s: s1, l: currentL };
-      const currentRgb = InformationTranslationFuncs.hslToRgb
-        ? InformationTranslationFuncs.hslToRgb(currentHsl)
-        : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbToHex
-        ? InformationTranslationFuncs.rgbToHex(currentRgb)
-        : "#000000"; // Default hex
-      const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
-      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
-      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
-      const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
-        currentHsl.l * 100
-      }%)`;
-      return (
-        <div
-          key={`lightness-${i}`}
-          className="tip"
-          style={{
-            backgroundColor: cssHsl,
-            color: contrastHex,
-            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
-          }}
-          onClick={() => handleSuggestionClick(currentHex)}
-        >
-          {currentHex.toUpperCase()}
-        </div>
+      // Use renderGradientCellWithCssHsl
+      return renderGradientCellWithCssHsl(
+        currentHsl,
+        `lightness-${i}`,
+        handleSuggestionClick
       );
     });
   };
@@ -134,32 +89,11 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
     return Array.from({ length: 10 }, (_, i) => {
       const currentS = i / 9; // Go from S=0 to S=1
       const currentHsl = { h: h1, s: currentS, l: l1 };
-      const currentRgb = InformationTranslationFuncs.hslToRgb
-        ? InformationTranslationFuncs.hslToRgb(currentHsl)
-        : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbToHex
-        ? InformationTranslationFuncs.rgbToHex(currentRgb)
-        : "#000000"; // Default hex
-      const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
-      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
-      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
-      const cssHsl = `hsl(${currentHsl.h}, ${currentHsl.s * 100}%, ${
-        currentHsl.l * 100
-      }%)`;
-      return (
-        <div
-          key={`saturation-${i}`}
-          className="tip"
-          style={{
-            backgroundColor: cssHsl,
-            color: contrastHex,
-            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
-          }}
-          onClick={() => handleSuggestionClick(currentHex)}
-        >
-          {currentHex.toUpperCase()}
-        </div>
+      // Use renderGradientCellWithCssHsl
+      return renderGradientCellWithCssHsl(
+        currentHsl,
+        `saturation-${i}`,
+        handleSuggestionClick
       );
     });
   };
@@ -171,28 +105,12 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
       const currentHsv = { h: hsv1.h, s: currentS, v: hsv1.v };
       const currentRgb = InformationTranslationFuncs.hsvToRgb
         ? InformationTranslationFuncs.hsvToRgb(currentHsv)
-        : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbToHex
-        ? InformationTranslationFuncs.rgbToHex(currentRgb)
-        : "#000000"; // Default hex
-      const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
-      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
-      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
-
-      return (
-        <div
-          key={`hsv-saturation-${i}`}
-          className="tip"
-          style={{
-            backgroundColor: currentHex,
-            color: contrastHex, // Use hex directly
-            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
-          }}
-          onClick={() => handleSuggestionClick(currentHex)}
-        >
-          {currentHex.toUpperCase()}
-        </div>
+        : [0, 0, 0];
+      // Use renderGradientCell for RGB-based gradients
+      return renderGradientCell(
+        currentRgb,
+        `hsv-saturation-${i}`,
+        handleSuggestionClick
       );
     });
   };
@@ -204,117 +122,82 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
       const currentHsv = { h: hsv1.h, s: hsv1.s, v: currentV };
       const currentRgb = InformationTranslationFuncs.hsvToRgb
         ? InformationTranslationFuncs.hsvToRgb(currentHsv)
-        : [0, 0, 0]; // Fallback RGB array
-      const currentHex = InformationTranslationFuncs.rgbToHex
-        ? InformationTranslationFuncs.rgbToHex(currentRgb)
-        : "#000000"; // Default hex
-      const contrastRgb = getContrastColor(currentRgb); // Pass array, receive array
-      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb); // Pass array
-      const shadowRgb = opposite(contrastRgb); // Calculate shadow RGB
-      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb); // Calculate shadow Hex
-
-      return (
-        <div
-          key={`hsv-value-${i}`}
-          className="tip"
-          style={{
-            backgroundColor: currentHex,
-            color: contrastHex, // Use hex directly
-            textShadow: `0 0 3px ${shadowHex}`, // Apply text shadow
-          }}
-          onClick={() => handleSuggestionClick(currentHex)}
-        >
-          {currentHex.toUpperCase()}
-        </div>
+        : [0, 0, 0];
+      // Use renderGradientCell
+      return renderGradientCell(
+        currentRgb,
+        `hsv-value-${i}`,
+        handleSuggestionClick
       );
     });
   };
 
   // --- Opposite Color Gradient --- //
   const renderOppositeGradient = (pathType) => {
-    const chosenRgb = rgb; // Original input color prop
+    const chosenRgb = rgb;
     const oppositeToChosenRgb = opposite(chosenRgb);
+    const startRgb = oppositeToChosenRgb; // Interpolate from opposite to original
+    const endRgb = chosenRgb; // to match visual flow if reversed by CSS
 
-    // The gradient should visually start with chosenRgb and end with oppositeToChosenRgb.
-    // If the display order of generated items is reversed (e.g., CSS flex-direction: row-reverse),
-    // then our data array must be generated from oppositeToChosenRgb to chosenRgb.
-    const startRgb = oppositeToChosenRgb; // Start of the data array for interpolation
-    const endRgb = chosenRgb; // End of the data array for interpolation
+    let startHslValue = null;
+    let endHslValue = null;
+    let canEffectivelyUseHslPath = false;
 
-    // Prepare HSL conversions if needed, with fallbacks
-    let startHsl = { h: 0, s: 0, l: 0 };
-    let endHsl = { h: 0, s: 0, l: 0 };
-    let canUseHslPath = false;
+    // Check if HSL path is viable (all necessary functions exist and conversions succeed)
+    if (
+      (pathType === "hsl_short" || pathType === "hsl_long") &&
+      InformationTranslationFuncs.rgbToHsv &&
+      InformationTranslationFuncs.hsvToHsl &&
+      InformationTranslationFuncs.hslToRgb
+    ) {
+      const startHsv = InformationTranslationFuncs.rgbToHsv(startRgb);
+      if (startHsv) {
+        startHslValue = InformationTranslationFuncs.hsvToHsl(startHsv);
+      }
 
-    if (pathType === "hsl_short" || pathType === "hsl_long") {
-      if (
-        InformationTranslationFuncs.rgbToHsv &&
-        InformationTranslationFuncs.hsvToHsl
-      ) {
-        const startHsvCheck = InformationTranslationFuncs.rgbToHsv(startRgb);
-        if (startHsvCheck) {
-          const startHslCheck =
-            InformationTranslationFuncs.hsvToHsl(startHsvCheck);
-          if (startHslCheck) startHsl = startHslCheck;
-        }
+      const endHsv = InformationTranslationFuncs.rgbToHsv(endRgb);
+      if (endHsv) {
+        endHslValue = InformationTranslationFuncs.hsvToHsl(endHsv);
+      }
 
-        const endHsvCheck = InformationTranslationFuncs.rgbToHsv(endRgb);
-        if (endHsvCheck) {
-          const endHslCheck = InformationTranslationFuncs.hsvToHsl(endHsvCheck);
-          if (endHslCheck) endHsl = endHslCheck;
-        }
-        // Check if primary conversion HSL->RGB is available
-        if (InformationTranslationFuncs.hslToRgb) {
-          canUseHslPath = true;
-        }
+      if (startHslValue && endHslValue) {
+        canEffectivelyUseHslPath = true;
       }
     }
 
     return Array.from({ length: 10 }, (_, i) => {
       const t = i / 9; // Interpolation factor from 0 to 1
       let currentRgbArray;
+      let currentHslForCell; // Will hold HSL if HSL path is used
 
-      if (
-        pathType === "rgb" ||
-        (!canUseHslPath &&
-          (pathType === "hsl_short" || pathType === "hsl_long"))
-      ) {
-        // RGB interpolation or fallback for HSL if conversions are missing
-        currentRgbArray = [
-          Math.round(startRgb[0] * (1 - t) + endRgb[0] * t),
-          Math.round(startRgb[1] * (1 - t) + endRgb[1] * t),
-          Math.round(startRgb[2] * (1 - t) + endRgb[2] * t),
-        ];
-      } else {
-        // HSL interpolation (hsl_short or hsl_long)
-        const h_start = startHsl.h;
-        const s_start = startHsl.s;
-        const l_start = startHsl.l;
+      const useHslPathForThisStep =
+        (pathType === "hsl_short" || pathType === "hsl_long") &&
+        canEffectivelyUseHslPath;
 
-        const h_end = endHsl.h;
-        const s_end = endHsl.s;
-        const l_end = endHsl.l;
+      if (useHslPathForThisStep) {
+        // HSL interpolation
+        const h_start = startHslValue.h;
+        const s_start = startHslValue.s;
+        const l_start = startHslValue.l;
+        const h_end = endHslValue.h;
+        const s_end = endHslValue.s;
+        const l_end = endHslValue.l;
 
-        // Interpolate S and L linearly
         const currentS = s_start * (1 - t) + s_end * t;
         const currentL = l_start * (1 - t) + l_end * t;
 
-        // Interpolate H with short or long path
         let delta_h = h_end - h_start;
-        let final_delta_h;
-
-        // Calculate shortest path delta for hue
         let final_delta_h_short = delta_h;
         if (final_delta_h_short > 180) final_delta_h_short -= 360;
         else if (final_delta_h_short < -180) final_delta_h_short += 360;
 
+        let final_delta_h;
         if (pathType === "hsl_short") {
           final_delta_h = final_delta_h_short;
         } else {
           // hsl_long
           if (final_delta_h_short === 0) {
-            // Handles cases where hues are identical
-            final_delta_h = 0; // Or 360 or -360 if a spin is desired, 0 means no hue change
+            final_delta_h = 0;
           } else {
             final_delta_h =
               final_delta_h_short > 0
@@ -322,59 +205,58 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
                 : final_delta_h_short + 360;
           }
         }
-
         const currentH = (h_start + final_delta_h * t + 360) % 360;
-        const currentHsl = { h: currentH, s: currentS, l: currentL };
+        currentHslForCell = { h: currentH, s: currentS, l: currentL };
 
-        currentRgbArray = InformationTranslationFuncs.hslToRgb
-          ? InformationTranslationFuncs.hslToRgb(currentHsl)
-          : [0, 0, 0]; // Fallback if hslToRgb is missing
+        // This conversion is safe due to canEffectivelyUseHslPath check
+        currentRgbArray =
+          InformationTranslationFuncs.hslToRgb(currentHslForCell);
+        if (!currentRgbArray) currentRgbArray = [0, 0, 0]; // Should not happen
+      } else {
+        // RGB interpolation (either pathType is "rgb" or HSL path is not viable)
+        currentRgbArray = [
+          Math.round(startRgb[0] * (1 - t) + endRgb[0] * t),
+          Math.round(startRgb[1] * (1 - t) + endRgb[1] * t),
+          Math.round(startRgb[2] * (1 - t) + endRgb[2] * t),
+        ];
       }
 
-      const currentHex = InformationTranslationFuncs.rgbToHex
-        ? InformationTranslationFuncs.rgbToHex(currentRgbArray)
-        : "#000000";
-      const contrastRgb = getContrastColor(currentRgbArray);
-      const contrastHex = InformationTranslationFuncs.rgbToHex(contrastRgb);
-      const shadowRgb = opposite(contrastRgb);
-      const shadowHex = InformationTranslationFuncs.rgbToHex(shadowRgb);
-
-      return (
-        <div
-          key={`opposite-${pathType}-${i}`}
-          className="tip"
-          style={{
-            backgroundColor: currentHex,
-            color: contrastHex,
-            textShadow: `0 0 3px ${shadowHex}`,
-          }}
-          onClick={() => handleSuggestionClick(currentHex)}
-        >
-          {currentHex.toUpperCase()}
-        </div>
-      );
+      // Decide which render function to use
+      if (useHslPathForThisStep && currentHslForCell) {
+        return renderGradientCellWithCssHsl(
+          currentHslForCell,
+          `opposite-${pathType}-${i}`,
+          handleSuggestionClick
+        );
+      } else {
+        return renderGradientCell(
+          currentRgbArray,
+          `opposite-${pathType}-${i}`,
+          handleSuggestionClick
+        );
+      }
     });
   };
 
   const renderSelectedGradient = () => {
     switch (gradientTypeIndex) {
-      case 1: // Hue Shortest Path
+      case 0: // Hue Shortest Path
         return renderHueGradient(hueStep_short, h_comp);
-      case 2: // Hue Longest Path
+      case 1: // Hue Longest Path
         return renderHueGradient(hueStep_long, h_comp);
-      case 3: // Lightness Gradient
+      case 2: // Lightness Gradient
         return renderLightnessGradient();
-      case 4: // Saturation Gradient
+      case 3: // Saturation Gradient
         return renderSaturationGradient();
-      case 5: // HSV Saturation Gradient
+      case 4: // HSV Saturation Gradient
         return renderHSVSaturationGradient();
-      case 6: // HSV Value Gradient
+      case 5: // HSV Value Gradient
         return renderHSVValueGradient();
-      case 7: // Opposite Color Gradient - RGB path
+      case 6: // Opposite Color Gradient - RGB path
         return renderOppositeGradient("rgb");
-      case 8: // Opposite Color Gradient - HSL Shortest Hue path
+      case 7: // Opposite Color Gradient - HSL Shortest Hue path
         return renderOppositeGradient("hsl_short");
-      case 9: // Opposite Color Gradient - HSL Longest Hue path
+      case 8: // Opposite Color Gradient - HSL Longest Hue path
         return renderOppositeGradient("hsl_long");
       default: // Default to Hue Shortest Path
         return renderHueGradient(hueStep_short, h_comp);

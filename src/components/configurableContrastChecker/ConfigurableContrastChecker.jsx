@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
 import HexInput from "../hexInput/HexInput";
 import RatioSection from "../compositionHarmony/RatioSection"; // Import RatioSection
-// Import utility functions from the correct path
-import InformationTranslationFuncs from "../../utilities/InformationTranslation.js"; // Corrected path to root utilities
-const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
+import InformationTranslationFuncs from "../../utilities/InformationTranslation.js";
+const { hexToRgb, rgbToHex } = InformationTranslationFuncs; // Removed unused contrast, rgbToHsl
 import "./configurableContrast.css";
-// import PopupTextBlock from "../popUp/PopupTextBlock"; // No longer needed directly
-import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
+import PopupWrapper from "../../utilities/PopupWrapper";
 import { configurableContrast } from "../../utilities/ContentPopUpText";
-
-// Destructuring assignment is no longer needed here
-// const { contrast, hexToRgb, rgbToHsl, rgbToHex } = InformationTranslationFuncs;
 
 const ConfigurableContrastChecker = () => {
   // State to hold the full colorDataArray

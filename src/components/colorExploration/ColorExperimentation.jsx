@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import BigSquareComposition from "../squareComposition/BigSquareComposition.jsx";
-
 import informationTranslationFuncs from "../../utilities/InformationTranslation.js";
-import { writeToClipboard } from "../../utilities/clipboardUtils.js";
-import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
+import {
+  getRandomRgbArray,
+  getPermutations,
+} from "../../utilities/arrayUtils.js"; // Import helpers
 import "./ColorExploration.css";
 import PopupWrapper from "../../utilities/PopupWrapper.jsx";
 import { colorExperimentation } from "../../utilities/ContentPopUpText";
 
 const { rgbToHsv, hsvToRgb, hexToRgb, rgbToHex } = informationTranslationFuncs;
 
+/*
 // Helper function to generate a random RGB color array
 const getRandomRgbArray = () => {
   const r = Math.floor(Math.random() * 256);
@@ -39,6 +42,7 @@ const getPermutations = (arr) => {
   });
   return allPermutations;
 };
+*/
 
 const ColorExperimentation = () => {
   const [color1, setColor1] = useState(null); // User-modifiable base color
@@ -48,7 +52,7 @@ const ColorExperimentation = () => {
   const [inputHex1, setInputHex1] = useState("#ffffff");
   const [inputHex2, setInputHex2] = useState("#000000"); // Initial placeholder
 
-  const { showFeedback } = useFeedback();
+  const copyWithFeedback = useClipboardWithFeedback();
 
   // Function to calculate color2 and color3 based on color1
   const calculateDerivedColors = (baseRgbArr) => {
@@ -158,15 +162,6 @@ const ColorExperimentation = () => {
     setInputHex2(event.target.value);
   };
 
-  const handleHexCopy = (hex) => {
-    writeToClipboard(hex)
-      .then(() => showFeedback(`Copied ${hex}!`, "success"))
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err);
-      });
-  };
-
   const hexColor1 = rgbToHex(color1) || inputHex1 || "#ffffff";
   const hexColor2 = rgbToHex(color2) || inputHex2 || "#000000";
   const hexColor3 = rgbToHex(color3) || "#000000";
@@ -210,7 +205,7 @@ const ColorExperimentation = () => {
               Couleur première:{" "}
               <span
                 className="clickable-hex"
-                onClick={() => handleHexCopy(hexColor1)}
+                onClick={() => copyWithFeedback(hexColor1, "Copied Color 1")}
               >
                 {hexColor1}
               </span>
@@ -230,7 +225,7 @@ const ColorExperimentation = () => {
               Couleur luminosité opposée:{" "}
               <span
                 className="clickable-hex"
-                onClick={() => handleHexCopy(hexColor2)}
+                onClick={() => copyWithFeedback(hexColor2, "Copied Color 2")}
               >
                 {hexColor2}
               </span>
@@ -250,7 +245,7 @@ const ColorExperimentation = () => {
               Couleur dérivée:{" "}
               <span
                 className="clickable-hex"
-                onClick={() => handleHexCopy(hexColor3)}
+                onClick={() => copyWithFeedback(hexColor3, "Copied Color 3")}
               >
                 {hexColor3}
               </span>

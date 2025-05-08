@@ -6,17 +6,14 @@ import "./FeedbackPopup.css";
  */
 const FeedbackPopup = ({ message, type = "success", isVisible }) => {
   // Base class
-  let popupClass = "feedback-popup";
-  console.log(message.replace("Copied ", "").replace("!", ""));
-  // Add type class (success/error)
-  if (type === "success" || type === "error") {
-    popupClass += ` ${type}`;
-  }
+  const baseClass = "feedback-popup";
+  const typeClass = type === "success" || type === "error" ? type : "";
+  const visibilityClass = isVisible ? "" : "hidden";
 
   // Add hidden class based on visibility
-  if (!isVisible) {
-    popupClass += " hidden";
-  }
+  const popupClass = `${baseClass} ${typeClass} ${visibilityClass}`
+    .trim()
+    .replace(/\\s+/g, " ");
 
   return (
     <div

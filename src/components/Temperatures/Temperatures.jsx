@@ -2,39 +2,39 @@ import InformationTranslationFuncs from "../../utilities/InformationTranslation"
 import { useState, useEffect } from "react";
 import "./temperature.css";
 import colorManagementFuncs from "../../utilities/complementaries";
-import { writeToClipboard } from "../../utilities/clipboardUtils";
-import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
+
 const { rgbToHex, hslToRgb, rgbToHsl, ofOppositeTemperature } =
   InformationTranslationFuncs;
 const { opposite } = colorManagementFuncs;
+
 const Temperatures = ({ rgb, contrastColorRgb }) => {
   const [oppositeTemperature, setOppositeTemperature] = useState(null);
   const [loading, setLoading] = useState(true);
   const [HSL, setHSL] = useState(null);
-  const { showFeedback } = useFeedback();
+  const copyWithFeedback = useClipboardWithFeedback();
 
-  const handleHexCopy = (hex) => {
-    if (!hex) return;
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success");
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err);
-      });
-  };
-
-  console.log(rgb);
   useEffect(() => {
-    setOppositeTemperature(ofOppositeTemperature(rgb));
-    setHSL(rgbToHsl(rgb));
+    if (
+      rgb &&
+      rgb.length === 3 &&
+      rgb.every((val) => typeof val === "number")
+    ) {
+      setOppositeTemperature(ofOppositeTemperature(rgb));
+      setHSL(rgbToHsl(rgb));
+    } else {
+      setOppositeTemperature([]);
+      setHSL({ h: 0, s: 0, l: 0 });
+      console.warn("Invalid RGB prop passed to Temperatures component:", rgb);
+    }
     setLoading(false);
   }, [rgb]);
 
-  return loading ? (
-    <div className="loading">Loading...</div>
-  ) : (
+  if (loading || !HSL || !oppositeTemperature) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  return (
     <div className="temperature-layout-wrapper">
       <div className="temperature-layout-container">
         <div
@@ -43,7 +43,7 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
             "--color": rgbToHex(rgb),
             "--color-opposite": rgbToHex(contrastColorRgb),
           }}
-          onClick={() => handleHexCopy(rgbToHex(rgb))}
+          onClick={() => copyWithFeedback(rgbToHex(rgb))}
         >
           {rgbToHex(rgb).toUpperCase()}
         </div>
@@ -58,6 +58,7 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
           {oppositeTemperature.map((temp, index) => {
             const neoHSL = { h: temp, s: HSL.s, l: HSL.l };
             const currentHex = rgbToHex(hslToRgb(neoHSL));
+            const contrastColorForChild = contrastColorRgb;
             return (
               <div
                 key={temp}
@@ -65,10 +66,10 @@ const Temperatures = ({ rgb, contrastColorRgb }) => {
                 style={{
                   "--i": index,
                   "--item-color": currentHex,
-                  "--color-opposite": rgbToHex(contrastColorRgb),
-                  "--shadow-color": rgbToHex(opposite(contrastColorRgb)),
+                  "--color-opposite": rgbToHex(contrastColorForChild),
+                  "--shadow-color": rgbToHex(opposite(contrastColorForChild)),
                 }}
-                onClick={() => handleHexCopy(currentHex)}
+                onClick={() => copyWithFeedback(currentHex)}
               >
                 {currentHex.toUpperCase()}
               </div>

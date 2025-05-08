@@ -18,14 +18,14 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const [hex6, setHex6] = useState("");
   const [hex7, setHex7] = useState("");
   const { rgbToHex } = InformationTranslationFuncs;
-  const { triangleHarmony, siblingOfComplementary, opposite, analogue } =
+  const { triangleHarmony, splitComplementary, opposite, analogue } =
     colorManagementFuncs;
   const { showFeedback } = useFeedback();
 
   const equilateralHarmony = triangleHarmony(rgb);
-  const siblingOfComplementaryHarmony = siblingOfComplementary(rgb);
+  const splitComplementaryHarmony = splitComplementary(rgb);
   const analogueHarmony = analogue(rgb);
-  console.log({ equilateralHarmony, siblingOfComplementaryHarmony });
+  console.log({ equilateralHarmony, splitComplementaryHarmony });
 
   const handleHexCopy = (hex) => {
     if (!hex) return;
@@ -68,8 +68,8 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   useEffect(() => {
     setHex2(rgbToHex(equilateralHarmony.rgb2));
     setHex3(rgbToHex(equilateralHarmony.rgb3));
-    setHex4(rgbToHex(siblingOfComplementaryHarmony.rgb2));
-    setHex5(rgbToHex(siblingOfComplementaryHarmony.rgb3));
+    setHex4(rgbToHex(splitComplementaryHarmony.rgb2));
+    setHex5(rgbToHex(splitComplementaryHarmony.rgb3));
     setHex6(rgbToHex(analogueHarmony.rgb2));
     setHex7(rgbToHex(analogueHarmony.rgb3));
 

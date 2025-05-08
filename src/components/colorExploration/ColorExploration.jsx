@@ -2,8 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import BigSquareComposition from "../squareComposition/BigSquareComposition";
 import colorManagementFuncs from "../../utilities/complementaries"; // Assuming complementaries.js exports 'opposite' directly
 import informationTranslationFuncs from "../../utilities/InformationTranslation"; // Import HSV functions
-import { writeToClipboard } from "../../utilities/clipboardUtils"; // Import clipboard utility
-import { useFeedback } from "../../contexts/FeedbackContext.jsx"; // Import feedback context
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
+import {
+  getRandomRgbArray,
+  getPermutations,
+} from "../../utilities/arrayUtils.js"; // Import helpers
 import "./ColorExploration.css"; // We'll create this for styling the layout and gradient
 import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
 import { colorExploration } from "../../utilities/ContentPopUpText";
@@ -12,6 +15,7 @@ const { opposite } = colorManagementFuncs;
 const { rgbToHsv, hsvToRgb, hexToRgb, rgbToHex } = informationTranslationFuncs;
 
 // Helper function to generate a random RGB color array
+/*
 const getRandomRgbArray = () => {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
@@ -40,6 +44,7 @@ const getPermutations = (arr) => {
   });
   return allPermutations;
 };
+*/
 
 const ColorExploration = () => {
   const [colors, setColors] = useState({
@@ -48,7 +53,7 @@ const ColorExploration = () => {
     hsvDerived: null,
   });
   const [inputHex, setInputHex] = useState("#ffffff"); // State for color input
-  const { showFeedback } = useFeedback(); // Use the feedback context hook
+  const copyWithFeedback = useClipboardWithFeedback(); // Use the hook
 
   // Function to calculate derived colors based on a starting RGB array
   const calculateDerivedColors = (startRgbArr) => {
@@ -111,18 +116,6 @@ const ColorExploration = () => {
     setInputHex(event.target.value);
   };
 
-  // Function to handle copying hex codes to clipboard
-  const handleHexCopy = (hex) => {
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success");
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err);
-      });
-  };
-
   // Prepare data for rendering
   const colorArray = [colors.random, colors.opposite, colors.hsvDerived].filter(
     Boolean
@@ -176,7 +169,9 @@ const ColorExploration = () => {
               Couleur aléatoire:{" "}
               <span
                 className="clickable-hex"
-                onClick={() => handleHexCopy(hexColors.random)}
+                onClick={() =>
+                  copyWithFeedback(hexColors.random, "Copied random color")
+                }
               >
                 {hexColors.random}
               </span>
@@ -196,7 +191,9 @@ const ColorExploration = () => {
               Couleur opposée:
               <span
                 className="clickable-hex"
-                onClick={() => handleHexCopy(hexColors.opposite)}
+                onClick={() =>
+                  copyWithFeedback(hexColors.opposite, "Copied opposite color")
+                }
               >
                 {hexColors.opposite}
               </span>
@@ -209,7 +206,9 @@ const ColorExploration = () => {
               Couleur dérivée:
               <span
                 className="clickable-hex"
-                onClick={() => handleHexCopy(hexColors.hsvDerived)}
+                onClick={() =>
+                  copyWithFeedback(hexColors.hsvDerived, "Copied derived color")
+                }
               >
                 {hexColors.hsvDerived}
               </span>

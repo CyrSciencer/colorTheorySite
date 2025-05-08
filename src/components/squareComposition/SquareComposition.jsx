@@ -1,6 +1,6 @@
 import "./squareComposition.css";
 const SquareComposition = ({ innerColor, outerColor }) => {
-  //   console.log({ innerColor, outerColor });
+  // console.log({ innerColor, outerColor });
   return (
     <div className="square-composition">
       <div

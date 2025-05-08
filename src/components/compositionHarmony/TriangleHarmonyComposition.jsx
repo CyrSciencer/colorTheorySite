@@ -6,8 +6,7 @@ import RatioSection from "./RatioSection";
 const TriangleHarmonyComposition = ({ hsl }) => {
   const { contrast, hslToRgb, rgbToHsl, rgbToHex } =
     InformationTranslationFuncs;
-  const { triangleHarmony, siblingOfComplementary, analogue } =
-    colorManagementFuncs;
+  const { triangleHarmony } = colorManagementFuncs;
 
   // 1. Calculate data for the base color
   const contrastSelected = contrast(hsl);
@@ -50,7 +49,6 @@ const TriangleHarmonyComposition = ({ hsl }) => {
         title="Ratio lumineux (Triangle)"
         ratioKey="lightRatioHarmony" // Pass the key for the light ratio
         colorDataArray={colorDataArrayofThree}
-        rgbToHex={rgbToHex} // Pass the conversion function
       />
 
       {/* Use the inner component for the Dark Ratio section */}
@@ -58,7 +56,6 @@ const TriangleHarmonyComposition = ({ hsl }) => {
         title="Ratio sombre (Triangle)"
         ratioKey="darkRatioHarmony" // Pass the key for the dark ratio
         colorDataArray={colorDataArrayofThree}
-        rgbToHex={rgbToHex} // Pass the conversion function
       />
     </div>
   );
