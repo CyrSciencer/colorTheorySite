@@ -235,7 +235,7 @@ const TripleHexInput1 = () => {
           <HexInput
             hex={hexC}
             setHex={setHexC}
-            title="Couleur C (Cible)"
+            title="Couleur cible"
             contrastColor={intermediateColors.contrastC}
           />
         </div>

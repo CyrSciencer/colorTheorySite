@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  font-family: "oldLangua", sans-serif;
+
   margin-bottom: 1rem; /* Add some space below */
 }
 .color-suggester input {

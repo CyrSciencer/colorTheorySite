@@ -147,7 +147,7 @@ const CompositionOfTwo = () => {
               style={{ "--color-border": hex1 }}
             >
               <ColorGradients rgb={rgb1} gradientTypeIndex={0} />
-              <p>Couleur A</p>
+              <h3>Couleur A</h3>
               <ColorGradients rgb={rgb1} gradientTypeIndex={1} />
             </div>
             <div
@@ -155,7 +155,7 @@ const CompositionOfTwo = () => {
               style={{ "--color-border": mixedColor }}
             >
               <ColorGradients rgb={rgb3} gradientTypeIndex={0} />
-              <p>Couleur mélangée</p>
+              <h3>Couleur mélangée</h3>
               <ColorGradients rgb={rgb3} gradientTypeIndex={1} />
             </div>
             <div
@@ -163,7 +163,7 @@ const CompositionOfTwo = () => {
               style={{ "--color-border": hex2 }}
             >
               <ColorGradients rgb={rgb2} gradientTypeIndex={0} />
-              <p>Couleur B</p>
+              <h3>Couleur B</h3>
               <ColorGradients rgb={rgb2} gradientTypeIndex={1} />
             </div>
           </div>

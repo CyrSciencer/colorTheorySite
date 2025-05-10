@@ -1,26 +1,30 @@
-.home-page-main {
-  padding: 20px 50px;
-}
-.home-page-main > .présentation {
+.home-page {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+}
 
-  border: 3px inset #000;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 30px;
-  width: 50%;
-}
-.home-page-nav > ul {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+.home-page header {
+  background-color: rgb(0, 0, 0);
   width: 100%;
-  /* border: 3px inset #000; */
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.home-page header h1 {
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  margin: 0;
+  padding: 10px 20px;
+  font-family: "OldLangua", serif;
+  font-size: 2.5rem;
+}
+
 .home-page h2 {
   font-size: 2rem;
   font-weight: bold;
@@ -29,18 +33,53 @@
   color: aliceblue;
   padding: 10px 20px;
   border-radius: 5px;
+  font-family: "OldLangua", serif;
 }
+
+.home-page main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.home-page-main {
+  padding: 20px 50px;
+}
+
+.home-page-main > .présentation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px inset #000;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  width: 50%;
+}
+
+.home-page-nav > ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .présentation > p:nth-child(2),
 .présentation > p:nth-child(3) {
   font-size: 16px;
   margin-bottom: 20px;
 }
+
 .présentation ul {
   list-style: square;
   padding: 0;
   margin: 0;
   font-size: 1rem;
 }
+
 .présentation ul li {
   margin-bottom: 10px;
   border: 2px outset #000;
@@ -48,12 +87,13 @@
   border-radius: 10px;
   padding: 10px;
 }
+
 .présentation span {
   font-weight: bold;
   font-size: 1.2rem;
 }
+
 .home-page-subText {
   font-size: 1rem;
-
   width: 100%;
 }

@@ -206,23 +206,23 @@ function SingleColorPage() {
           <PopupWrapper title="Gradients" content={Gradients}>
             <h2>Gradients</h2>
           </PopupWrapper>
-          <span>gradient 1 vers le complémentaire</span>
+          <h3>gradient 1 vers le complémentaire</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={0} />
-          <span>gradient 2 vers le complémentaire</span>
+          <h3>gradient 2 vers le complémentaire</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={1} />
-          <span>gradient 1 vers l'opposée</span>
+          <h3>gradient 1 vers l'opposée</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={7} />
-          <span>gradient 2 vers l'opposée</span>
+          <h3>gradient 2 vers l'opposée</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={8} />
-          <span>gradient vers l'opposée passant par le gris</span>
+          <h3>gradient vers l'opposée passant par le gris</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={6} />
-          <span>gradient de luminosité</span>
+          <h3>gradient de luminosité</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={2} />
-          <span>gradient de saturation</span>
+          <h3>gradient de saturation</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={5} />
-          <span>gradient 1 vers le moins saturé</span>
+          <h3>gradient 1 vers le moins saturé</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={3} />
-          <span>gradient 2 vers le moins saturé</span>
+          <h3>gradient 2 vers le moins saturé</h3>
           <ColorGradients rgb={rgb} gradientTypeIndex={4} />
         </div>
       </main>

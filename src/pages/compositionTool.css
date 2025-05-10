@@ -1,16 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Handlee:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+@font-face {
+  font-family: "OldLangua";
+  src: url("/fonts/OldLangua.ttf") format("truetype");
+}
+
+.composition-tool-page {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .triple-inputs-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
+
 .composition-tool-page header {
   background-color: rgb(0, 0, 0);
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .composition-tool-page header h1 {
   color: rgb(0, 0, 0);
   background-color: rgb(255, 255, 255);
+  margin: 0;
+  padding: 10px 20px;
+  font-family: "OldLangua", serif;
+  font-size: 2.5rem;
 }
+
 .composition-tool-page h2 {
   color: rgb(0, 0, 0);
   background-color: rgb(255, 255, 255);
@@ -20,4 +51,30 @@
   max-width: 600px;
   text-align: center;
   margin: 20px 0;
+  padding: 10px;
+  box-sizing: border-box;
+  font-family: "OldLangua", serif;
+  font-size: 2rem;
+}
+
+.composition-tool-page h3 {
+  font-family: "OldLangua", serif;
+  font-size: 1.5rem;
+}
+
+.composition-tool-page main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+/* Styles pour tous les autres éléments de texte */
+.composition-tool-page p,
+.composition-tool-page span,
+.composition-tool-page button,
+.composition-tool-page input,
+.composition-tool-page label {
+  font-family: "Handlee", serif;
+  font-size: 1em;
 }

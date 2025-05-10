@@ -11,7 +11,6 @@
 h5,
 .factor-slider-container label,
 .result-item span {
-  font-family: "oldLangua", sans-serif; /* Ensure custom font */
   font-size: 1.2rem; /* Example base size */
   margin-bottom: 0.5rem; /* Consistent spacing */
   text-align: center; /* Center align text elements */

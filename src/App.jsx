@@ -7,6 +7,7 @@ import CompositionTool from "./pages/CompositionTool";
 import ColorSuggester from "./components/colorSuggester/ColorSuggester";
 import "./App.css"; // Keep general styles if needed
 import { FeedbackProvider } from "./contexts/FeedbackContext";
+import "./styles/fonts.css";
 
 function App() {
   return (

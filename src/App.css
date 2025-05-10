@@ -11,13 +11,13 @@
 input,
 textarea,
 select {
-  font-family: sans-serif; /* Or specify another font stack like system default */
+  font-family: "Handlee", serif; /* Or specify another font stack like system default */
 }
 button {
-  font-family: "oldLangua", sans-serif;
+  font-family: "Handlee", serif;
 }
 body {
-  font-family: "oldLangua", sans-serif;
+  font-family: "Handlee", serif;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

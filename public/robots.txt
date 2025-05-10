@@ -1,0 +1,10 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://votre-domaine.com/sitemap.xml
+
+# Disallow admin or private routes if you have any
+Disallow: /admin/
+Disallow: /private/ 

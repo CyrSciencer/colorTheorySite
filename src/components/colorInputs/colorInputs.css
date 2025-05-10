@@ -41,7 +41,7 @@ label {
 }
 .hex-input-container > input {
   height: 20px;
-  width: 40%;
+  width: 50%;
   text-align: center;
   border-radius: 5px;
   border: 4px inset black;
