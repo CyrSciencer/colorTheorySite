@@ -29,7 +29,11 @@ const CompositionOfTwo = () => {
   const [contrastColorHex2, setContrastColorHex2] = useState("#FFFFFF");
   const [mixedColor, setMixedColor] = useState("#FF00FF");
   const [mixedColorDataArray, setMixedColorDataArray] = useState([]);
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
   useEffect(() => {
     const currentRgb1 = hexToRgb(hex1);
     const currentRgb2 = hexToRgb(hex2);

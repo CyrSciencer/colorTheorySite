@@ -6,7 +6,13 @@ import ConfigurableContrastChecker from "../components/configurableContrastCheck
 import ColorExploration from "../components/colorExploration/ColorExploration";
 import MultipleColorMixing from "../components/colorMixer/MultipleColorMixing";
 import ColorExperimentation from "../components/colorExploration/ColorExperimentation";
+import { useEffect } from "react";
 const CompositionTool = () => {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
   return (
     <section className="composition-tool-page">
       <header>

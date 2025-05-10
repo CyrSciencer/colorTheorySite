@@ -77,9 +77,7 @@ const QuadrangularHarmonies = ({ rgb, contrastColorRgb }) => {
         textShadow: `0 0 5px ${rgbToHex(opposite(contrastColorRgb))}`,
       }}
       onClick={() => copyWithFeedback(baseHex)}
-    >
-      {baseHex.toUpperCase()}
-    </div>
+    ></div>
   );
 
   return (

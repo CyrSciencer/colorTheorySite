@@ -55,6 +55,9 @@ const HexInput = ({
         style={{
           color: contrastColor, // Use contrast color for text
           textShadow: "0 0 3px var(--shadow-color)", // Same shadow as label
+          backgroundColor: hex, // Add background color matching the hex value
+          padding: "2px 6px", // Add some padding
+          borderRadius: "4px", // Add rounded corners
         }}
         aria-label={`${title} hex value`}
         onClick={handleHexClick} // Updated handler

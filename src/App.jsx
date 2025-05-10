@@ -20,7 +20,12 @@ function App() {
         <Route path="/composition-of-two" element={<CompositionOfTwo />} />
         <Route path="/composition-tool" element={<CompositionTool />} />
       </Routes>
-      <footer></footer>
+      <footer>
+        <p>Crée par Cyr ROUYRRE en Mai 2025</p>
+        <p>
+          Portfolio: <a href="https://portfolio-cyr-rouyrre.netlify.app">▶</a>
+        </p>
+      </footer>
     </FeedbackProvider>
   );
 }

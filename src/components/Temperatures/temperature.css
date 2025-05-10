@@ -84,3 +84,9 @@
   padding: 0.5em;
   box-sizing: border-box;
 }
+.center-item:hover,
+.circle-item:hover {
+  cursor: pointer;
+
+  border: 2px solid #000000;
+}

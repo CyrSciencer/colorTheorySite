@@ -62,6 +62,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
       style={{
         backgroundColor: rgbToHex(rgb),
       }}
+      onClick={() => handleHexCopy(rgbToHex(rgb))}
     ></div>
   );
 

@@ -39,7 +39,11 @@ function SingleColorPage() {
   const { rgbToHex, getContrastingTextColorRgb } = InformationTranslationFuncs;
   const { complementary, opposite } = colorManagementFuncs;
   const copyWithFeedback = useClipboardWithFeedback(); // Use the hook
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
   useEffect(() => {
     // console.log(funcs.opposite(rgb));
     setOppositeColorHex(rgbToHex(opposite(rgb)));
@@ -112,7 +116,11 @@ function SingleColorPage() {
             >
               <span
                 className="clickable-hex-inline"
-                /* Add specific styles if needed, otherwise rely on parent */
+                style={{
+                  backgroundColor: complementaryColorHex,
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                }}
               >
                 {complementaryColorHex.toUpperCase()}
               </span>

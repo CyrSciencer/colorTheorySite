@@ -19,7 +19,7 @@ const FeedbackPopup = ({ message, type = "success", isVisible }) => {
     <div
       className={popupClass}
       style={{
-        "--color-success": message.replace("Copied ", "").replace("!", ""),
+        "--color-success": message.split(" ").pop().replace("!", ""),
       }}
     >
       {message}

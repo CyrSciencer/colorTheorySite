@@ -243,6 +243,10 @@ const ColorInputs = ({
           }
           maxLength="7"
           className="hex-input"
+          style={{
+            backgroundColor: hex,
+            color: oppositeColor,
+          }}
         />
       </div>
     </>
