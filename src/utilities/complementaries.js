@@ -264,6 +264,7 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
   const sfl2 = saturationFromLightness(hsl2.l);
 
   // --- Calculate contrast bias ---
+  // Les couleurs sombres sont toujours plus "fortes" dans les mélanges
   const contrast1 = contrast(hsl1);
   const contrast2 = contrast(hsl2);
   const ratio1 = contrast1.darkRatioHarmony;
@@ -281,25 +282,24 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
         : midpoint + ((percent - 0.5) / 0.5) * (1 - midpoint);
     adjustedPercent = Math.max(0, Math.min(1, adjustedPercent));
   }
-  // --- End contrast bias calculation ---
 
   // --- Calculate Lightness with Forbidden Zone Skipping ---
+  // La zone interdite est utilisée pour éviter une couleur de mélange trop saturée
   const max_sfl = Math.max(sfl1, sfl2);
-  const forbidden_half_width = Math.max(0, (1 - max_sfl) / 2); // Ensure non-negative
+  const forbidden_half_width = Math.max(0, (1 - max_sfl) / 2);
   const lower_forbidden_bound = 0.5 - forbidden_half_width;
   const upper_forbidden_bound = 0.5 + forbidden_half_width;
 
   const is_crossing =
     (hsl1.l < lower_forbidden_bound && hsl2.l > upper_forbidden_bound) ||
     (hsl1.l > upper_forbidden_bound && hsl2.l < lower_forbidden_bound);
-  const is_relevant = forbidden_half_width > 0.01; // Avoid trivial gaps
+  const is_relevant = forbidden_half_width > 0.01;
 
   let finalL_before_darkening;
-  const smooth_adj_p = smoothStepInterpolate(0, 1, adjustedPercent); // Apply smoothstep early
+  const smooth_adj_p = smoothStepInterpolate(0, 1, adjustedPercent);
 
   if (is_crossing && is_relevant) {
-    // Remap interpolation to skip the forbidden zone [lower_bound, upper_bound]
-    const l_start_orig = hsl1.l; // Keep original start for direction check
+    const l_start_orig = hsl1.l;
     const l_end_orig = hsl2.l;
     const l_start = Math.min(l_start_orig, l_end_orig);
     const l_end = Math.max(l_start_orig, l_end_orig);
@@ -309,8 +309,6 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
     const total_allowed_len = len1 + len2;
 
     if (total_allowed_len <= 1e-6) {
-      // Effectively no allowed range
-      // Snap to the nearest allowed bound based on the starting side
       finalL_before_darkening =
         l_start_orig < 0.5 ? lower_forbidden_bound : upper_forbidden_bound;
     } else {
@@ -318,36 +316,27 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
 
       let mapped_l;
       if (smooth_adj_p <= prop1) {
-        // Map to first segment [l_start, lower_forbidden_bound]
-        const scaled_p1 = prop1 > 1e-6 ? smooth_adj_p / prop1 : 0; // Avoid division by zero
+        const scaled_p1 = prop1 > 1e-6 ? smooth_adj_p / prop1 : 0;
         mapped_l = l_start + scaled_p1 * (lower_forbidden_bound - l_start);
       } else {
-        // Map to second segment [upper_forbidden_bound, l_end]
         const scaled_p2 =
-          prop1 < 1.0 - 1e-6 ? (smooth_adj_p - prop1) / (1 - prop1) : 1; // Avoid division by zero
+          prop1 < 1.0 - 1e-6 ? (smooth_adj_p - prop1) / (1 - prop1) : 1;
         mapped_l =
           upper_forbidden_bound + scaled_p2 * (l_end - upper_forbidden_bound);
       }
-      // Need to ensure the final value reflects the original direction if hsl1.l > hsl2.l
-      // If we started high and ended low, the mapped value should be mirrored
       finalL_before_darkening =
         l_start_orig > l_end_orig ? l_end + l_start - mapped_l : mapped_l;
     }
   } else {
-    // Standard smooth interpolation if no relevant crossing
-    // Use original start/end points for interpolation direction
     finalL_before_darkening = hsl1.l + (hsl2.l - hsl1.l) * smooth_adj_p;
-    // finalL_before_darkening = smoothStepInterpolate(hsl1.l, hsl2.l, adjustedPercent); // Old way
   }
-  // Clamp intermediate lightness just in case
   finalL_before_darkening = Math.max(0, Math.min(1, finalL_before_darkening));
-  // --- End Lightness Calculation ---
 
   // --- Determine Final HSL based on rules ---
   let resultHsl = { h: 0, s: 0, l: 0 };
   let ruleApplied = false;
 
-  // Calculate Final Saturation (same for all rules now)
+  // Calculate Final Saturation
   const finalS = smoothStepInterpolate(sfl1, sfl2, adjustedPercent);
 
   // --- Apply Rules ---
@@ -355,32 +344,30 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
   const info2 = getColorInfo(hsl2);
 
   if (!info1 || !info2) {
-    // Fallback: Use calculated L, no specific darkening
     console.warn("Color category not found, using simple mix logic for L");
     const fallbackH = interpolateHueShortestPath(
       hsl1.h,
       hsl2.h,
       adjustedPercent
     );
-    let fallbackL = finalL_before_darkening; // Use the calculated L
-    // fallbackL *= 0.95; // Optional fallback darkening removed for now
+    let fallbackL = finalL_before_darkening;
     resultHsl = {
       h: fallbackH,
       s: finalS,
       l: Math.max(0, Math.min(1, fallbackL)),
     };
-    ruleApplied = true; // Treat fallback as a rule application
+    ruleApplied = true;
   }
   // Rule 0: Same Category
   else if (getColorNameFromHue(hsl1.h) === getColorNameFromHue(hsl2.h)) {
+    // La hue est à équidistance des deux
     const h = interpolateHueShortestPath(hsl1.h, hsl2.h, adjustedPercent);
-    let finalL = finalL_before_darkening * 0.95; // Apply rule darkening
+    let finalL = finalL_before_darkening * 0.95;
     resultHsl = { h: h, s: finalS, l: Math.max(0, Math.min(1, finalL)) };
     ruleApplied = true;
   }
   // Rule 1: Primary + Primary
   else if (info1.type === "primary" && info2.type === "primary") {
-    // Hue calculation (using smooth_adj_p for midpoint check)
     let secondaryName = null;
     for (const name in colorDataBase.colorComp) {
       const comp = colorDataBase.colorComp[name];
@@ -393,41 +380,62 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
         break;
       }
     }
+
     let calculatedHue;
     if (secondaryName) {
-      const targetMidpointHue = getMidpointHue(secondaryName);
-      const h1 = hsl1.h;
-      const h2 = hsl2.h;
-      // Use smooth_adj_p for targeting midpoint
-      if (Math.abs(smooth_adj_p - 0.5) < 1e-6) {
-        // Check proximity to 0.5
-        calculatedHue = targetMidpointHue;
-      } else if (smooth_adj_p < 0.5) {
-        const scaledPercent = smooth_adj_p / 0.5; // Map [0, 0.5) -> [0, 1)
+      // Calcul de la hue subjective pour chaque couleur primaire
+      const range1 = colorDataBase.colorName[info1.name];
+      const range2 = colorDataBase.colorName[info2.name];
+      const rangeSecondary = colorDataBase.colorName[secondaryName];
+
+      // Calcul des valeurs subjectives
+      const getSubjectiveValue = (hue, range) => {
+        if (range.minHue2 !== undefined) {
+          // Cas spécial pour le rouge
+          if (hue >= range.minHue2) {
+            return (hue - range.minHue2) / (range.maxHue2 - range.minHue2);
+          } else {
+            return (hue - range.minHue) / (range.maxHue - range.minHue);
+          }
+        }
+        return (hue - range.minHue) / (range.maxHue - range.minHue);
+      };
+
+      const subj1 = getSubjectiveValue(hsl1.h, range1);
+      const subj2 = getSubjectiveValue(hsl2.h, range2);
+      const avgSubj = (subj1 + subj2) / 2;
+
+      // Calcul de la hue cible dans la plage de la couleur secondaire
+      const hueRange = rangeSecondary.maxHue - rangeSecondary.minHue;
+      const targetHue = rangeSecondary.minHue + hueRange * avgSubj;
+
+      // Création d'un dégradé fluide
+      if (smooth_adj_p < 0.5) {
+        // Dégradé de la première couleur vers la cible
+        const scaledPercent = smooth_adj_p * 2; // Map [0, 0.5) -> [0, 1)
         calculatedHue = interpolateHueShortestPath(
-          h1,
-          targetMidpointHue,
+          hsl1.h,
+          targetHue,
           scaledPercent
         );
       } else {
-        // smooth_adj_p > 0.5
-        const scaledPercent = (smooth_adj_p - 0.5) / 0.5; // Map (0.5, 1] -> (0, 1]
+        // Dégradé de la cible vers la deuxième couleur
+        const scaledPercent = (smooth_adj_p - 0.5) * 2; // Map [0.5, 1] -> [0, 1]
         calculatedHue = interpolateHueShortestPath(
-          targetMidpointHue,
-          h2,
+          targetHue,
+          hsl2.h,
           scaledPercent
         );
       }
     } else {
-      // Fallback hue interpolation
       calculatedHue = interpolateHueShortestPath(
         hsl1.h,
         hsl2.h,
         adjustedPercent
       );
     }
-    // --- End Hue Logic ---
-    let finalL = finalL_before_darkening * 0.85; // Apply rule darkening
+
+    let finalL = finalL_before_darkening * 0.85;
     resultHsl = {
       h: calculatedHue,
       s: finalS,
@@ -446,11 +454,10 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
 
     let calculatedHue;
     let finalL;
-    let finalS_rule2; // Use a specific variable for S in this rule
+    let finalS_rule2;
 
-    // Case 2a: Addition CONTAINS Primary
     if (additionInfo.primaries.includes(primaryInfo.name)) {
-      // Hue calculation: Lean towards primary
+      // Création d'un dégradé fluide vers la couleur primaire
       const baseHue = interpolateHueShortestPath(
         hsl1.h,
         hsl2.h,
@@ -461,39 +468,25 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
       if (deltaH > 180) deltaH -= 360;
       if (deltaH <= -180) deltaH += 360;
       calculatedHue = (((baseHue + deltaH * 0.3) % 360) + 360) % 360;
-      // --- End Hue ---
-      finalL = finalL_before_darkening * 0.95; // Apply rule darkening
-      // Use standard S calculation for Case 2a
-      finalS_rule2 = finalS; // finalS is calculated globally earlier
-    }
-    // Case 2b: Addition does NOT contain Primary (Complementary mixing effect)
-    else {
+      finalL = finalL_before_darkening * 0.95;
+      finalS_rule2 = finalS;
+    } else {
+      // Création d'un dégradé fluide avec effet de neutralisation
       calculatedHue = interpolateHueShortestPath(
         hsl1.h,
         hsl2.h,
         adjustedPercent
-      ); // Normal hue interp
-
-      // Calculate complementarity factor
+      );
       let deltaHComp = hsl1.h - hsl2.h;
       if (deltaHComp > 180) deltaHComp -= 360;
       if (deltaHComp <= -180) deltaHComp += 360;
       const complementarityFactor = Math.abs(deltaHComp) / 180.0;
-      // Use original percent for peak effect strength
       const effectStrength = 1 - Math.abs(percent - 0.5) * 1.6;
-
-      // Darkening/Desaturation factor (peaks at 1 for complements at midpoint)
       const neutralizationFactor = complementarityFactor * effectStrength;
-
-      // Calculate final Lightness: Darken towards 0 based on neutralization
       finalL = finalL_before_darkening * (1 - neutralizationFactor);
-
-      // Calculate final Saturation: Desaturate based on neutralization
-      // Start with the standard interpolated SFL (globally calculated finalS)
-      // Reduce saturation based on neutralization factor
       finalS_rule2 = finalS * (1 - neutralizationFactor);
     }
-    // Assign H, calculated L, and rule-specific S (finalS_rule2)
+
     resultHsl = {
       h: calculatedHue,
       s: finalS_rule2,
@@ -503,42 +496,29 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
   }
   // Rule 3: Addition + Addition
   else if (info1.type === "addition" && info2.type === "addition") {
-    // Hue calculation: potentially lean towards dominant primary
-    let currentHue = interpolateHueShortestPath(
+    // Création d'un dégradé fluide entre les deux couleurs
+    const rgb3 = [
+      Math.round((rgb1[0] + rgb2[0]) / 2),
+      Math.round((rgb1[1] + rgb2[1]) / 2),
+      Math.round((rgb1[2] + rgb2[2]) / 2),
+    ];
+    const hsl3 = rgbToHsl(rgb3);
+
+    // Interpolation fluide entre les deux couleurs
+    const calculatedHue = interpolateHueShortestPath(
       hsl1.h,
       hsl2.h,
       adjustedPercent
     );
-    const commonPrimaries = info1.primaries.filter((p) =>
-      info2.primaries.includes(p)
-    );
-    let targetHue = currentHue; // Default
-    if (commonPrimaries.length === 1) {
-      const dominantPrimaryName = commonPrimaries[0];
-      targetHue = getMidpointHue(dominantPrimaryName);
-    } // Add other hue logic for A+A if needed (e.g., based on all 3 primaries)
 
-    let calculatedHue;
-    if (targetHue !== currentHue) {
-      // Lean hue if target identified
-      let deltaH = targetHue - currentHue;
-      if (deltaH > 180) deltaH -= 360;
-      if (deltaH <= -180) deltaH += 360;
-      calculatedHue = (((currentHue + deltaH * 0.3) % 360) + 360) % 360;
-    } else {
-      calculatedHue = currentHue;
-    }
-    // --- End Hue ---
-    let finalL = finalL_before_darkening * 0.9; // Apply rule darkening
     resultHsl = {
       h: calculatedHue,
-      s: finalS,
-      l: Math.max(0, Math.min(1, finalL)),
+      s: hsl3.s,
+      l: hsl3.l,
     };
     ruleApplied = true;
   }
 
-  // --- Fallback if no rule applied (Should ideally not be reached) ---
   if (!ruleApplied) {
     console.warn("Mixing rule logic failed, using simple mix.");
     const fallbackH = interpolateHueShortestPath(
@@ -546,7 +526,7 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
       hsl2.h,
       adjustedPercent
     );
-    let fallbackL = finalL_before_darkening; // Use the calculated L
+    let fallbackL = finalL_before_darkening;
     resultHsl = {
       h: fallbackH,
       s: finalS,
@@ -554,7 +534,6 @@ const advancedColorBlend = (rgb1, rgb2, percent) => {
     };
   }
 
-  // Final Clamping (S needs it, L should be clamped in rules)
   resultHsl.s = Math.max(0, Math.min(1, resultHsl.s));
 
   const rgb3 = hslToRgb(resultHsl);
