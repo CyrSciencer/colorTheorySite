@@ -31,8 +31,11 @@ const complementary = (rgb) => {
  * @returns {number[]} Opposite color as RGB array.
  */
 const opposite = (rgb) => {
-  const rgb2 = [255 - rgb[0], 255 - rgb[1], 255 - rgb[2]];
-  return rgb2;
+  const rgb2 = complementary(rgb);
+  const hsl = rgbToHsl(rgb2);
+  hsl.l = 1 - hsl.l;
+  const rgb3 = hslToRgb(hsl);
+  return rgb3;
 };
 
 /**
