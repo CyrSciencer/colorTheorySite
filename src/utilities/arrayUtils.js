@@ -3,9 +3,10 @@ import informationTranslationFuncs from "./InformationTranslation";
 const { hslToRgb } = informationTranslationFuncs;
 export const getRandomRgbArray = () => {
   const h = Math.floor(Math.random() * 360);
-  const s = Math.floor(Math.random() * 100);
-  const l = Math.floor(Math.random() * 100);
+  const s = Math.min(Math.max(Math.floor(Math.random() * 100) / 100, 0.2), 0.8);
+  const l = Math.min(Math.max(Math.floor(Math.random() * 100) / 100, 0.2), 0.8);
   const rgb = hslToRgb({ h, s, l });
+  // console.log({ h, s, l });
   return rgb;
 };
 

@@ -45,7 +45,39 @@ h5 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 15px;
 }
+.triple-hex-input-one-container .logic-container {
+  flex-direction: row;
+}
+.two-inputs-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+/* Media Queries */
+@media (max-width: 1220px) {
+  .triple-hex-input-one-container .logic-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .square-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@media (max-width: 909px) {
+  .square-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .factor-slider {
   /* width: 100%; */ /* Removed, use mix-slider width or adjust */
   /* margin-top: 5px; */ /* Removed, using margin on container/label */

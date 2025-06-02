@@ -1,10 +1,10 @@
 .triangular-harmonies {
   display: flex;
-  flex-direction: column;
+
   gap: 100px;
   /* border: 1px solid black; */
   display: flex;
-  flex-direction: row;
+
   margin-top: 20px;
 }
 /* .isosceles-triangle */

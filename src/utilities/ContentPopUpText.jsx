@@ -29,17 +29,19 @@ export const HarmoniesTriadique = (
     Cette section présente les harmonies triadiques de la couleur sélectionnée :
     <ul>
       <li>
-        Gauche : Vraie triade, les couleurs forment un triangle équilatéral sur
-        la roue des couleurs.
+        {window.innerWidth > 1220 ? "Gauche" : "Haut"} : Vraie triade, les
+        couleurs forment un triangle équilatéral sur la roue des couleurs.
       </li>
       <li>
-        Milieu : Complémentaire adjacent, les couleurs forment un triangle
-        isocèle sur la roue des couleurs. Les deux couleurs de la base sont
-        analogues à la couleur complémentaire.
+        {window.innerWidth > 1220 ? "Milieu" : "Centre"} : Complémentaire
+        adjacent, les couleurs forment un triangle isocèle sur la roue des
+        couleurs. Les deux couleurs de la base sont analogues à la couleur
+        complémentaire.
       </li>
       <li>
-        Droite : Analogues, les couleurs générées sont proches, à équidistance
-        et de part et d'autre de la couleur sélectionnée.
+        {window.innerWidth > 1220 ? "Droite" : "Bas"} : Analogues, les couleurs
+        générées sont proches, à équidistance et de part et d'autre de la
+        couleur sélectionnée.
       </li>
     </ul>
   </p>
@@ -54,13 +56,14 @@ export const HarmoniesTétradique = (
         (Chaque tétrade est composée de 2 axes de couleurs complémentaires.)
       </li>
       <li>
-        Centre : Vraie tétrade, les couleurs forment un carré sur la roue des
-        couleurs.
+        {window.innerWidth > 1220 ? "Milieu" : "Centre"} : Vraie tétrade, les
+        couleurs forment un carré sur la roue des couleurs.
       </li>
       <li>
-        Gauche et droite : Tétrade rectangulaire, les couleurs forment un
-        rectangle sur la roue des couleurs. Les deux rectangles sont positionnés
-        en miroir selon l'axe de la couleur sélectionnée et sa complémentaire.
+        {window.innerWidth > 1220 ? "Gauche et Droite" : "Haut et Bas"} :
+        Tétrade rectangulaire, les couleurs forment un rectangle sur la roue des
+        couleurs. Les deux rectangles sont positionnés en miroir selon l'axe de
+        la couleur sélectionnée et sa complémentaire.
       </li>
     </ul>
   </p>

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./HomePage.css";
 import PopupWrapper from "../utilities/PopupWrapper";
 
@@ -9,6 +10,7 @@ const HomePage = () => {
       top: 0,
     });
   }, []);
+
   return (
     <div className="home-page">
       <header className="home-page-header">
@@ -29,9 +31,7 @@ const HomePage = () => {
           </ul>
         </nav>
         <div className="présentation">
-          <PopupWrapper title="Bienvenue">
-            <h2>Bienvenue</h2>
-          </PopupWrapper>
+          <h3>Bienvenue</h3>
           <p>
             <span>Alchimie des couleurs</span> est un site web qui permet de
             comprendre les principes de la théorie des couleurs tout en donnant

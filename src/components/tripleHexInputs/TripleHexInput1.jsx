@@ -147,97 +147,100 @@ const TripleHexInput1 = () => {
             />
           </div>
         </div>
-
-        <div className="inputs-wrapper">
-          <HexInput
-            hex={hexA}
-            setHex={setHexA}
-            title="Couleur A"
-            contrastColor={intermediateColors.contrastA}
-          />
-          <HexInput
-            hex={hexB}
-            setHex={setHexB}
-            title="Couleur B"
-            contrastColor={intermediateColors.contrastB}
-          />
-        </div>
-        <div>
-          <div className="factor-slider-container">
-            <label htmlFor="factor-slider">direction des intermédiaires:</label>
-            <input
-              type="range"
-              id="factor-slider"
-              min="0"
-              max="1"
-              step="0.01"
-              value={factor}
-              onChange={(e) => setFactor(parseFloat(e.target.value))}
-              className="factor-slider"
+        <div className="two-inputs-container">
+          <div className="inputs-wrapper">
+            <HexInput
+              hex={hexA}
+              setHex={setHexA}
+              title="Couleur A"
+              contrastColor={intermediateColors.contrastA}
+            />
+            <HexInput
+              hex={hexB}
+              setHex={setHexB}
+              title="Couleur B"
+              contrastColor={intermediateColors.contrastB}
             />
           </div>
+          <div>
+            <div className="factor-slider-container">
+              <label htmlFor="factor-slider">
+                direction des intermédiaires:
+              </label>
+              <input
+                type="range"
+                id="factor-slider"
+                min="0"
+                max="1"
+                step="0.01"
+                value={factor}
+                onChange={(e) => setFactor(parseFloat(e.target.value))}
+                className="factor-slider"
+              />
+            </div>
 
-          <div className="results-wrapper">
-            <h5>Couleurs intermédiaires:</h5>
-            <div className="results-container">
-              {intermediateColors.hex3 && (
-                <div
-                  className="result-item"
-                  style={{
-                    backgroundColor: intermediateColors.hex3,
-                    color: intermediateColors.contrast3,
-                    textShadow: `0 0 3px ${intermediateColors.shadow3}`, // Apply shadow 3
-                  }}
-                >
-                  <p>
-                    <span
-                      className="clickable-hex"
-                      onClick={() =>
-                        copyWithFeedback(
-                          intermediateColors.hex3,
-                          "Copied Intermediate 1"
-                        )
-                      }
-                    >
-                      {intermediateColors.hex3}
-                    </span>
-                  </p>
-                </div>
-              )}
-              {intermediateColors.hex4 && (
-                <div
-                  className="result-item"
-                  style={{
-                    backgroundColor: intermediateColors.hex4,
-                    color: intermediateColors.contrast4,
-                    textShadow: `0 0 3px ${intermediateColors.shadow4}`, // Apply shadow 4
-                  }}
-                >
-                  <p>
-                    <span
-                      className="clickable-hex"
-                      onClick={() =>
-                        copyWithFeedback(
-                          intermediateColors.hex4,
-                          "Copied Intermediate 2"
-                        )
-                      }
-                    >
-                      {intermediateColors.hex4}
-                    </span>
-                  </p>
-                </div>
-              )}
+            <div className="results-wrapper">
+              <h5>Couleurs intermédiaires:</h5>
+              <div className="results-container">
+                {intermediateColors.hex3 && (
+                  <div
+                    className="result-item"
+                    style={{
+                      backgroundColor: intermediateColors.hex3,
+                      color: intermediateColors.contrast3,
+                      textShadow: `0 0 3px ${intermediateColors.shadow3}`, // Apply shadow 3
+                    }}
+                  >
+                    <p>
+                      <span
+                        className="clickable-hex"
+                        onClick={() =>
+                          copyWithFeedback(
+                            intermediateColors.hex3,
+                            "Copied Intermediate 1"
+                          )
+                        }
+                      >
+                        {intermediateColors.hex3}
+                      </span>
+                    </p>
+                  </div>
+                )}
+                {intermediateColors.hex4 && (
+                  <div
+                    className="result-item"
+                    style={{
+                      backgroundColor: intermediateColors.hex4,
+                      color: intermediateColors.contrast4,
+                      textShadow: `0 0 3px ${intermediateColors.shadow4}`, // Apply shadow 4
+                    }}
+                  >
+                    <p>
+                      <span
+                        className="clickable-hex"
+                        onClick={() =>
+                          copyWithFeedback(
+                            intermediateColors.hex4,
+                            "Copied Intermediate 2"
+                          )
+                        }
+                      >
+                        {intermediateColors.hex4}
+                      </span>
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="target-input-wrapper">
-          <HexInput
-            hex={hexC}
-            setHex={setHexC}
-            title="Couleur cible"
-            contrastColor={intermediateColors.contrastC}
-          />
+          <div className="target-input-wrapper">
+            <HexInput
+              hex={hexC}
+              setHex={setHexC}
+              title="Couleur cible"
+              contrastColor={intermediateColors.contrastC}
+            />
+          </div>
         </div>
         <div className="square-container">
           <div className="square-wrapper">

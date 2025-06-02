@@ -58,6 +58,7 @@ const ColorExperimentation = () => {
   // Initial generation for color1 and subsequent derivations
   const handleGenerate = () => {
     const randomRgbArr1 = getRandomRgbArray();
+    console.log(randomRgbArr1);
     setColor1(randomRgbArr1);
     setInputHex1(rgbToHex(randomRgbArr1));
 

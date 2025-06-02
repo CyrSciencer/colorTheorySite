@@ -48,45 +48,47 @@ const MultipleColorMixing = () => {
           title="Couleur C"
         />
       </div>
-      <div>
-        <ColorMixer
-          hex1={hex1}
-          hex2={hex2}
-          mixedColor={mixedColor1}
-          setMixedColor={setMixedColor1}
-        />
-        <ColorMixer
-          hex1={hex2}
-          hex2={hex3}
-          mixedColor={mixedColor2}
-          setMixedColor={setMixedColor2}
-        />
-        <ColorMixer
-          hex1={hex3}
-          hex2={hex1}
-          mixedColor={mixedColor3}
-          setMixedColor={setMixedColor3}
-        />
-      </div>
-      <div>
-        <ColorMixer
-          hex1={mixedColor1}
-          hex2={hex3}
-          mixedColor={mixedColor4}
-          setMixedColor={setMixedColor4}
-        />
-        <ColorMixer
-          hex1={mixedColor2}
-          hex2={hex1}
-          mixedColor={mixedColor5}
-          setMixedColor={setMixedColor5}
-        />
-        <ColorMixer
-          hex1={mixedColor3}
-          hex2={hex2}
-          mixedColor={mixedColor6}
-          setMixedColor={setMixedColor6}
-        />
+      <div className="mixers">
+        <div className="mixer-greater-container">
+          <ColorMixer
+            hex1={hex1}
+            hex2={hex2}
+            mixedColor={mixedColor1}
+            setMixedColor={setMixedColor1}
+          />
+          <ColorMixer
+            hex1={hex2}
+            hex2={hex3}
+            mixedColor={mixedColor2}
+            setMixedColor={setMixedColor2}
+          />
+          <ColorMixer
+            hex1={hex3}
+            hex2={hex1}
+            mixedColor={mixedColor3}
+            setMixedColor={setMixedColor3}
+          />
+        </div>
+        <div className="mixer-greater-container">
+          <ColorMixer
+            hex1={mixedColor1}
+            hex2={hex3}
+            mixedColor={mixedColor4}
+            setMixedColor={setMixedColor4}
+          />
+          <ColorMixer
+            hex1={mixedColor2}
+            hex2={hex1}
+            mixedColor={mixedColor5}
+            setMixedColor={setMixedColor5}
+          />
+          <ColorMixer
+            hex1={mixedColor3}
+            hex2={hex2}
+            mixedColor={mixedColor6}
+            setMixedColor={setMixedColor6}
+          />
+        </div>
       </div>
     </div>
   );

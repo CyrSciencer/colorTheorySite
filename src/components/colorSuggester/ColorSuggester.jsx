@@ -45,7 +45,7 @@ const ColorSuggester = ({ onSuggestionClick }) => {
   return (
     <div className="color-suggester">
       <button onClick={toggleOpen} className="toggle-button">
-        {isOpen ? "Fermer" : "Recherche par nom de couleur"}
+        {isOpen ? "Fermer" : "✎"}
       </button>
       {isOpen && (
         <>

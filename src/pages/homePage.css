@@ -5,8 +5,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #f0ffff;
 }
-
+.home-page h3 {
+  font-weight: bold;
+  margin-bottom: 20px;
+  background-color: #000000;
+  border: 7px outset #000;
+  color: #eefffe;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
 .home-page header {
   background-color: rgb(0, 0, 0);
   width: 100%;
@@ -45,9 +54,59 @@
 
 .home-page-main {
   padding: 20px 50px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+}
+.home-page-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+.home-page-nav > ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  list-style: none;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  gap: 20px;
 }
 
-.home-page-main > .présentation {
+.home-page-nav > ul > li {
+  flex: 1;
+  min-width: 200px;
+}
+
+.home-page-nav > ul > li > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #f0f8ff;
+  border: 2px outset #000;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #000;
+  transition: all 0.3s ease;
+}
+
+.home-page-nav > ul > li > a:hover {
+  background-color: rgb(179, 250, 252);
+  color: #000;
+  transform: translateY(-2px);
+}
+
+.présentation {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,15 +115,6 @@
   background-color: #fff;
   border-radius: 10px;
   padding: 30px;
-  width: 50%;
-}
-
-.home-page-nav > ul {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }
 
 .présentation > p:nth-child(2),
@@ -78,6 +128,7 @@
   padding: 0;
   margin: 0;
   font-size: 1rem;
+  width: 100%;
 }
 
 .présentation ul li {
@@ -96,4 +147,115 @@
 .home-page-subText {
   font-size: 1rem;
   width: 100%;
+}
+
+/* Custom styles to complement Bootstrap */
+.card {
+  border: 2px solid #000;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.list-group-item {
+  border: 1px solid #000;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.list-group-item a {
+  color: #000;
+  transition: color 0.2s ease-in-out;
+}
+
+.list-group-item a:hover {
+  color: #0d6efd;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .home-page-main {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .home-page-nav {
+    padding: 0 15px;
+  }
+
+  .home-page-nav > ul {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .home-page-nav > ul > li {
+    flex: 1 1 calc(50% - 15px);
+  }
+
+  .présentation {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page header h1 {
+    font-size: 2rem;
+  }
+
+  .home-page h2 {
+    font-size: 1.5rem;
+  }
+
+  .home-page-nav {
+    padding: 0 10px;
+  }
+
+  .home-page-nav > ul {
+    gap: 10px;
+  }
+
+  .home-page-nav > ul > li {
+    flex: 1 1 100%;
+  }
+
+  .présentation {
+    padding: 20px;
+  }
+
+  .présentation ul li {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .home-page header h1 {
+    font-size: 1.5rem;
+    padding: 8px 15px;
+  }
+
+  .home-page h2 {
+    font-size: 1.2rem;
+    padding: 8px 15px;
+  }
+
+  .home-page-main {
+    padding: 10px;
+  }
+
+  .home-page-nav {
+    padding: 0 5px;
+  }
+
+  .présentation {
+    padding: 15px;
+  }
+
+  .présentation span {
+    font-size: 1rem;
+  }
 }

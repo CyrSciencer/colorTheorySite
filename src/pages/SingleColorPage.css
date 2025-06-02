@@ -1,3 +1,9 @@
+.single-color-page-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0ffff;
+}
 .color-inputs {
   display: flex;
   flex-direction: row;
@@ -115,4 +121,173 @@
   display: flex;
   justify-content: center;
   padding: 20px 0;
+}
+
+.single-color-page-layout {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header Styles */
+.single-color-page-layout header {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.single-color-page-layout header h1 {
+  margin: 0;
+  padding: 10px 20px;
+  font-family: "OldLangua", serif;
+  font-size: 2.5rem;
+}
+
+.color-inputs {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 20px;
+}
+
+/* Main Content Layout */
+.single-color-page-main {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Section Styles */
+.single-color-page-main > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.single-color-page-main h2 {
+  font-size: 2rem;
+  background-color: aliceblue;
+  border: 3px inset #000000;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-family: "OldLangua", serif;
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+.triangular-harmonies {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.quadrangular-harmonies {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.gradient-line {
+  gap: 10px;
+}
+/* Responsive Design */
+@media (max-width: 1220px) {
+  .single-color-page-layout header {
+    padding: 15px;
+  }
+
+  .color-inputs {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
+  }
+
+  .color-inputs > div {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .color-inputs > div > div {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .single-color-page-main {
+    padding: 15px;
+  }
+
+  .single-color-page-main h2 {
+    font-size: 1.8rem;
+    padding: 8px 15px;
+  }
+
+  .composition-harmony-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .triangular-harmonies,
+  .quadrangular-harmonies {
+    flex-direction: column;
+    align-items: center;
+  }
+  .gradient-line {
+    gap: 7px;
+  }
+}
+
+@media (max-width: 909px) {
+  .square-composition-row {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+  }
+  .gradient-line {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .single-color-page-layout header {
+    padding: 5px;
+  }
+
+  .single-color-page-layout header h1 {
+    font-size: 1.5rem;
+    padding: 6px 12px;
+  }
+
+  .color-inputs {
+    padding: 0 5px;
+  }
+
+  .single-color-page-main {
+    padding: 5px;
+  }
+
+  .single-color-page-main h2 {
+    font-size: 1.2rem;
+    padding: 5px 10px;
+  }
+  .gradient-line {
+    gap: 2px;
+  }
 }

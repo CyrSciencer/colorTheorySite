@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Handlee:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
 @font-face {
   font-family: "OldLangua";
-  src: url("/fonts/OldLangua.ttf") format("truetype");
+  src: url("/fonts/OldLangua.otf") format("opentype");
 }
 
 .composition-tool-page {
@@ -22,6 +22,7 @@
   max-width: 1200px;
   padding: 0 20px;
   box-sizing: border-box;
+  gap: 2rem;
 }
 
 .composition-tool-page header {
@@ -47,14 +48,14 @@
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   border: 1px inset rgb(0, 0, 0);
-  min-width: 450px;
-  max-width: 600px;
   text-align: center;
   margin: 20px 0;
   padding: 10px;
   box-sizing: border-box;
   font-family: "OldLangua", serif;
   font-size: 2rem;
+  width: 100%;
+  max-width: 600px;
 }
 
 .composition-tool-page h3 {
@@ -77,4 +78,105 @@
 .composition-tool-page label {
   font-family: "Handlee", serif;
   font-size: 1em;
+}
+.mixer-greater-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+.mixers {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+/* Media Queries */
+@media (max-width: 1220px) {
+  .composition-tool-page header {
+    padding: 15px;
+  }
+
+  .composition-tool-page header h1 {
+    font-size: 2.2rem;
+    padding: 8px 15px;
+  }
+
+  .composition-tool-page h2 {
+    font-size: 1.8rem;
+    margin: 15px 0;
+    padding: 8px 15px;
+  }
+
+  .triple-inputs-section {
+    padding: 0 15px;
+  }
+  .mixer-greater-container {
+    gap: 5px;
+    flex-direction: column;
+  }
+  .mixers {
+    gap: 5px;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 909px) {
+  .composition-tool-page header {
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .composition-tool-page header h1 {
+    font-size: 2rem;
+    padding: 6px 12px;
+  }
+
+  .composition-tool-page h2 {
+    font-size: 1.6rem;
+    margin: 10px 0;
+    padding: 6px 12px;
+  }
+
+  .composition-tool-page h3 {
+    font-size: 1.3rem;
+  }
+
+  .triple-inputs-section {
+    padding: 0 10px;
+    gap: 1.5rem;
+  }
+  .color-swatches {
+    flex-direction: column;
+  }
+}
+@media (max-width: 810px) {
+  .mixers {
+    flex-direction: column;
+    margin-top: -150px;
+  }
+}
+@media (max-width: 600px) {
+  .composition-tool-page header {
+    padding: 8px;
+  }
+
+  .composition-tool-page header h1 {
+    font-size: 1.8rem;
+    padding: 5px 10px;
+  }
+
+  .composition-tool-page h2 {
+    font-size: 1.4rem;
+    margin: 8px 0;
+    padding: 5px 10px;
+  }
+
+  .composition-tool-page h3 {
+    font-size: 1.2rem;
+  }
+
+  .triple-inputs-section {
+    padding: 0 8px;
+    gap: 1rem;
+  }
 }
