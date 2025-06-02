@@ -1,5 +1,6 @@
 import InformationTranslationFuncs from "./InformationTranslation.js";
-const { rgbToHsl, hslToRgb, contrast, rgbToHex } = InformationTranslationFuncs;
+const { rgbToHsl, hslToRgb, contrast, rgbToHex, hslToHsv, hsvToRgb } =
+  InformationTranslationFuncs;
 import colorDataBase from "./colorDataBase.js";
 
 /**
@@ -34,7 +35,9 @@ const opposite = (rgb) => {
   const rgb2 = complementary(rgb);
   const hsl = rgbToHsl(rgb2);
   hsl.l = 1 - hsl.l;
-  const rgb3 = hslToRgb(hsl);
+  const hsv = hslToHsv(hsl);
+  hsv.v = hsv.v * hsl.l;
+  const rgb3 = hsvToRgb(hsv);
   return rgb3;
 };
 

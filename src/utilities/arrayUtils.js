@@ -1,9 +1,11 @@
 // Helper function to generate a random RGB color array
+import { hslToRgb } from "./InformationTranslation";
 export const getRandomRgbArray = () => {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  return [r, g, b];
+  const h = Math.floor(Math.random() * 360);
+  const s = Math.floor(Math.random() * 100);
+  const l = Math.floor(Math.random() * 100);
+  const rgb = hslToRgb({ h, s, l });
+  return rgb;
 };
 
 // Helper function to generate permutations of an array

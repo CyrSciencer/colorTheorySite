@@ -12,38 +12,6 @@ import { colorExperimentation } from "../../utilities/ContentPopUpText";
 
 const { rgbToHsv, hsvToRgb, hexToRgb, rgbToHex } = informationTranslationFuncs;
 
-/*
-// Helper function to generate a random RGB color array
-const getRandomRgbArray = () => {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  return [r, g, b];
-};
-
-// Helper function to generate permutations of an array
-const getPermutations = (arr) => {
-  if (arr.length === 0) return [[]];
-  const firstElement = arr[0];
-  const rest = arr.slice(1);
-
-  const permsWithoutFirst = getPermutations(rest);
-  const allPermutations = [];
-
-  permsWithoutFirst.forEach((perm) => {
-    for (let i = 0; i <= perm.length; i++) {
-      const permWithFirst = [
-        ...perm.slice(0, i),
-        firstElement,
-        ...perm.slice(i),
-      ];
-      allPermutations.push(permWithFirst);
-    }
-  });
-  return allPermutations;
-};
-*/
-
 const ColorExperimentation = () => {
   const [color1, setColor1] = useState(null); // User-modifiable base color
   const [color2, setColor2] = useState(null); // Random Hue, Opposite Luminosity, modifiable

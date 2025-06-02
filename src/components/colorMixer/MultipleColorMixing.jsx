@@ -32,13 +32,13 @@ const MultipleColorMixing = () => {
         <HexInput
           hex={hex1}
           setHex={setHex1}
-          contrastColor={rgbToHex(opposite(rgb1))}
+          contrastColor={rgbToHex([0, 0, 0])}
           title="Couleur A"
         />
         <HexInput
           hex={hex2}
           setHex={setHex2}
-          contrastColor={rgbToHex(opposite(rgb2))}
+          contrastColor={rgbToHex([0, 0, 0])}
           title="Couleur B"
         />
         <HexInput
