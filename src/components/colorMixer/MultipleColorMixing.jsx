@@ -32,19 +32,19 @@ const MultipleColorMixing = () => {
         <HexInput
           hex={hex1}
           setHex={setHex1}
-          contrastColor={rgbToHex([0, 0, 0])}
+          contrastColor={rgbToHex([255, 255, 255])}
           title="Couleur A"
         />
         <HexInput
           hex={hex2}
           setHex={setHex2}
-          contrastColor={rgbToHex([0, 0, 0])}
+          contrastColor={rgbToHex([255, 255, 255])}
           title="Couleur B"
         />
         <HexInput
           hex={hex3}
           setHex={setHex3}
-          contrastColor={rgbToHex(opposite(rgb3))}
+          contrastColor={rgbToHex([255, 255, 255])}
           title="Couleur C"
         />
       </div>

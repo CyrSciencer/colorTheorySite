@@ -17,7 +17,7 @@ function useClipboardWithFeedback() {
       }
       try {
         await writeToClipboard(textToCopy);
-        showFeedback(`${successMessagePrefix} ${textToCopy}!`, "success");
+        showFeedback(`couleur copiée: ${textToCopy.toUpperCase()}!`, "success");
       } catch (err) {
         showFeedback("Failed to copy!", "error");
         console.error("Clipboard error: ", err); // Keep for debugging, or remove for production

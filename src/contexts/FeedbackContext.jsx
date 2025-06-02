@@ -50,7 +50,7 @@ export const FeedbackProvider = ({ children }) => {
   return (
     <FeedbackContext.Provider value={{ showFeedback }}>
       {children}
-      {/* Render the popup component, controlled by context state */}
+
       <FeedbackPopup
         isVisible={feedback.isVisible}
         message={feedback.message}

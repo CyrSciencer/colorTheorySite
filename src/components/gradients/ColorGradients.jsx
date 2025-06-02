@@ -2,8 +2,7 @@ import React from "react";
 import InformationTranslationFuncs from "../../utilities/InformationTranslation";
 import colorManagementFuncs from "../../utilities/complementaries"; // Added import
 import "./gradient.css"; // Reusing the existing CSS for simplicity
-import { writeToClipboard } from "../../utilities/clipboardUtils";
-import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
 import {
   renderGradientCell,
   renderGradientCellWithCssHsl,
@@ -12,24 +11,12 @@ import {
 const { opposite } = colorManagementFuncs; // Destructure function
 
 const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
-  const { showFeedback } = useFeedback();
+  const copyWithFeedback = useClipboardWithFeedback();
   const handleSuggestionClick = (hex) => {
-    // Use clipboard utility
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success"); // Trigger success popup via context
-        if (onSuggestionClick) {
-          onSuggestionClick(hex);
-        }
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error"); // Trigger error popup via context
-        // Keep console log for debugging
-        console.error("Clipboard error: ", err);
-      });
-
-    // Optionally clear the input/suggestions after selection
-    // setDescription('');
+    copyWithFeedback(hex);
+    if (onSuggestionClick) {
+      onSuggestionClick(hex);
+    }
   };
   // Convert input RGB color directly to HSV
   const hsv1 = InformationTranslationFuncs.rgbToHsv

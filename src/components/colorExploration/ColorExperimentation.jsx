@@ -173,7 +173,7 @@ const ColorExperimentation = () => {
               Couleur première:{" "}
               <span
                 className="clickable-hex"
-                onClick={() => copyWithFeedback(hexColor1, "Copied Color 1")}
+                onClick={() => copyWithFeedback(hexColor1, "copiée")}
               >
                 {hexColor1}
               </span>
@@ -193,7 +193,7 @@ const ColorExperimentation = () => {
               Couleur luminosité opposée:{" "}
               <span
                 className="clickable-hex"
-                onClick={() => copyWithFeedback(hexColor2, "Copied Color 2")}
+                onClick={() => copyWithFeedback(hexColor2, "copiée")}
               >
                 {hexColor2}
               </span>
@@ -213,7 +213,7 @@ const ColorExperimentation = () => {
               Couleur dérivée:{" "}
               <span
                 className="clickable-hex"
-                onClick={() => copyWithFeedback(hexColor3, "Copied Color 3")}
+                onClick={() => copyWithFeedback(hexColor3, "Copié")}
               >
                 {hexColor3}
               </span>

@@ -1,5 +1,6 @@
 // Helper function to generate a random RGB color array
-import { hslToRgb } from "./InformationTranslation";
+import informationTranslationFuncs from "./InformationTranslation";
+const { hslToRgb } = informationTranslationFuncs;
 export const getRandomRgbArray = () => {
   const h = Math.floor(Math.random() * 360);
   const s = Math.floor(Math.random() * 100);

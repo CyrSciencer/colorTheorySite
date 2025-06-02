@@ -138,7 +138,7 @@ const ColorExploration = () => {
               <span
                 className="clickable-hex"
                 onClick={() =>
-                  copyWithFeedback(hexColors.random, "Copied random color")
+                  copyWithFeedback(hexColors.random, "Couleur aléatoire copiée")
                 }
               >
                 {hexColors.random}
@@ -160,7 +160,7 @@ const ColorExploration = () => {
               <span
                 className="clickable-hex"
                 onClick={() =>
-                  copyWithFeedback(hexColors.opposite, "Copied opposite color")
+                  copyWithFeedback(hexColors.opposite, "Couleur opposée copiée")
                 }
               >
                 {hexColors.opposite}

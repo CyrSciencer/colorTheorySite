@@ -7,7 +7,8 @@ import BigSquareComposition from "../squareComposition/BigSquareComposition";
 import "./tripleHexInput.css";
 import PopupWrapper from "../../utilities/PopupWrapper"; // Import shared component
 import { compositionRatio631 } from "../../utilities/ContentPopUpText";
-const { rgbToHex, hexToRgb } = InformationTranslationFuncs;
+const { rgbToHex, hexToRgb, getContrastingTextColorRgb } =
+  InformationTranslationFuncs;
 
 const TripleHexInput2 = () => {
   const [hexA, setHexA] = useState("#CD3232"); // Different defaults
@@ -42,9 +43,24 @@ const TripleHexInput2 = () => {
         <h2>Outil de composition ratio 6-3-1</h2>
       </PopupWrapper>
       <div className="inputs-wrapper">
-        <HexInput hex={hexA} setHex={setHexA} title="Color A" />
-        <HexInput hex={hexB} setHex={setHexB} title="Color B" />
-        <HexInput hex={hexC} setHex={setHexC} title="Color C" />
+        <HexInput
+          hex={hexA}
+          setHex={setHexA}
+          title="Couleur A"
+          contrastColor={rgbToHex(getContrastingTextColorRgb(hexToRgb(hexA)))}
+        />
+        <HexInput
+          hex={hexB}
+          setHex={setHexB}
+          title="Couleur B"
+          contrastColor={rgbToHex(getContrastingTextColorRgb(hexToRgb(hexB)))}
+        />
+        <HexInput
+          hex={hexC}
+          setHex={setHexC}
+          title="Couleur C"
+          contrastColor={rgbToHex(getContrastingTextColorRgb(hexToRgb(hexC)))}
+        />
       </div>
 
       <RatioSection colorDataArray={colorDataArray} rgbVersHex={rgbToHex} />

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import HexInput from "../hexInput/HexInput";
 import RatioSection from "../compositionHarmony/RatioSection"; // Import RatioSection
 import InformationTranslationFuncs from "../../utilities/InformationTranslation.js";
-const { hexToRgb, rgbToHex } = InformationTranslationFuncs; // Removed unused contrast, rgbToHsl
+const { hexToRgb, getContrastingTextColorRgb, rgbToHex } =
+  InformationTranslationFuncs; // Removed unused contrast, rgbToHsl
 import "./configurableContrast.css";
 import PopupWrapper from "../../utilities/PopupWrapper";
 import { configurableContrast } from "../../utilities/ContentPopUpText";
@@ -110,7 +111,10 @@ const ConfigurableContrastChecker = () => {
                 // key={colorData.name} // Key moved to parent div
                 hex={colorData.hexValue} // Use the stored hex value
                 setHex={(newHex) => handleHexChange(index, newHex)}
-                title={colorData.name}
+                title={`Couleur ${index + 1}`}
+                contrastColor={rgbToHex(
+                  getContrastingTextColorRgb(hexToRgb(colorData.hexValue))
+                )}
               />
               {/* Add input for contrastInfo */}
               <div className="contrast-info-input">

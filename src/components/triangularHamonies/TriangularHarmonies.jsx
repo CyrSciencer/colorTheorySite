@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import adjComplementaryHarmony from "../../assets/svg/harmonie-adj-complémentaire.svg";
 import analoguousHarmony from "../../assets/svg/harmonie-analogues.svg";
 import triadHarmony from "../../assets/svg/harmonie-triadiques.svg";
-import { writeToClipboard } from "../../utilities/clipboardUtils";
-import { useFeedback } from "../../contexts/FeedbackContext.jsx";
+import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
 
 const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   console.log(rgb);
@@ -20,7 +19,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
   const { rgbToHex } = InformationTranslationFuncs;
   const { triangleHarmony, splitComplementary, opposite, analogue } =
     colorManagementFuncs;
-  const { showFeedback } = useFeedback();
+  const copyWithFeedback = useClipboardWithFeedback();
 
   const equilateralHarmony = triangleHarmony(rgb);
   const splitComplementaryHarmony = splitComplementary(rgb);
@@ -29,14 +28,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
 
   const handleHexCopy = (hex) => {
     if (!hex) return;
-    writeToClipboard(hex)
-      .then(() => {
-        showFeedback(`Copied ${hex}!`, "success");
-      })
-      .catch((err) => {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err);
-      });
+    copyWithFeedback(hex);
   };
 
   const createTipElement = (hexValue) => {
