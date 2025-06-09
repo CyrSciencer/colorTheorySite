@@ -84,6 +84,11 @@ const CompositionOfTwo = () => {
         <Link to="/">
           <button>Accueil</button>
         </Link>
+
+        <p className="header-text">
+          selectionnez 2 couleurs avec les selecteurs ci-dessous pour les
+          comparer et les mélanger.
+        </p>
         <div className="hex-inputs-container">
           <SquareComposition innerColor={hex2} outerColor={hex1} />
           <HexInput

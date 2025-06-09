@@ -12,15 +12,18 @@ function useClipboardWithFeedback() {
   const copy = useCallback(
     async (textToCopy, successMessagePrefix = "Copied") => {
       if (!textToCopy) {
-        showFeedback("No text to copy!", "error");
+        showFeedback("Aucun texte à copier !", "error");
         return;
       }
       try {
         await writeToClipboard(textToCopy);
-        showFeedback(`couleur copiée: ${textToCopy.toUpperCase()}!`, "success");
+        showFeedback(
+          `Couleur copiée : ${textToCopy.toUpperCase()} !`,
+          "success"
+        );
       } catch (err) {
-        showFeedback("Failed to copy!", "error");
-        console.error("Clipboard error: ", err); // Keep for debugging, or remove for production
+        showFeedback("Échec de la copie !", "error");
+        console.error("Erreur de copie : ", err); // Garder pour le débogage, ou supprimer pour la production
       }
     },
     [showFeedback]

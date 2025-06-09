@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PopupTextBlock from "../components/popUp/PopupTextBlock";
+import "./PopupWrapper.css";
 
 // Helper component to avoid repetition for H2 popups
 const PopupWrapper = ({ title, children, content }) => {
@@ -21,15 +22,18 @@ const PopupWrapper = ({ title, children, content }) => {
   });
 
   return (
-    <>
+    <div className="popup-wrapper-container">
+      <i className="info-icon" onClick={open}>
+        i
+      </i>
       {triggerElement}
       <PopupTextBlock
         isOpen={isOpen}
         onClose={close}
-        title={title} // Use the provided title for the popup
-        content={<p>{content}</p>} // Placeholder content, consider making this a prop
+        title={title}
+        content={<p>{content}</p>}
       />
-    </>
+    </div>
   );
 };
 

@@ -112,7 +112,7 @@ export const températureOpposée = (
     </p>
     <p>
       La transition chaud-froid étant arbitraire, les verts et les violets
-      donnent les couleurs de transitions opposées.
+      donnent les couleurs de transition opposées.
     </p>
   </>
 );

@@ -4,7 +4,7 @@ import TripleHexInput1 from "../components/tripleHexInputs/TripleHexInput1";
 import TripleHexInput2 from "../components/tripleHexInputs/TripleHexInput2";
 import ConfigurableContrastChecker from "../components/configurableContrastChecker/ConfigurableContrastChecker";
 import ColorExploration from "../components/colorExploration/ColorExploration";
-import MultipleColorMixing from "../components/colorMixer/MultipleColorMixing";
+
 import ColorExperimentation from "../components/colorExploration/ColorExperimentation";
 import { useEffect } from "react";
 const CompositionTool = () => {
@@ -20,6 +20,10 @@ const CompositionTool = () => {
         <Link to="/">
           <button>Accueil</button>
         </Link>
+        <p className="header-text">
+          Cette page vous permet de comparer au moins 2 couleurs entre elles via
+          différents outils de composition.
+        </p>
       </header>
       <main>
         <div className="triple-inputs-section">
@@ -28,7 +32,6 @@ const CompositionTool = () => {
           <ConfigurableContrastChecker />
           <ColorExploration />
           <ColorExperimentation />
-          <MultipleColorMixing />
         </div>
       </main>
     </section>

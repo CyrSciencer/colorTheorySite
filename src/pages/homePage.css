@@ -17,7 +17,16 @@
   border-radius: 5px;
 }
 .home-page header {
-  background-color: rgb(0, 0, 0);
+  background: linear-gradient(
+    30deg,
+    #ff0000,
+    #ff7f00,
+    #ffff00,
+    #00ff00,
+    #0000ff,
+    #4b0082,
+    #9400d3
+  );
   width: 100%;
   padding: 20px;
   display: flex;

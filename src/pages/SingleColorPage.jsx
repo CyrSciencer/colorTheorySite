@@ -158,6 +158,10 @@ function SingleColorPage() {
             <Link to="/">
               <button>Accueil</button>
             </Link>
+            <p className="header-text">
+              modifiez les valeurs ci-dessous pour modifier la couleur à
+              analyser
+            </p>
             <div className="color-inputs">
               <ColorInputs
                 rgb={rgb}

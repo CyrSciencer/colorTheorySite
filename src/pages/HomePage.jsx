@@ -45,7 +45,7 @@ const HomePage = () => {
             <li>
               <p>
                 <span>Analyse chromatique:</span> contient plusieurs schémas
-                représentant différentes idées liées à une couleur séléctionnée
+                représentant différentes idées liées à une couleur sélectionnée
                 et modifiable dynamiquement.
               </p>
             </li>
@@ -60,7 +60,7 @@ const HomePage = () => {
               <p>
                 <span>Outils de composition:</span> donne plusieurs outils de
                 visualisation de composition entre au moins 3 couleurs
-                séléctionnables.
+                sélectionnables.
               </p>
             </li>
           </ul>
@@ -69,7 +69,7 @@ const HomePage = () => {
             haut à droite de la page.
           </p>
           <p className="home-page-subText">
-            --Les titres de sections sont clickable pour plus d'informations.
+            --Les titres de sections sont cliquables pour plus d'informations.
           </p>
           <p className="home-page-subText">
             --Les valeurs hexadecimales sont copiables.

@@ -153,13 +153,13 @@ const ColorExperimentation = () => {
   return (
     <div className="color-exploration-container">
       <PopupWrapper
-        title="Outils exploratif de composition"
+        title="Outil exploratif de composition"
         content={colorExperimentation}
       >
-        <h2>Outils exploratif de composition</h2>
+        <h2>Outil exploratif de composition</h2>
       </PopupWrapper>
       <div className="controls-section">
-        <button onClick={handleGenerate}>Générer une nouvelle palette</button>
+        <button onClick={handleGenerate}>Génération aléatoire:</button>
       </div>
 
       {color1 && color2 && color3 && (

@@ -1,0 +1,41 @@
+.popup-wrapper-container {
+  position: relative;
+  display: inline-block;
+}
+
+.info-icon {
+  position: absolute;
+  top: 10px;
+  right: -7px;
+  width: 25px;
+  height: 25px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1;
+  transition: transform 0.2s ease;
+  animation: dreamy 4s ease-in-out infinite;
+}
+
+.info-icon:hover {
+  transform: scale(1.1);
+}
+@keyframes dreamy {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
