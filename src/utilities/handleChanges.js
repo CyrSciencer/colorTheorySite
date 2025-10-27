@@ -1,5 +1,3 @@
-import { useState } from "react";
-import colorManagementFuncs from "./complementaries";
 import InformationTranslationFuncs from "./InformationTranslation";
 
 //usages

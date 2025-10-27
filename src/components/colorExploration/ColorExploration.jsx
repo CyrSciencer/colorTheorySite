@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import BigSquareComposition from "../squareComposition/BigSquareComposition";
 import colorManagementFuncs from "../../utilities/complementaries"; // Assuming complementaries.js exports 'opposite' directly
 import informationTranslationFuncs from "../../utilities/InformationTranslation"; // Import HSV functions
@@ -117,12 +117,6 @@ const ColorExploration = () => {
   };
 
   // Prepare data for rendering
-  const colorArray = [colors.random, colors.opposite, colors.hsvDerived].filter(
-    Boolean
-  );
-  const colorPermutations =
-    colorArray.length === 3 ? getPermutations(colorArray) : [];
-
   // rgbToHex now handles null/invalid input, but we can still be explicit with defaults
   const hexColors = {
     random: rgbToHex(colors.random) || inputHex || "#ffffff", // Default to inputHex or white

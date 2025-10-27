@@ -236,3 +236,33 @@ export const colorExperimentation = (
     </ul>
   </p>
 );
+export const colorExperimentationV2 = (
+  <p>
+    Cet outil peut générer 2 couleurs aléatoires de saturation opposées et une
+    3ème couleur de saturation intermédiaire.
+    <br />
+    Usage :
+    <ul>
+      <li>Modifier la première couleur modifie les 2 autres couleurs.</li>
+      <li>
+        Modifier la couleur de saturation opposée ne modifie que la couleur
+        dérivée.
+      </li>
+    </ul>
+  </p>
+);
+export const colorExperimentationV3 = (
+  <p>
+    Cet outil peut générer 2 couleurs aléatoires de luminosités opposées et une
+    3ème couleur de luminosité & saturation intermédiaire.
+    <br />
+    Usage :
+    <ul>
+      <li>Modifier la première couleur modifie les 2 autres couleurs.</li>
+      <li>
+        Modifier la couleur de luminosité & saturation opposée ne modifie que la
+        couleur dérivée.
+      </li>
+    </ul>
+  </p>
+);

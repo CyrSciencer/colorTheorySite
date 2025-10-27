@@ -4,8 +4,9 @@ import TripleHexInput1 from "../components/tripleHexInputs/TripleHexInput1";
 import TripleHexInput2 from "../components/tripleHexInputs/TripleHexInput2";
 import ConfigurableContrastChecker from "../components/configurableContrastChecker/ConfigurableContrastChecker";
 import ColorExploration from "../components/colorExploration/ColorExploration";
-import MultipleColorMixing from "../components/colorMixer/MultipleColorMixing";
 import ColorExperimentation from "../components/colorExploration/ColorExperimentation";
+import ColorExperimentationV2 from "../components/colorExploration/ColorExperimentationV2";
+import ColorExperimentationV3 from "../components/colorExploration/ColorExperimentationV3";
 const CompositionTool = () => {
   return (
     <section className="composition-tool-page">
@@ -17,12 +18,13 @@ const CompositionTool = () => {
       </header>
       <main>
         <div className="triple-inputs-section">
-          <TripleHexInput1 />
           <TripleHexInput2 />
           <ConfigurableContrastChecker />
           <ColorExploration />
           <ColorExperimentation />
-          <MultipleColorMixing />
+          <ColorExperimentationV2 />
+          <ColorExperimentationV3 />
+          <TripleHexInput1 />
         </div>
       </main>
     </section>
