@@ -15,18 +15,19 @@ export const FeedbackProvider = ({ children }) => {
     isVisible: false,
     message: "",
     type: "success",
+    color: "",
   });
   const timeoutRef = useRef(null);
 
   const showFeedback = useCallback(
-    (message, type = "success", duration = 3000) => {
+    (message, type = "success", duration = 3000, color = "") => {
       // Clear any existing timeout
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
-      // Set feedback state to visible with message and type
-      setFeedback({ isVisible: true, message, type });
+      // Set feedback state to visible with message, type, and color
+      setFeedback({ isVisible: true, message, type, color });
 
       // Set a timeout to hide the feedback
       timeoutRef.current = setTimeout(() => {
@@ -55,6 +56,7 @@ export const FeedbackProvider = ({ children }) => {
         isVisible={feedback.isVisible}
         message={feedback.message}
         type={feedback.type}
+        color={feedback.color}
       />
     </FeedbackContext.Provider>
   );

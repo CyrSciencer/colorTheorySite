@@ -23,7 +23,7 @@
 }
 
 .feedback-popup.success {
-  background-color: var(--color-success);
+  font-family: "Courier New", Courier, monospace;
   color: #fff;
 
   font-size: 2rem;

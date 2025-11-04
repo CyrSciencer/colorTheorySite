@@ -7,7 +7,7 @@
 }
 
 .color-exploration-container button {
-  font-family: "oldLangua", sans-serif;
+  font-family: "OldLangua", sans-serif;
   padding: 10px 15px;
   font-size: 1em;
   cursor: pointer;
@@ -69,4 +69,235 @@
 }
 h2 {
   padding: 10px;
+}
+
+/* Secondary options controls */
+.secondary-options {
+  margin: 20px 0;
+
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  flex: 1;
+  width: 400px;
+  min-height: 350px;
+}
+
+/* Third color options with fixed dimensions */
+.third-color-options {
+  margin: 20px 0;
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  width: 400px;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.third-color-options h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.secondary-options h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.option-row {
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.option-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+.option-row input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.option-row input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+  height: 8px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+}
+
+.option-row input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #000;
+  cursor: pointer;
+}
+
+.option-row input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #000;
+  cursor: pointer;
+  border: none;
+}
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Container for options side by side */
+.options-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  align-items: center;
+}
+.options-container :first-child {
+  padding: 8.5px;
+}
+@media (max-width: 900px) {
+  .options-container {
+    flex-direction: column;
+  }
+
+  .third-color-options {
+    width: 100%;
+    min-width: 350px;
+  }
+}
+
+/* Toggle button for complementary */
+.toggle-button {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1.1em;
+  font-weight: bold;
+  border: 3px solid #000;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "OldLangua", sans-serif;
+}
+
+.toggle-button.active {
+  background-color: #4caf50;
+  color: white;
+  border-color: #2e7d32;
+}
+
+.toggle-button.active:hover {
+  background-color: #45a049;
+  border-color: #1b5e20;
+}
+
+.toggle-button.inactive {
+  background-color: #f44336;
+  color: white;
+  border-color: #c62828;
+}
+
+.toggle-button.inactive:hover {
+  background-color: #da190b;
+  border-color: #b71c1c;
+}
+
+/* Disabled label styling */
+.disabled-label {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.disabled-label input[type="range"] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.option-row input[type="range"]:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+.option-row input[type="range"]:disabled::-webkit-slider-thumb {
+  background: #666;
+  cursor: not-allowed;
+}
+
+.option-row input[type="range"]:disabled::-moz-range-thumb {
+  background: #666;
+  cursor: not-allowed;
+}
+
+/* Mode buttons for third color */
+.mode-buttons {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.mode-button {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1em;
+  font-weight: bold;
+  border: 2px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #fff;
+  color: #000;
+  font-family: "OldLangua", sans-serif;
+}
+
+.mode-button:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mode-button.active {
+  background-color: #2196f3;
+  color: white;
+  border-color: #1976d2;
+  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.4);
+}
+
+.mode-button.active:hover {
+  background-color: #1976d2;
+  border-color: #0d47a1;
+}
+
+.mode-description {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #e3f2fd;
+  border-radius: 5px;
+  border-left: 4px solid #2196f3;
+}
+
+.mode-description p {
+  margin: 0;
+  font-size: 0.95em;
+  color: #333;
+  line-height: 1.4;
 }

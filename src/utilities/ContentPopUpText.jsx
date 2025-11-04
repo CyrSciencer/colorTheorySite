@@ -209,60 +209,59 @@ export const multipleColorMixing = (
 );
 
 export const colorExploration = (
-  <p>
-    Cet outil permet de mettre en relation :
-    <ul>
-      <li>Une couleur aléatoire</li>
-      <li>Sa couleur opposée</li>
-      <li>Une couleur aléatoire de luminosité intermédiaire</li>
-    </ul>
-    La génération aléatoire n'est pas obligatoire ; elle peut être modifiée en
-    cliquant dans le carré de contour blanc à côté de la valeur aléatoire.
-  </p>
-);
-
-export const colorExperimentation = (
-  <p>
-    Cet outil peut générer 2 couleurs aléatoires de luminosités opposées et une
-    3ème couleur de luminosité intermédiaire.
-    <br />
-    Usage :
-    <ul>
-      <li>Modifier la première couleur modifie les 2 autres couleurs.</li>
-      <li>
-        Modifier la couleur de luminosité opposée ne modifie que la couleur
-        dérivée.
-      </li>
-    </ul>
-  </p>
-);
-export const colorExperimentationV2 = (
-  <p>
-    Cet outil peut générer 2 couleurs aléatoires de saturation opposées et une
-    3ème couleur de saturation intermédiaire.
-    <br />
-    Usage :
-    <ul>
-      <li>Modifier la première couleur modifie les 2 autres couleurs.</li>
-      <li>
-        Modifier la couleur de saturation opposée ne modifie que la couleur
-        dérivée.
-      </li>
-    </ul>
-  </p>
-);
-export const colorExperimentationV3 = (
-  <p>
-    Cet outil peut générer 2 couleurs aléatoires de luminosités opposées et une
-    3ème couleur de luminosité & saturation intermédiaire.
-    <br />
-    Usage :
-    <ul>
-      <li>Modifier la première couleur modifie les 2 autres couleurs.</li>
-      <li>
-        Modifier la couleur de luminosité & saturation opposée ne modifie que la
-        couleur dérivée.
-      </li>
-    </ul>
-  </p>
+  <>
+    <p>
+      Cet outil permet de générer et d'explorer des palettes de 3 couleurs avec
+      un contrôle précis sur chacune d'elles.
+    </p>
+    <p>
+      <strong>Couleur de départ :</strong> Peut être générée aléatoirement ou
+      choisie manuellement via le sélecteur de couleur.
+    </p>
+    <p>
+      <strong>Couleur secondaire :</strong>
+      <ul>
+        <li>
+          <em>Mode complémentaire :</em> Utilise la teinte complémentaire de la
+          couleur de départ.
+        </li>
+        <li>
+          <em>Mode personnalisé :</em> Permet de choisir une teinte spécifique
+          (0-360°).
+        </li>
+        <li>
+          <em>Luminosité et saturation :</em> Ajustables de -100 à 200, où 0 =
+          identique à la couleur de départ, 100 = valeur opposée, les valeurs
+          négatives tendent vers l'extrême dans la même direction, et les
+          valeurs au-dessus de 100 tendent vers l'extrême opposé.
+        </li>
+      </ul>
+    </p>
+    <p>
+      <strong>Couleur tertiaire :</strong>
+      <ul>
+        <li>
+          <em>Aléatoire :</em> Teinte aléatoire avec saturation et luminosité
+          moyennes.
+        </li>
+        <li>
+          <em>Chemin court :</em> Couleur intermédiaire entre les deux premières
+          par le chemin le plus court sur la roue chromatique.
+        </li>
+        <li>
+          <em>Chemin long :</em> Couleur intermédiaire entre les deux premières
+          par le chemin le plus long sur la roue chromatique.
+        </li>
+        <li>
+          {" "}
+          En mode complémentaire, le chemin long et court suivent le principe de
+          l'harmonie tétradique (voir page Analyse chromatique).
+        </li>
+      </ul>
+    </p>
+    <p>
+      Les compositions et gradients présentés permettent de visualiser les
+      relations entre les couleurs générées.
+    </p>
+  </>
 );

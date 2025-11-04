@@ -17,7 +17,7 @@ const ColorGradients = ({ rgb, gradientTypeIndex, onSuggestionClick }) => {
     // Use clipboard utility
     writeToClipboard(hex)
       .then(() => {
-        showFeedback(`Copied ${hex}!`, "success"); // Trigger success popup via context
+        showFeedback(`Copied ${hex}!`, "success", 3000, hex); // Trigger success popup via context
         if (onSuggestionClick) {
           onSuggestionClick(hex);
         }

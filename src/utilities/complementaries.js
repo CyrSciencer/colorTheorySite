@@ -191,6 +191,21 @@ const interpolateHueShortestPath = (h1, h2, percent) => {
   return ((h % 360) + 360) % 360;
 };
 
+// Helper function for longest-path hue interpolation
+const interpolateHueLongestPath = (h1, h2, percent) => {
+  let deltaH = h2 - h1;
+  // Take the longest path around the color wheel (opposite of shortest path)
+  if (deltaH > 0 && deltaH <= 180) {
+    deltaH -= 360; // Force the long way counterclockwise
+  } else if (deltaH < 0 && deltaH >= -180) {
+    deltaH += 360; // Force the long way clockwise
+  }
+  // If |deltaH| > 180, it's already the long path, so leave it as is
+  let h = h1 + deltaH * percent;
+  // Normalize hue to be within [0, 360)
+  return ((h % 360) + 360) % 360;
+};
+
 // Helper function for smooth (ease-in-out) interpolation
 const smoothStepInterpolate = (a, b, t) => {
   const smoothedT = t * t * (3 - 2 * t);
@@ -625,6 +640,7 @@ const colorManagementFuncs = {
   getColorNameFromHue,
   getColorInfo,
   interpolateHueShortestPath,
+  interpolateHueLongestPath,
   smoothStepInterpolate,
   hslMixer,
   getMidpointHue,

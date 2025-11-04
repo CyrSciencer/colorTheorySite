@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./HomePage.css";
+import "./homePage.css";
 import PopupWrapper from "../utilities/PopupWrapper";
 
 const HomePage = () => {
@@ -24,9 +24,8 @@ const HomePage = () => {
           </ul>
         </nav>
         <div className="présentation">
-          <PopupWrapper title="Bienvenue">
-            <h2>Bienvenue</h2>
-          </PopupWrapper>
+          <h1>Bienvenue</h1>
+
           <p>
             <span>Alchimie des couleurs</span> est un site web qui permet de
             comprendre les principes de la théorie des couleurs tout en donnant

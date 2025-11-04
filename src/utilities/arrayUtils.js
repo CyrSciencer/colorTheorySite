@@ -1,3 +1,8 @@
+import informationTranslationFuncs from "./InformationTranslation";
+import colorManagementFuncs from "./complementaries";
+const { rgbToHsl, hslToRgb } = informationTranslationFuncs;
+const { interpolateHueShortestPath, interpolateHueLongestPath } =
+  colorManagementFuncs;
 // Helper function to generate a random RGB color array
 export const getRandomRgbArray = () => {
   const r = Math.floor(Math.random() * 256);
@@ -31,4 +36,26 @@ export const getPermutations = (arr) => {
     }
   });
   return allPermutations;
+};
+export const getIntermediateColors1 = (rgb1, rgb2) => {
+  const hsl1 = rgbToHsl(rgb1);
+  const hsl2 = rgbToHsl(rgb2);
+  const intermediateHue = interpolateHueShortestPath(hsl1.h, hsl2.h, 0.5);
+  const intermediateHsl = {
+    h: intermediateHue,
+    s: (hsl1.s + hsl2.s) / 2,
+    l: (hsl1.l + hsl2.l) / 2,
+  };
+  return hslToRgb(intermediateHsl);
+};
+export const getIntermediateColors2 = (rgb1, rgb2) => {
+  const hsl1 = rgbToHsl(rgb1);
+  const hsl2 = rgbToHsl(rgb2);
+  const intermediateHue = interpolateHueLongestPath(hsl1.h, hsl2.h, 0.5);
+  const intermediateHsl = {
+    h: intermediateHue,
+    s: (hsl1.s + hsl2.s) / 2,
+    l: (hsl1.l + hsl2.l) / 2,
+  };
+  return hslToRgb(intermediateHsl);
 };

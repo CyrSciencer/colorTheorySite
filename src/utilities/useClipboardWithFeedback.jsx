@@ -12,14 +12,20 @@ function useClipboardWithFeedback() {
   const copy = useCallback(
     async (textToCopy, successMessagePrefix = "Copied") => {
       if (!textToCopy) {
-        showFeedback("No text to copy!", "error");
+        showFeedback("No text to copy!", "error", 3000, "");
         return;
       }
       try {
         await writeToClipboard(textToCopy);
-        showFeedback(`${successMessagePrefix} ${textToCopy}!`, "success");
+        // Pass the copied hex code as the color parameter
+        showFeedback(
+          `${successMessagePrefix} ${textToCopy}!`,
+          "success",
+          3000,
+          textToCopy
+        );
       } catch (err) {
-        showFeedback("Failed to copy!", "error");
+        showFeedback("Failed to copy!", "error", 3000, "");
         console.error("Clipboard error: ", err); // Keep for debugging, or remove for production
       }
     },

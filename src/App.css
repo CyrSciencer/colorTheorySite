@@ -14,15 +14,18 @@ select {
   font-family: sans-serif; /* Or specify another font stack like system default */
 }
 button {
-  font-family: "oldLangua", sans-serif;
+  font-family: "OldLangua", sans-serif;
 }
 body {
-  font-family: "oldLangua", sans-serif;
+  font-family: "OldLangua", sans-serif;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f4f4f4; /* Light grey background */
   color: #333; /* Default text color */
+}
+p {
+  font-family: "Courier New", Courier, monospace;
 }
 header {
   display: flex;
@@ -53,12 +56,71 @@ h2 {
   margin-bottom: 1rem;
   font-size: 2rem;
   text-align: center;
+  position: relative;
+}
+
+/* Add info icon for clickable h2 elements */
+h2[style*="cursor: pointer"]::after,
+h2[style*="cursor:pointer"]::after {
+  content: "(i)";
+  font-size: 0.5em;
+  font-family: "Courier New", Courier, monospace;
+  color: #f32121;
+  animation: blink 2s ease-in-out infinite;
+  margin-left: 0.5rem;
+  font-weight: bold;
+  position: absolute;
+  top: -1.2rem;
+  right: -1.2rem;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  background-color: #ffffff;
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 h3 {
   margin: 1rem 0;
   font-size: 1.5rem;
   text-align: center;
+  position: relative;
+}
+
+/* Add info icon for clickable h3 elements */
+h3[style*="cursor: pointer"]::after,
+h3[style*="cursor:pointer"]::after {
+  content: "(i)";
+  font-size: 0.5em;
+  font-family: "Courier New", Courier, monospace;
+  color: #f32121;
+  animation: blink 2s ease-in-out infinite;
+  margin-left: 0.5rem;
+  font-weight: bold;
+  position: absolute;
+  top: -1.2rem;
+  right: -1.2rem;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  background-color: #ffffff;
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 span {
   padding: 5px;

@@ -31,7 +31,7 @@ const TriangularHarmonies = ({ rgb, contrastColorRgb }) => {
     if (!hex) return;
     writeToClipboard(hex)
       .then(() => {
-        showFeedback(`Copied ${hex}!`, "success");
+        showFeedback(`Copied ${hex}!`, "success", 3000, hex);
       })
       .catch((err) => {
         showFeedback("Failed to copy!", "error");

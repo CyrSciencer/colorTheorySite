@@ -4,7 +4,7 @@ import colorManagementFuncs from "../../utilities/complementaries"; // Contains 
 import SquareComposition from "../squareComposition/SquareComposition";
 import useClipboardWithFeedback from "../../utilities/useClipboardWithFeedback.jsx";
 
-import "./ColorMixer.css";
+import "./colorMixer.css";
 const { hexToRgb, rgbToHsl, hslToRgb, rgbToHex } = InformationTranslationFuncs;
 const { advancedColorBlend, opposite } = colorManagementFuncs; // Import opposite
 
